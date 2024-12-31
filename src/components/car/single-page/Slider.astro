@@ -1,0 +1,95 @@
+---
+import { Image } from "astro:assets";
+import IconChevronLeft from "~/assets/images/icons/chevron-left.svg";
+import IconChevronRight from "~/assets/images/icons/chevron-right.svg";
+const { image, alt, gallery } = Astro.props;
+gallery.unshift({ image, alt });
+---
+
+<!-- Main Slider -->
+<div class="embla bg-gray-900 max-w-full m-auto relative">
+	<div class="embla__viewport overflow-hidden">
+		<div class="embla__container flex touch-pinch-zoom">
+			{
+				gallery.map((image: any) => (
+					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
+						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover" />
+					</div>
+				))
+			}
+		</div>
+
+		<button
+			aria-label="go to previous slide"
+			class="embla__button embla-button-prev left-0 top-1/2 -translate-y-1/2"
+			type="button"
+		>
+			<IconChevronLeft class="text-white/90" />
+		</button>
+
+		<button
+			aria-label="go to next slide"
+			class="embla__button embla-button-next right-0 top-1/2 -translate-y-1/2"
+			type="button"
+		>
+			<IconChevronRight class="text-white/90" />
+		</button>
+	</div>
+</div>
+
+<!-- Thumbnail Nav -->
+<div class="embla-thumbs bg-gray-900">
+	<div class="embla-thumbs__viewport overflow-hidden">
+		<div class="embla-thumbs__container flex">
+			{
+				gallery.map((image: any) => (
+					<div class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1">
+						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover" />
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+	import EmblaCarousel from "embla-carousel";
+	import {
+		addThumbBtnsClickHandlers,
+		addToggleThumbBtnsActive,
+		addPrevNextBtnsClickHandlers,
+	} from "~/utils/embla-thumbs";
+
+	document.addEventListener("astro:page-load", function () {
+		const viewportNodeMainCarousel = document.querySelector(".embla__viewport") as HTMLElement;
+		const viewportNodeThumbCarousel = document.querySelector(".embla-thumbs__viewport") as HTMLElement;
+
+		if (!viewportNodeMainCarousel || !viewportNodeThumbCarousel) return;
+
+		const prevBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-prev");
+		const nextBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-next");
+
+		const OPTIONS = {
+			loop: true,
+		};
+		const OPTIONS_THUMBS = {
+			containScroll: "keepSnaps" as const,
+			dragFree: true,
+		};
+
+		const emblaApiMain = EmblaCarousel(viewportNodeMainCarousel, OPTIONS);
+		const emblaApiThumb = EmblaCarousel(viewportNodeThumbCarousel, OPTIONS_THUMBS);
+
+		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(emblaApiMain, prevBtnNode, nextBtnNode);
+
+		const removeThumbBtnsClickHandlers = addThumbBtnsClickHandlers(emblaApiMain, emblaApiThumb);
+		const removeToggleThumbBtnsActive = addToggleThumbBtnsActive(emblaApiMain, emblaApiThumb);
+
+		emblaApiMain
+			.on("destroy", removeThumbBtnsClickHandlers)
+			.on("destroy", removeToggleThumbBtnsActive)
+			.on("destroy", removePrevNextBtnsClickHandlers);
+
+		emblaApiThumb.on("destroy", removeThumbBtnsClickHandlers).on("destroy", removeToggleThumbBtnsActive);
+	});
+</script>

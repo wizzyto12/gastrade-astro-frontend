@@ -1,0 +1,60 @@
+---
+import { getMileage, getMileageUnit, getMileageLabel } from "~/utils/helpers";
+import { labels, categoryLabels } from "~/utils/labels";
+import { getEntry } from "astro:content";
+const { car } = Astro.props;
+
+if (!car) {
+	return;
+}
+
+const carData = (await getEntry("cars", car.id)) as { data: Record<string, any> };
+
+if (!carData) {
+	return;
+}
+
+const excludeFields = ["price", "salePrice", "availability", "hidden"];
+---
+
+{
+	Object.entries(categoryLabels).map(
+		([key, label]) =>
+			carData.data[key] &&
+			Object.keys(carData.data[key]).some(
+				(subKey) => !excludeFields.includes(subKey) && carData.data[key][subKey]
+			) && (
+				<div class="grid grid-cols-1 lg:grid-cols-3 pt-12">
+					<h2 class={`h6 feature-icon feature-icon-${key}`}>{label}</h2>
+
+					<dl class="lg:col-span-2 grid grid-cols-2 gap-x-8 max-w-lg gap-y-2 text-base">
+						{Object.entries(carData.data[key]).map(
+							([subKey, value]) =>
+								!excludeFields.includes(subKey) && (
+									<>
+										<dt>{labels[key][subKey] || subKey}</dt>
+										<dd class="font-bold whitespace-nowrap">
+											{subKey === "features" ? (
+												<ul class="list-disc list-inside space-y-1">
+													{value.map((feature) => (
+														<li>{feature}</li>
+													))}
+												</ul>
+											) : subKey === "mileage" ? (
+												`${getMileage(value)} ${getMileageUnit()}`
+											) : value === true ? (
+												"Yes"
+											) : value ? (
+												value
+											) : (
+												"N/A"
+											)}
+										</dd>
+									</>
+								)
+						)}
+					</dl>
+				</div>
+			)
+	)
+}

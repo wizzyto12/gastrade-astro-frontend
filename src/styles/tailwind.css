@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+	@apply h-full antialiased scroll-smooth;
+}
+
+body {
+	@apply h-full scroll-smooth text-lg font-inter text-gray-800;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@apply font-bold break-words;
+}
+
+h1,
+.h1 {
+	@apply text-5xl lg:text-6xl;
+}
+
+h2,
+.h2 {
+	@apply text-4xl lg:text-5xl;
+}
+
+h3,
+.h3 {
+	@apply text-3xl lg:text-4xl;
+}
+
+h4,
+.h4 {
+	@apply text-2xl lg:text-3xl;
+}
+
+h5,
+.h5 {
+	@apply text-xl lg:text-2xl;
+}
+
+h6,
+.h6 {
+	@apply text-lg lg:text-xl;
+}
+
+p {
+	@apply leading-loose;
+}
+
+.button {
+	@apply px-4 py-3 text-base transition duration-300 font-bold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+}
+
+.button-teal {
+	@apply bg-teal-500 hover:bg-teal-500/80 text-white focus-visible:outline-teal-500;
+}
+
+.button-black {
+	@apply bg-gray-800 hover:bg-gray-500 text-white focus-visible:outline-gray-800 rounded-full;
+}
+
+.button-yellow {
+	@apply bg-yellow-200 hover:bg-yellow-100 text-gray-800 focus-visible:outline-yellow-200;
+}
+
+.menu-item-active {
+	@apply font-bold;
+}
+
+section.bg-white + section.bg-white > .container {
+	@apply pt-0;
+}
+
+input,
+textarea {
+	@apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+}
+
+label {
+	@apply block text-sm/6 font-semibold;
+}
+
+/* Embla */
+.embla-thumbs__slide.embla-thumbs__slide--selected {
+	@apply border-yellow-400;
+}
+
+.embla__button {
+	-webkit-tap-highlight-color: transparent;
+	@apply absolute w-8 h-14 z-10 inline-flex items-center justify-center cursor-pointer border-0 p-0 m-0 appearance-none bg-gray-800/50 touch-manipulation;
+}
+
+/* Car Card */
+.card-car[data-car-on-sale='true'] .price.on-sale {
+	@apply line-through text-base;
+}
+
+.card-car[data-car-on-sale='true'] mark.price-on-sale {
+	@apply font-bold text-lg bg-yellow-200 px-2;
+}
+
+.card-car[data-car-on-sale='true']:not([data-car-available='sold']) .ribbon::after {
+	content: "On Sale";
+	@apply absolute z-20 bg-yellow-200 text-sm font-bold px-4 py-1;
+}
+
+.card-car[data-car-available='sold'] .ribbon::after {
+	content: "Sold";
+	@apply absolute z-20 bg-red-200 text-sm font-bold px-4 py-1 text-red-900;
+}
+
+/* inter-300 - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 300;
+	src: url("/fonts/inter/inter-v18-latin-300.woff2") format("woff2");
+}
+/* inter-300italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 300;
+	src: url("/fonts/inter/inter-v18-latin-300italic.woff2") format("woff2");
+}
+/* inter-regular - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/fonts/inter/inter-v18-latin-regular.woff2") format("woff2");
+}
+/* inter-italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 400;
+	src: url("/fonts/inter/inter-v18-latin-italic.woff2") format("woff2");
+}
+/* inter-500 - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 500;
+	src: url("/fonts/inter/inter-v18-latin-500.woff2") format("woff2");
+}
+/* inter-500italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 500;
+	src: url("/fonts/inter/inter-v18-latin-500italic.woff2") format("woff2");
+}
+/* inter-600 - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 600;
+	src: url("/fonts/inter/inter-v18-latin-600.woff2") format("woff2");
+}
+/* inter-600italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 600;
+	src: url("/fonts/inter/inter-v18-latin-600italic.woff2") format("woff2");
+}
+/* inter-700 - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 700;
+	src: url("/fonts/inter/inter-v18-latin-700.woff2") format("woff2");
+}
+/* inter-700italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 700;
+	src: url("/fonts/inter/inter-v18-latin-700italic.woff2") format("woff2");
+}
+/* inter-900 - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 900;
+	src: url("/fonts/inter/inter-v18-latin-900.woff2") format("woff2");
+}
+/* inter-900italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: italic;
+	font-weight: 900;
+	src: url("/fonts/inter/inter-v18-latin-900italic.woff2") format("woff2");
+}

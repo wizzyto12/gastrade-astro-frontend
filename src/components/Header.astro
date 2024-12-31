@@ -1,0 +1,45 @@
+---
+import { menuMain } from "~/data/menus";
+import IconLogo from "~/assets/images/icons/logo.svg";
+const rmTrailingSlash = (path: string): string => {
+	return path.endsWith("/") && path.length > 1 ? path.slice(0, path.length - 1) : path;
+};
+
+const pathname = rmTrailingSlash(Astro.url.pathname);
+---
+
+<header>
+	<section class="bg-yellow-200">
+		<div class="container py-8">
+			<div class="flex justify-between items-center gap-x-4">
+				<a href="/">
+					<div class="flex items-center gap-x-2">
+						<IconLogo class="h-8 inline-block" />
+						<span class="font-bold text-4xl">Hyper<span class="font-normal">Drive</span></span>
+					</div>
+				</a>
+
+				<nav>
+					<ul class="flex items-center gap-x-4">
+						{
+							menuMain.map((item) => (
+								<li>
+									<a
+										href={item.url}
+										class={`hover:text-gray-600 ${pathname === item.url ? "font-bold" : ""}`}
+									>
+										{item.name}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+
+				<div>
+					<a href="/" class="button button-black">Contact</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</header>
