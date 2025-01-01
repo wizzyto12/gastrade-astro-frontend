@@ -36,7 +36,7 @@ const cars = defineCollection({
 			technical: z.object({
 				horsePower: z.number().positive(),
 				transmission: z.enum(["Automatic", "Manual", "CVT", "Dual-Clutch"]),
-				engineSizeCC: z.number().positive(),
+				engineSizeCC: z.number().nonnegative(),
 				gears: z.number().int().optional(),
 				cilinders: z.number().int().optional(),
 				weight: z.number().int().optional(),
