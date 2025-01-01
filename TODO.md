@@ -15,6 +15,7 @@
 - [ ] Make image ribbon depend on parent classname
 - [ ] Add Form for car inquiry
 - [ ] Related cars widget
+- [ ] Add icons to features list
 
 ## Low Priority
 - [ ] Update README with theme info
@@ -23,3 +24,6 @@
 - [ ] Widget for car trade-in valuation
 - [ ] Widget for seller information
 - [ ] Translation support
+
+## Bugs
+- [ ] Fix slides duplicating on page reload
