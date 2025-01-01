@@ -3,13 +3,20 @@ import { Image } from "astro:assets";
 import IconChevronLeft from "~/assets/images/icons/chevron-left.svg";
 import IconChevronRight from "~/assets/images/icons/chevron-right.svg";
 const { image, alt, gallery } = Astro.props;
-gallery.unshift({ image, alt });
+// gallery.unshift({ image, alt });
 ---
 
 <!-- Main Slider -->
 <div class="embla bg-gray-900 max-w-full m-auto relative">
 	<div class="embla__viewport overflow-hidden">
 		<div class="embla__container flex touch-pinch-zoom">
+			{
+				image && (
+					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
+						<Image src={image} alt={alt || ""} class="w-full h-full object-cover" />
+					</div>
+				)
+			}
 			{
 				gallery.map((image: any) => (
 					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
@@ -41,6 +48,11 @@ gallery.unshift({ image, alt });
 <div class="embla-thumbs bg-gray-900">
 	<div class="embla-thumbs__viewport overflow-hidden">
 		<div class="embla-thumbs__container flex">
+			<div
+				class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1"
+			>
+				{image && <Image src={image} alt={alt || ""} class="w-full h-full object-cover" />}
+			</div>
 			{
 				gallery.map((image: any) => (
 					<div class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1">
