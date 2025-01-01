@@ -60,7 +60,7 @@ const { Content } = await render(car);
 								car.data.gallery ? (
 									<Slider image={car.data.image} alt={car.data.imageAlt} gallery={car.data.gallery} />
 								) : (
-									<Image src={car.data.image} alt={car.data.imageAlt ? car.data.imageAlt : ""} />
+									<Image src={car.data.image} alt={car.data.imageAlt ? car.data.imageAlt : ""} loading={'eager'} fetchpriority={'high'} />
 								)
 							) : (
 								<div class="absolute inset-0 text-gray-200 size-full bg-gray-50 flex flex-col gap-4 items-center justify-center">
