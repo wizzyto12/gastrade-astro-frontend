@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import type { GetStaticPaths, Page } from "astro";
+import { siteName } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
@@ -25,7 +26,7 @@ interface Props {
 const { page } = Astro.props;
 ---
 
-<Layout>
+<Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
 	<Section class:list={"bg-gray-50"}>
 		<Container class:list={"max-lg:px-0 max-lg:max-w-full"}>
 			<div class="flex">
