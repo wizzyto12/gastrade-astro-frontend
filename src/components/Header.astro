@@ -10,16 +10,16 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
 
 <header>
 	<section class="bg-yellow-200">
-		<div class="container py-8">
+		<div class="container py-4 lg:py-8">
 			<div class="flex justify-between items-center gap-x-4">
 				<a href="/">
 					<div class="flex items-center gap-x-2">
-						<IconLogo class="h-8 inline-block" />
-						<span class="font-bold text-4xl">Hyper<span class="font-normal">Drive</span></span>
+						<IconLogo class="h-5 lg:h-8 inline-block" />
+						<span class="font-bold text-2xl lg:text-4xl">Hyper<span class="font-normal">Drive</span></span>
 					</div>
 				</a>
 
-				<nav>
+				<nav class="max-lg:hidden">
 					<ul class="flex items-center gap-x-4">
 						{
 							menuMain.map((item) => (
@@ -36,7 +36,7 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
 					</ul>
 				</nav>
 
-				<div>
+				<div class="max-lg:hidden">
 					<a href="/" class="button button-black">Contact</a>
 				</div>
 			</div>
