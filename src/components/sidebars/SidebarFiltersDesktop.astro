@@ -1,3 +1,134 @@
+---
+import { bodyTypes, fuelTypes, transmission, conditions } from "~/content.config";
+
+const apiUrl = new URL("/api/getFilteredCars.json", Astro.url);
+
+interface Car {
+	data: {
+		general: {
+			make: string;
+		};
+		exterior: {
+			color: string;
+		};
+	};
+}
+
+const allCars: Car[] = await fetch(apiUrl).then((res) => res.json());
+const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
+const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
+const total = allCars.length;
+---
+
 <div class="max-lg:hidden shrink-0 lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-purple-100 px-6">Sidebar</div>
+	<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 py-4">
+		<form action="#" id="form-filter" class="grid grid-cols-1 gap-y-6">
+			<div>
+				<label for="make" class="">Make</label>
+				<select name="make" id="make">
+					<option value="all">All</option>
+					{makes.map((make) => <option value={make}>{make}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<label for="model" class="">Model</label>
+				<select name="model" id="model">
+					<option value="all">All</option>
+				</select>
+			</div>
+
+			<div>
+				<label for="color" class="">Color</label>
+				<select name="color" id="color">
+					<option value="all">All</option>
+					{colors.map((color) => <option value={color}>{color}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<label for="bodyType" class="">Body Type</label>
+				<select name="bodyType" id="bodyType">
+					<option value="all">All</option>
+					{bodyTypes.map((bodyType) => <option value={bodyType}>{bodyType}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<label for="fuelType" class="">Fuel Type</label>
+				<select name="fuelType" id="fuelType">
+					<option value="all">All</option>
+					{fuelTypes.map((fuelType) => <option value={fuelType}>{fuelType}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<label for="transmission" class="">Transmission</label>
+				<select name="transmission" id="transmission">
+					<option value="all">All</option>
+					{transmission.map((transmission) => <option value={transmission}>{transmission}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<label for="condition" class="">Condition</label>
+				<select name="condition" id="condition">
+					<option value="all">All</option>
+					{conditions.map((condition) => <option value={condition}>{condition}</option>)}
+				</select>
+			</div>
+
+			<div>
+				<button type="submit" class="button button-yellow w-full">
+					Search <span id="filter-result-found">({total})</span></button
+				>
+			</div>
+		</form>
+	</div>
 </div>
+
+<script>
+	document.addEventListener("astro:page-load", function () {
+		const form = document.getElementById("form-filter") as HTMLFormElement;
+
+		if (form) {
+			const resultFound = document.getElementById("filter-result-found")!;
+
+			form.addEventListener("submit", async function (event) {
+				event.preventDefault();
+
+				try {
+					const url = new URL("/api/getFilteredCars.json", window.location.origin);
+
+					const formData = new FormData(form);
+					for (const [key, value] of formData.entries()) {
+						url.searchParams.append(key, value.toString());
+					}
+
+					const response = await fetch(url);
+					const data = await response.json();
+
+					// if make is not 'all' and model is not 'all', filter the data and populate the model select field with all the unique models
+					// if (formData.get("make") !== "all" && formData.get("model") === "all") {
+					// 	const models = [...new Set(data.map((car: Car) => car.data.general.model))].sort();
+					// 	const modelSelect = document.getElementById("model") as HTMLSelectElement;
+					// 	modelSelect.innerHTML = "<option value='all'>All</option>";
+					// 	models.forEach((model) => {
+					// 		const option = document.createElement("option");
+					// 		option.value = model;
+					// 		option.textContent = model;
+					// 		modelSelect.appendChild(option);
+					// 	});
+					// }
+
+                    resultFound.textContent = `(${data?.length ?? 0})`;
+					console.log(data);
+				} catch (error) {
+					console.error(error);
+				}
+			});
+
+			form.addEventListener("change", () => form?.dispatchEvent(new Event("submit")));
+		}
+	});
+</script>

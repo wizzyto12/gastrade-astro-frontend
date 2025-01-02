@@ -1,3 +1,59 @@
-<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
-    Sidebar Mobile
-</div>
+---
+import Container from "~/components/Container.astro";
+---
+
+<dialog
+	open
+	id="modal-filter"
+	class="fixed inset-0 z-10 overflow-y-auto bg-yellow-200 max-w-svw w-svw h-full lg:hidden"
+>
+	<Container class:list={"py-4"}>
+		<div class="flex flex-col h-full">
+			<div class="flex items-center justify-between">
+				<div>
+					<button type="button" class="text-base font-medium">reset</button>
+				</div>
+				<button id="button-modal-filter-close" type="button" class="-m-2.5 p-2.5">
+					<span class="sr-only">Close filter modal</span>
+					<svg
+						class="size-8"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						aria-hidden="true"
+						data-slot="icon"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+					</svg>
+				</button>
+			</div>
+			<div
+				class="flow-root bg-white w-full mt-16 rounded-xl grow h-full shrink-0 ring-1 ring-gray-800 border-y border-gray-800"
+			>
+				<div class="py-6 px-4">
+					<form action="">
+						<div>
+							<label for="make" class="sr-only">Make</label>
+							<select
+								name="make"
+								id="make"
+								class="block bg-transparent w-full py-2 pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+							>
+								<option value="all">All</option>
+								<option value="audi">Audi</option>
+								<option value="bmw">BMW</option>
+								<option value="ford">Ford</option>
+								<option value="honda">Honda</option>
+								<option value="hyundai">Hyundai</option>
+								<option value="mercedes-benz">Mercedes-Benz</option>
+								<option value="toyota">Toyota</option>
+								<option value="volkswagen">Volkswagen</option>
+							</select>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</Container>
+</dialog>
