@@ -2,6 +2,8 @@
 
 ## High Priority
 - [ ] Filters
+    - [ ] Autopopulate model based on make
+    - [ ] Allow multiple selections (color, models, etc.)
 - [ ] Search
 - [ ] Pagination
 - [ ] Sorting
@@ -26,4 +28,4 @@
 - [ ] Translation support
 
 ## Bugs
-- [ ] Fix slides duplicating on page reload
+- [x] Fix slides duplicating on page reload

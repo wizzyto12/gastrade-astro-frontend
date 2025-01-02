@@ -9,6 +9,8 @@ import playformInline from "@playform/inline";
 
 // https://astro.build/config
 export default defineConfig({
+	site: "http://localhost:4321",
+	base: "/",
 	integrations: [
 		tailwind(),
 		mdx(),
