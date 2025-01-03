@@ -1,5 +1,6 @@
 import { z, defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
+import slugify from "slugify";
 
 export const bodyTypes = ["SUV", "Sedan", "Hatchback", "Coupe", "Convertible", "Pickup"] as const;
 export const fuelTypes = ["Petrol", "Diesel", "Hybrid", "Electric", "CNG"] as const;
@@ -19,6 +20,7 @@ const cars = defineCollection({
 			publishDate: z.coerce.date().default(new Date(2025, 0, 1)),
 			general: z.object({
 				make: z.string(),
+				// makeSlugified: z.string(),
 				model: z.coerce.string(),
 				type: z.string().optional(),
 				price: z.number().positive(),

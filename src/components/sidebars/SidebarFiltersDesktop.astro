@@ -1,30 +1,29 @@
 ---
+export const prerender = false;
 import { bodyTypes, fuelTypes, transmission, conditions } from "~/content.config";
+import type { CollectionEntry } from "astro:content";
+import IconReset from "~/assets/images/icons/reset.svg";
+type Car = CollectionEntry<"cars">;
 
-const apiUrl = new URL("/api/getFilteredCars.json", Astro.url);
+let url = new URL("/api/getFilteredCars.json", Astro.url);
+const response = await fetch(url);
+const allCars: Car[] = await response.json();
 
-interface Car {
-	data: {
-		general: {
-			make: string;
-		};
-		exterior: {
-			color: string;
-		};
-	};
-}
-
-const allCars: Car[] = await fetch(apiUrl).then((res) => res.json());
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
 const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
-const total = allCars.length;
+const { count } = Astro.props;
 ---
 
 <div class="max-lg:hidden shrink-0 lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
 	<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 py-4">
-		<form action="#" id="form-filter" class="grid grid-cols-1 gap-y-6">
+		<form id="form-filter" method="get" class="grid grid-cols-1 gap-y-6">
 			<div>
-				<label for="make" class="">Make</label>
+				<div class="flex items-center gap-x-2">
+					<label for="make">Make</label>
+					<button id="clear-input-make" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="make" id="make">
 					<option value="all">All</option>
 					{makes.map((make) => <option value={make}>{make}</option>)}
@@ -32,14 +31,24 @@ const total = allCars.length;
 			</div>
 
 			<div>
-				<label for="model" class="">Model</label>
+				<div class="flex items-center gap-x-2">
+					<label for="model">Model</label>
+					<button id="clear-input-model" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="model" id="model">
 					<option value="all">All</option>
 				</select>
 			</div>
 
 			<div>
-				<label for="color" class="">Color</label>
+				<div class="flex items-center gap-x-2">
+					<label for="color">Color</label>
+					<button id="clear-input-color" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="color" id="color">
 					<option value="all">All</option>
 					{colors.map((color) => <option value={color}>{color}</option>)}
@@ -47,7 +56,12 @@ const total = allCars.length;
 			</div>
 
 			<div>
-				<label for="bodyType" class="">Body Type</label>
+				<div class="flex items-center gap-x-2">
+					<label for="bodyType">Body Type</label>
+					<button id="clear-input-bodyType" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="bodyType" id="bodyType">
 					<option value="all">All</option>
 					{bodyTypes.map((bodyType) => <option value={bodyType}>{bodyType}</option>)}
@@ -55,7 +69,12 @@ const total = allCars.length;
 			</div>
 
 			<div>
-				<label for="fuelType" class="">Fuel Type</label>
+				<div class="flex items-center gap-x-2">
+					<label for="fuelType">Fuel Type</label>
+					<button id="clear-input-fuelType" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="fuelType" id="fuelType">
 					<option value="all">All</option>
 					{fuelTypes.map((fuelType) => <option value={fuelType}>{fuelType}</option>)}
@@ -63,7 +82,12 @@ const total = allCars.length;
 			</div>
 
 			<div>
-				<label for="transmission" class="">Transmission</label>
+				<div class="flex items-center gap-x-2">
+					<label for="transmission">Transmission</label>
+					<button id="clear-input-transmission" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="transmission" id="transmission">
 					<option value="all">All</option>
 					{transmission.map((transmission) => <option value={transmission}>{transmission}</option>)}
@@ -71,7 +95,12 @@ const total = allCars.length;
 			</div>
 
 			<div>
-				<label for="condition" class="">Condition</label>
+				<div class="flex items-center gap-x-2">
+					<label for="condition">Condition</label>
+					<button id="clear-input-condition" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
 				<select name="condition" id="condition">
 					<option value="all">All</option>
 					{conditions.map((condition) => <option value={condition}>{condition}</option>)}
@@ -80,7 +109,7 @@ const total = allCars.length;
 
 			<div>
 				<button type="submit" class="button button-yellow w-full">
-					Search <span id="filter-result-found">({total})</span></button
+					Search <span id="filter-result-found">({count})</span></button
 				>
 			</div>
 		</form>
@@ -93,42 +122,84 @@ const total = allCars.length;
 
 		if (form) {
 			const resultFound = document.getElementById("filter-result-found")!;
+			const urlParams = new URLSearchParams(window.location.search);
 
-			form.addEventListener("submit", async function (event) {
-				event.preventDefault();
+			for (const [key, value] of urlParams.entries()) {
+				const input = form.elements.namedItem(key) as HTMLSelectElement;
+				const clearButton = document.getElementById(`clear-input-${key}`)! as HTMLButtonElement;
+
+				if (input) {
+					input.value = value;
+					if (value !== "all" && clearButton) {
+						clearButton.classList.remove("hidden");
+					}
+				}
+			}
+
+			form.addEventListener("change", async (event) => {
+				const target = event.target! as HTMLSelectElement;
+				const clearButton = document.getElementById(`clear-input-${target.name}`)! as HTMLButtonElement;
+
+				if (target.value !== "all") {
+					clearButton.classList.remove("hidden");
+				} else {
+					clearButton.classList.add("hidden");
+				}
 
 				try {
 					const url = new URL("/api/getFilteredCars.json", window.location.origin);
-
 					const formData = new FormData(form);
+
+					url.search = "";
+
 					for (const [key, value] of formData.entries()) {
-						url.searchParams.append(key, value.toString());
+						if (value !== "all") {
+							url.searchParams.append(key, value.toString());
+						}
 					}
 
 					const response = await fetch(url);
 					const data = await response.json();
 
-					// if make is not 'all' and model is not 'all', filter the data and populate the model select field with all the unique models
-					// if (formData.get("make") !== "all" && formData.get("model") === "all") {
-					// 	const models = [...new Set(data.map((car: Car) => car.data.general.model))].sort();
-					// 	const modelSelect = document.getElementById("model") as HTMLSelectElement;
-					// 	modelSelect.innerHTML = "<option value='all'>All</option>";
-					// 	models.forEach((model) => {
-					// 		const option = document.createElement("option");
-					// 		option.value = model;
-					// 		option.textContent = model;
-					// 		modelSelect.appendChild(option);
-					// 	});
-					// }
-
-                    resultFound.textContent = `(${data?.length ?? 0})`;
-					console.log(data);
+					resultFound.textContent = `(${data?.length ?? 0})`;
 				} catch (error) {
 					console.error(error);
 				}
 			});
 
-			form.addEventListener("change", () => form?.dispatchEvent(new Event("submit")));
+			form.addEventListener("submit", async function (event) {
+				event.preventDefault();
+				try {
+					const url = new URL(window.location.href);
+					const formData = new FormData(form);
+
+					url.search = "";
+
+					for (const [key, value] of formData.entries()) {
+						if (value !== "all") {
+							url.searchParams.append(key, value.toString());
+						}
+					}
+
+					window.location.href = url.toString();
+				} catch (error) {
+					console.error(error);
+				}
+			});
+
+			const clearButtons = form.querySelectorAll("button[id^='clear-input-']");
+			clearButtons.forEach((button) => {
+				button.addEventListener("click", (event) => {
+					const inputId = button.id.replace("clear-input-", "");
+					const input = form.elements.namedItem(inputId) as HTMLSelectElement;
+
+					if (input) {
+						input.value = "all";
+						input.dispatchEvent(new Event("change"));
+						form.dispatchEvent(new Event("submit"));
+					}
+				});
+			});
 		}
 	});
 </script>

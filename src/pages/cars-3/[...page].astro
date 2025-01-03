@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import type { GetStaticPaths, Page } from "astro";
 import { siteName } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
@@ -11,22 +11,35 @@ import CardCar from "~/components/car/CardCar.astro";
 import SidebarFiltersDesktop from "~/components/sidebars/SidebarFiltersDesktop.astro";
 import SidebarFiltersMobile from "~/components/sidebars/SidebarFiltersMobile.astro";
 import Pagination from "~/components/Pagination.astro";
-type Car = CollectionEntry<"cars">;
 
-let url = new URL("/api/getFilteredCars.json", Astro.url);
-let searchParams;
 
-searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
-url.search = searchParams.toString();
+interface Car {
+	data: {
+		general: {
+			make: string;
+		};
+		exterior: {
+			color: string;
+		};
+	};
+}
 
-const response = await fetch(url);
-const allCars: Car[] = await response.json();
 
-const count = (allCars.length > 0 ? allCars.length : 0);
-const page = parseInt(searchParams.get("page") || "1");
-const pageSize = 12;
-const totalPages = Math.ceil(Array.isArray(allCars) ? allCars.length / pageSize : 0);
-const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSize, page * pageSize) : [];
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+	const apiUrl = new URL("/api/getFilteredCars.json", Astro.url);
+	const cars: Car[] = await fetch(apiUrl).then((res) => res.json());
+
+	return paginate(cars, {
+		pageSize: 12,
+		params: { page: undefined },
+	});
+};
+
+interface Props {
+	page: Page<any>;
+}
+
+const { page } = Astro.props;
 ---
 
 <Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
@@ -58,25 +71,15 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 					</button>
 				</div>
 
-				<SidebarFiltersDesktop count={count} />
+				<SidebarFiltersDesktop />
 
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
 						<ul class="grid grid-cols-1 lg:gap-16">
-                            {paginatedCars.length > 0 ? (
-                                paginatedCars.map((car) => <CardCar car={car} />)
-                            ) : (
-                                <li class="text-center text-gray-500">No results found</li>
-                            )}
-                        </ul>
+							{page.data.map((car) => <CardCar car={car} />)}
+						</ul>
 
-                        {paginatedCars.length > 0 && (
-                            <div class="pagination">
-                                {page > 1 && <a href={`/cars/?page=${page - 1}${searchParams.toString()}`}>Previous</a>}
-                                {page < totalPages && <a href={`/cars/?page=${page + 1}${searchParams.toString()}`}>Next</a>}
-                            </div>
-                        )}
-						<!-- <Pagination page={page} /> -->
+						<Pagination page={page} />
 					</div>
 				</main>
 			</div>
