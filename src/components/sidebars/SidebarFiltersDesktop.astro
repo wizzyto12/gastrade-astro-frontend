@@ -1,8 +1,11 @@
 ---
 export const prerender = false;
 import { bodyTypes, fuelTypes, transmission, conditions } from "~/content.config";
+import { getPrice } from "~/utils/helpers";
 import type { CollectionEntry } from "astro:content";
 import IconReset from "~/assets/images/icons/reset.svg";
+import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
+
 type Car = CollectionEntry<"cars">;
 
 let url = new URL("/api/getFilteredCars.json", Astro.url);
@@ -11,11 +14,13 @@ const allCars: Car[] = await response.json();
 
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
 const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
+
+const priceSteps = [50000, 100000, 150000, 200000, 250000, 300000];
 const { count } = Astro.props;
 ---
 
 <div class="max-lg:hidden shrink-0 lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-	<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 py-4">
+	<div class="flex sticky top-8 flex-col gap-y-5 overflow-y-auto bg-white shadow-md px-6 py-4">
 		<form id="form-filter" method="get" class="grid grid-cols-1 gap-y-6">
 			<div>
 				<div class="flex items-center gap-x-2">
@@ -24,10 +29,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="make" id="make">
-					<option value="all">All</option>
-					{makes.map((make) => <option value={make}>{make}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="make" id="make" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{makes.map((make) => <option value={make}>{make}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -37,9 +45,43 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="model" id="model">
-					<option value="all">All</option>
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="model" id="model" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
+			</div>
+
+			<div>
+				<div class="flex items-center gap-x-2">
+					<label for="price">Price</label>
+					<button id="clear-input-price" type="button" class="hidden">
+						<IconReset class="size-3 -mt-px" />
+					</button>
+				</div>
+				<div class="grid grid-cols-1">
+					<select name="price" id="price" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{
+							priceSteps.map((step, index) => {
+								const nextStep = priceSteps[index + 1];
+								if (index === 0) {
+									return <option value={`0-${step}`}>Lower than {getPrice(step)}</option>;
+								} else if (nextStep) {
+									return (
+										<option value={`${step}-${nextStep}`}>
+											{getPrice(step)} - {getPrice(nextStep)}
+										</option>
+									);
+								} else {
+									return <option value={`${step}-`}>Higher than {getPrice(step)}</option>;
+								}
+							})
+						}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -49,10 +91,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="color" id="color">
-					<option value="all">All</option>
-					{colors.map((color) => <option value={color}>{color}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="color" id="color" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{colors.map((color) => <option value={color}>{color}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -62,10 +107,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="bodyType" id="bodyType">
-					<option value="all">All</option>
-					{bodyTypes.map((bodyType) => <option value={bodyType}>{bodyType}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="bodyType" id="bodyType" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{bodyTypes.map((bodyType) => <option value={bodyType}>{bodyType}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -75,10 +123,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="fuelType" id="fuelType">
-					<option value="all">All</option>
-					{fuelTypes.map((fuelType) => <option value={fuelType}>{fuelType}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="fuelType" id="fuelType" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{fuelTypes.map((fuelType) => <option value={fuelType}>{fuelType}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -88,10 +139,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="transmission" id="transmission">
-					<option value="all">All</option>
-					{transmission.map((transmission) => <option value={transmission}>{transmission}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="transmission" id="transmission" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{transmission.map((transmission) => <option value={transmission}>{transmission}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>
@@ -101,10 +155,13 @@ const { count } = Astro.props;
 						<IconReset class="size-3 -mt-px" />
 					</button>
 				</div>
-				<select name="condition" id="condition">
-					<option value="all">All</option>
-					{conditions.map((condition) => <option value={condition}>{condition}</option>)}
-				</select>
+				<div class="grid grid-cols-1">
+					<select name="condition" id="condition" class="appearance-none col-start-1 row-start-1">
+						<option value="all">All</option>
+						{conditions.map((condition) => <option value={condition}>{condition}</option>)}
+					</select>
+					<IconChevronDown class="icon-chevron-down" />
+				</div>
 			</div>
 
 			<div>

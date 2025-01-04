@@ -22,7 +22,7 @@ url.search = searchParams.toString();
 const response = await fetch(url);
 const allCars: Car[] = await response.json();
 
-const count = (allCars.length > 0 ? allCars.length : 0);
+const count = allCars.length > 0 ? allCars.length : 0;
 const page = parseInt(searchParams.get("page") || "1");
 const pageSize = 12;
 const totalPages = Math.ceil(Array.isArray(allCars) ? allCars.length / pageSize : 0);
@@ -63,20 +63,20 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
 						<ul class="grid grid-cols-1 lg:gap-16">
-                            {paginatedCars.length > 0 ? (
-                                paginatedCars.map((car) => <CardCar car={car} />)
-                            ) : (
-                                <li class="text-center text-gray-500">No results found</li>
-                            )}
-                        </ul>
+							{
+								paginatedCars.length > 0 ? (
+									paginatedCars.map((car) => <CardCar car={car} />)
+								) : (
+									<li class="text-center text-gray-500">No results found</li>
+								)
+							}
+						</ul>
 
-                        {paginatedCars.length > 0 && (
-                            <div class="pagination">
-                                {page > 1 && <a href={`/cars/?page=${page - 1}${searchParams.toString()}`}>Previous</a>}
-                                {page < totalPages && <a href={`/cars/?page=${page + 1}${searchParams.toString()}`}>Next</a>}
-                            </div>
-                        )}
-						<!-- <Pagination page={page} /> -->
+						{
+							paginatedCars.length > 0 && (
+								<Pagination page={page} totalPages={totalPages} searchParams={searchParams} />
+							)
+						}
 					</div>
 				</main>
 			</div>

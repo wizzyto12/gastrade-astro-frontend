@@ -117,6 +117,11 @@ label {
 	@apply absolute z-20 bg-red-200 text-sm font-bold px-4 py-1 text-red-900;
 }
 
+/* Icons */
+svg.icon-chevron-down {
+	@apply pointer-events-none text-gray-800 col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end sm:size-4;
+}
+
 /* inter-300 - latin */
 @font-face {
 	font-display: swap;

@@ -9,34 +9,35 @@ const { data } = Astro.props;
 
 const mileage = getMileage(data.history.mileage);
 const mileageUnit = getMileageUnit();
+const pillClasses = "flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1 ring-1 ring-gray-200";
 ---
 
 <ul class="flex gap-x-2 sm:gap-x-4 items-center gap-y-2 mt-auto flex-wrap text-sm lg:text-base">
-	<li class="flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1">
+	<li class={pillClasses}>
 		<IconMilage class="size-4 lg:size-5" />
 		<span>
 			{`${mileage} ${mileageUnit}`}
 		</span>
 	</li>
-	<li class="flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1">
+	<li class={pillClasses}>
 		<IconTransmission class="size-4 lg:size-5" />
 		<span>
 			{data.technical.transmission}
 		</span>
 	</li>
-	<li class="flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1">
+	<li class={pillClasses}>
 		<IconCalendar class="size-4 lg:size-5 -mt-0.5" />
 		<span>
 			{data.history.year}
 		</span>
 	</li>
-	<li class="flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1">
+	<li class={pillClasses}>
 		<IconFuel class="size-4 lg:size-5 -mt-0.5" />
 		<span>
 			{data.efficiency.fuelType}
 		</span>
 	</li>
-	<li class="flex items-center gap-x-1 rounded-full bg-gray-100 px-3 py-1">
+	<li class={pillClasses}>
 		<IconOdometer class="size-4 lg:size-5 -mt-0.5" />
 		<span>
 			{data.technical.horsePower} BHP ({(data.technical.horsePower / 1.362).toFixed()} kW)
