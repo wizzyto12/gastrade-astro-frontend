@@ -1,0 +1,103 @@
+---
+import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
+---
+
+<div class="mb-8 flex items-center justify-between gap-x-4">
+	<form id="form-search">
+		<div>
+			<label class="sr-only" for="search">Search</label>
+			<input
+				type="search"
+				name="search"
+				placeholder="Search..."
+				id="search"
+				class="bg-transparent px-2 outline-none text-xl border-b-2 border-gray-300 rounded-none placeholder:text-gray-500 focus:outline-none focus-visible:border-gray-500"
+			/>
+		</div>
+	</form>
+
+	<form id="form-sort"></form>
+	<div class="shrink-0">
+		<div class="flex items-center gap-x-2">
+			<label class="sr-only" for="sort">Sort</label>
+		</div>
+		<div class="grid grid-cols-1">
+			<select
+				name="sort"
+				id="sort"
+				class="appearance-none col-start-1 bg-transparent outline-none row-start-1 pr-10"
+			>
+				<option value="all">Sort by</option>
+				<option value="mileage-desc">Mileage: High to Low</option>
+				<option value="mileage-asc">Mileage: Low to High</option>
+				<option value="price-desc">Price: High to Low</option>
+				<option value="price-asc">Price: Low to High</option>
+				<option value="year-desc">Year: High to Low</option>
+				<option value="year-asc">Year: Low to High</option>
+			</select>
+			<IconChevronDown class="icon-chevron-down" />
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("astro:page-load", function () {
+		const searchForm = document.getElementById("form-search") as HTMLFormElement;
+		const sortForm = document.getElementById("form-sort") as HTMLFormElement;
+		const searchInput = document.getElementById("search") as HTMLInputElement;
+		const sortSelect = document.getElementById("sort") as HTMLSelectElement;
+
+		const url = new URL(window.location.href);
+		const sort = url.searchParams.get("sort");
+		const search = url.searchParams.get("search");
+
+		if (sort) {
+			sortSelect.value = sort;
+		}
+
+		if (search) {
+			searchInput.value = search;
+		}
+
+		sortSelect?.addEventListener("change", (event) => {
+			const url = new URL(window.location.href);
+			const sort = sortSelect.value;
+
+			if (url.searchParams.has("sort")) {
+				url.searchParams.delete("sort");
+			}
+
+			if (sort !== "all") {
+				url.searchParams.set("sort", sort);
+			}
+
+			window.location.href = url.toString();
+		});
+
+		searchForm?.addEventListener("submit", (event) => {
+			event.preventDefault();
+			const url = new URL(window.location.href);
+			const search = searchInput.value;
+
+			if (url.searchParams.has("search")) {
+				url.searchParams.delete("search");
+			}
+
+			if (search) {
+				url.searchParams.set("search", search);
+			}
+
+			window.location.href = url.toString();
+		});
+
+		searchInput?.addEventListener("input", () => {
+			if (!searchInput.value) {
+				const url = new URL(window.location.href);
+				if (url.searchParams.has("search")) {
+					url.searchParams.delete("search");
+				}
+				window.location.href = url.toString();
+			}
+		});
+	});
+</script>

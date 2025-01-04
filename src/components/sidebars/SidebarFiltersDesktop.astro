@@ -230,11 +230,11 @@ const { count } = Astro.props;
 					const url = new URL(window.location.href);
 					const formData = new FormData(form);
 
-					url.search = "";
-
 					for (const [key, value] of formData.entries()) {
 						if (value !== "all") {
-							url.searchParams.append(key, value.toString());
+							url.searchParams.set(key, value.toString());
+						} else {
+							url.searchParams.delete(key);
 						}
 					}
 

@@ -1,23 +1,61 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { z } from "zod";
+
+const searchParamsSchema = z.object({
+	make: z.string().optional(),
+	model: z.string().optional(),
+	yearFrom: z
+		.string()
+		.regex(/^\d{4}$/)
+		.optional(),
+	yearTo: z
+		.string()
+		.regex(/^\d{4}$/)
+		.optional(),
+	price: z.string().optional(),
+	mileageFrom: z.string().optional(),
+	mileageTo: z.string().optional(),
+	fuelType: z.string().optional(),
+	bodyType: z.string().optional(),
+	transmission: z.string().optional(),
+	color: z.string().optional(),
+	condition: z.string().optional(),
+	sort: z.string().optional(),
+	search: z.string().optional(),
+});
 
 export const GET: APIRoute = async ({ request }) => {
 	const url = new URL(request.url);
 
-	const make = url.searchParams.get("make");
-	const model = url.searchParams.get("model");
-	const yearFrom = url.searchParams.get("yearFrom");
-	const yearTo = url.searchParams.get("yearTo");
-	const priceFrom = url.searchParams.get("priceFrom");
-	const priceTo = url.searchParams.get("priceTo");
-	const mileageFrom = url.searchParams.get("mileageFrom");
-	const mileageTo = url.searchParams.get("mileageTo");
-	const fuelType = url.searchParams.get("fuelType");
-	const bodyType = url.searchParams.get("bodyType");
-	const transmission = url.searchParams.get("transmission");
-	const color = url.searchParams.get("color");
-	const condition = url.searchParams.get("condition");
+	const searchParams = Object.fromEntries(url.searchParams.entries());
+
+	const result = searchParamsSchema.safeParse(searchParams);
+
+	if (!result.success) {
+		return new Response(JSON.stringify({ error: "Invalid search parameters" }), {
+			status: 400,
+			headers: { "content-type": "application/json" },
+		});
+	}
+
+	const {
+		make,
+		model,
+		yearFrom,
+		yearTo,
+		price,
+		mileageFrom,
+		mileageTo,
+		fuelType,
+		bodyType,
+		transmission,
+		color,
+		condition,
+		sort,
+		search,
+	} = result.data;
 
 	const filters: ((data: any) => boolean)[] = [];
 
@@ -48,21 +86,21 @@ export const GET: APIRoute = async ({ request }) => {
 	}
 
 	// Price
-	if (priceFrom) {
-		const minPrice = parseInt(priceFrom);
-		filters.push((data: any) => {
-			const regularPrice = data.general.price;
-			const salePrice = data.general.salePrice;
-			return regularPrice >= minPrice || (salePrice && salePrice >= minPrice);
-		});
-	}
+	if (price && price !== "all") {
+		const [minPrice, maxPrice] = price.split("-").map(Number);
 
-	if (priceTo) {
-		const maxPrice = parseInt(priceTo);
 		filters.push((data: any) => {
 			const regularPrice = data.general.price;
 			const salePrice = data.general.salePrice;
-			return regularPrice <= maxPrice || (salePrice && salePrice <= maxPrice);
+
+			if (maxPrice) {
+				return (
+					(regularPrice >= minPrice && regularPrice <= maxPrice) ||
+					(salePrice && salePrice >= minPrice && salePrice <= maxPrice)
+				);
+			} else {
+				return regularPrice >= minPrice || (salePrice && salePrice >= minPrice);
+			}
 		});
 	}
 
@@ -100,9 +138,65 @@ export const GET: APIRoute = async ({ request }) => {
 		filters.push((data: any) => data.general.condition === condition);
 	}
 
+	// Search
+	if (search) {
+		const searchQueries = search
+			.toLowerCase()
+			.replace(/[^a-zA-Z0-9\s]/g, "")
+			.split(" ");
+
+		filters.push((data: any) => {
+			const searchableFields = [
+				data.general.make,
+				data.general.model,
+				data.general.bodyType,
+				data.exterior.color,
+				data.technical.transmission,
+				data.history.year.toString(), // Cast year to string for search
+				data.general.condition,
+			];
+
+			return searchQueries.every((query) =>
+				searchableFields.some((field) => field && field.toLowerCase().includes(query))
+			);
+		});
+	}
+
 	const allCars = await getCollection("cars", ({ data }: { data: any }) => {
 		return filters.every((filter) => filter(data));
 	});
+
+	// Sort
+	if (sort && sort !== "all") {
+		const [sortKey, sortOrder] = sort.split("-");
+		const order = sortOrder === "asc" ? 1 : -1;
+
+		allCars.sort((a: any, b: any) => {
+			let aValue, bValue;
+
+			switch (sortKey) {
+				case "price":
+					aValue = a.data.general.salePrice ? a.data.general.salePrice : a.data.general.price;
+					bValue = b.data.general.salePrice ? b.data.general.salePrice : b.data.general.price;
+					break;
+				case "mileage":
+					aValue = a.data.history.mileage;
+					bValue = b.data.history.mileage;
+					break;
+				case "year":
+					aValue = a.data.history.year;
+					bValue = b.data.history.year;
+					break;
+				default:
+					aValue = a.data[sortKey];
+					bValue = b.data[sortKey];
+			}
+
+			if (aValue < bValue) return -1 * order;
+			if (aValue > bValue) return 1 * order;
+			return 0;
+		});
+	}
 
 	if (!allCars || allCars.length === 0) {
 		return new Response(JSON.stringify({ error: "No cars found" }), {
