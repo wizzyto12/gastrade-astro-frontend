@@ -73,7 +73,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 						</ul>
 
 						{
-							paginatedCars.length > 0 && (
+							paginatedCars.length > 0 && totalPages > 1 && (
 								<Pagination page={page} totalPages={totalPages} searchParams={searchParams} />
 							)
 						}
