@@ -95,7 +95,7 @@ label {
 
 .embla__button {
 	-webkit-tap-highlight-color: transparent;
-	@apply absolute w-8 h-14 z-10 inline-flex items-center justify-center cursor-pointer border-0 p-0 m-0 appearance-none bg-gray-800/50 touch-manipulation;
+	@apply absolute w-8 h-14 z-10 inline-flex items-center justify-center cursor-pointer border-0 p-0 m-0 appearance-none bg-gray-800/50 touch-manipulation print:hidden;
 }
 
 /* Car Card */
@@ -120,6 +120,11 @@ label {
 /* Icons */
 svg.icon-chevron-down {
 	@apply pointer-events-none text-gray-800 col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end sm:size-4;
+}
+
+/* Print styles */
+header, footer {
+	@apply print:hidden;
 }
 
 /* inter-300 - latin */

@@ -16,6 +16,7 @@ import FeatureBox from "~/components/car/single-page/FeatureBox.astro";
 import FeaturesList from "~/components/car/single-page/FeaturesList.astro";
 import FormInquire from "~/components/forms/Inquire.astro";
 import WidgetLoan from "~/components/car/single-page/WidgetLoan.astro";
+import ModalSlider from "~/components/modals/ModalSlider.astro";
 
 // Buttons
 import ButtonGoBack from "~/components/buttons/ButtonGoBack.astro";
@@ -49,14 +50,14 @@ const { Content } = await render(car);
 
 <Layout>
 	<Section class:list={"bg-gray-50"}>
-		<Container class:list={"pb-0 lg:pb-0 max-sm:pt-8"}>
+		<Container class:list={"pb-0 lg:pb-0 max-sm:pt-8 print:hidden"}>
 			<ButtonGoBack />
 		</Container>
 
 		<Container class:list={"pt-0 lg:pt-0 max-md:max-w-full max-md:px-0"}>
 			<div class="bg-white shadow-md">
 				<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-					<div class="relative">
+					<div id="gallery-wrapper" class="relative">
 						{
 							car.data.image ? (
 								car.data.gallery ? (
@@ -98,7 +99,7 @@ const { Content } = await render(car);
 
 							<hr class="w-full mt-auto" />
 
-							<div class="flex flex-col sm:flex-row sm:items-center gap-x-4 mt-8 w-full max-sm:gap-y-8">
+							<div class="flex flex-col sm:flex-row sm:items-center gap-x-4 mt-8 w-full max-sm:gap-y-8 print:hidden">
 								<div class="flex items-center max-sm:justify-center gap-x-4 w-full">
 									<ButtonCall />
 									<ButtonInquire />
@@ -137,12 +138,14 @@ const { Content } = await render(car);
 				<hr />
 
 				<!-- Form -->
-				<div id="ask-a-question" class="p-8 max-w-3xl pt-12 prose">
+				<div id="ask-a-question" class="p-8 max-w-3xl pt-12 prose print:hidden">
 					<FormInquire />
 				</div>
 			</div>
 		</Container>
 	</Section>
+
+	<ModalSlider car={car} />
 </Layout>
 
 <script>
