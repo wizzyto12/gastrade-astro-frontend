@@ -53,9 +53,7 @@ export const labels: ShapeToLabels<CollectionEntry<"cars">["data"]> = {
 		emissionsCO2: "Emissions CO2",
 		emissionsRating: "Emissions Rating",
 	},
-	options: {
-		features: "Features",
-	},
+	options: "Options",
 	security: {
 		alarm: "Alarm",
 		immobilizer: "Immobilizer",

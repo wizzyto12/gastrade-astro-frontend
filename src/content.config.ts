@@ -55,11 +55,7 @@ const cars = defineCollection({
 				emissionsCO2: z.string().optional(),
 				emissionsRating: z.string().optional(),
 			}),
-			options: z
-				.object({
-					features: z.array(z.string()).optional(),
-				})
-				.optional(),
+			options: z.array(z.string()).optional(),
 			security: z
 				.object({
 					alarm: z.boolean().optional(),
