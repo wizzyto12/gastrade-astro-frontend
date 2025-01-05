@@ -75,16 +75,16 @@ const { price } = Astro.props;
 		</div>
 
 		<div class="lg:col-span-1 flex items-center justify-center">
-			<button type="submit" class="button button-black"> Calculate </button>
+			<button type="submit" class="button button-black w-full"> Calculate </button>
 		</div>
 	</div>
 
 	<div
 		id="loan-calculator-result"
-		class="px-8 absolute bottom-0 translate-y-1/2 inset-x-0 w-full opacity-0 transition duration-300"
+		class="px-0 lg:px-8 bottom-0 max-lg:mt-4 lg:translate-y-1/2 inset-x-0 w-full opacity-0 max-lg:h-0 transition duration-300"
 	>
 		<div
-			class="bg-white rounded-lg border-2 border-gray-200 p-4 grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 relative"
+			class="bg-white rounded-lg lg:border-2 border-gray-200 p-4 grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 relative"
 		>
 			<div>
 				<span class="block text-sm font-semibold">Monthly payment</span>
@@ -101,7 +101,7 @@ const { price } = Astro.props;
 				<span id="loan-total-payment" class="block"></span>
 			</div>
 
-			<div class="absolute bottom-0 translate-y-full">
+			<div class="lg:absolute bottom-0 lg:translate-y-full">
 				<p class="text-xs mt-3 text-gray-500">
 					Using this calculator does not constitute an application for a loan or create any obligations
 					between you and {siteName}.
@@ -135,7 +135,9 @@ const { price } = Astro.props;
 					monthlyPaymentField.textContent = data.monthlyInstallment;
 					totalPaymentField.textContent = data.totalPayment;
 					LoanCalculatorResult.style.opacity = "1";
-					wrapper.classList.add("pb-16", "mb-16");
+					LoanCalculatorResult.classList.remove("max-lg:h-0");
+					LoanCalculatorResult.classList.add("max-lg:h-auto");
+					wrapper.classList.add("lg:pb-16", "lg:mb-16");
 				}
 			} catch (error) {
 				console.error("Fetch error:", error);
