@@ -1,5 +1,5 @@
 ---
-import { getMileage, getMileageUnit, getMileageLabel } from "~/utils/helpers";
+import { getMileage, getMileageUnit } from "~/utils/helpers";
 import { labels, categoryLabels } from "~/utils/labels";
 import { getEntry } from "astro:content";
 const { car } = Astro.props;
@@ -24,7 +24,7 @@ const excludeFields = ["price", "salePrice", "availability", "hidden"];
 			Object.keys(carData.data[key]).some(
 				(subKey) => !excludeFields.includes(subKey) && carData.data[key][subKey]
 			) && (
-				<div class="grid grid-cols-1 lg:grid-cols-3 pt-12">
+				<div class="grid grid-cols-1 lg:grid-cols-3 pt-12 feature-list-item">
 					<h2 class={`h6 feature-icon feature-icon-${key}`}>{label}</h2>
 
 					<dl class="lg:col-span-2 grid grid-cols-2 gap-x-2 md:gap-x-8 max-w-lg gap-y-2 text-base max-lg:mt-8">

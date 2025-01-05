@@ -91,6 +91,7 @@ const cars = defineCollection({
 					warranty: z.string().optional(),
 					dealerNotes: z.string().optional(),
 					hidden: z.boolean().optional().default(false),
+					loanWidget: z.boolean().optional().default(false),
 				})
 				.optional(),
 		}),

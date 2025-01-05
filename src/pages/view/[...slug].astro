@@ -15,6 +15,7 @@ import Price from "~/components/car/single-page/Price.astro";
 import FeatureBox from "~/components/car/single-page/FeatureBox.astro";
 import FeaturesList from "~/components/car/single-page/FeaturesList.astro";
 import FormInquire from "~/components/forms/Inquire.astro";
+import WidgetLoan from "~/components/car/single-page/WidgetLoan.astro";
 
 // Buttons
 import ButtonGoBack from "~/components/buttons/ButtonGoBack.astro";
@@ -22,6 +23,7 @@ import ButtonShare from "~/components/buttons/ButtonShare.astro";
 import ButtonPrint from "~/components/buttons/ButtonPrint.astro";
 import ButtonCall from "~/components/buttons/ButtonCall.astro";
 import ButtonInquire from "~/components/buttons/ButtonInquire.astro";
+import LinkLoan from "~/components/car/single-page/LinkLoan.astro";
 
 export async function getStaticPaths() {
 	const cars = await getCollection("cars");
@@ -60,7 +62,12 @@ const { Content } = await render(car);
 								car.data.gallery ? (
 									<Slider image={car.data.image} alt={car.data.imageAlt} gallery={car.data.gallery} />
 								) : (
-									<Image src={car.data.image} alt={car.data.imageAlt ? car.data.imageAlt : ""} loading={'eager'} fetchpriority={'high'} />
+									<Image
+										src={car.data.image}
+										alt={car.data.imageAlt ? car.data.imageAlt : ""}
+										loading={"eager"}
+										fetchpriority={"high"}
+									/>
 								)
 							) : (
 								<div class="absolute inset-0 text-gray-200 size-full bg-gray-50 flex flex-col gap-4 items-center justify-center">
@@ -84,6 +91,8 @@ const { Content } = await render(car);
 							<hr class="w-full" />
 
 							<Price properties={car.data.general} />
+
+							{car.data.misc?.loanWidget && <LinkLoan />}
 
 							<FeatureBox car={car} />
 
@@ -111,8 +120,18 @@ const { Content } = await render(car);
 					</div>
 				</div>
 
-				<div class="p-8 divide-y divide-gray-200 max-w-5xl space-y-12">
+				<div
+					id="features-list"
+					class="p-8 divide-y divide-gray-200 max-w-5xl grid grid-cols-1 gap-y-12 feature-list"
+				>
 					<FeaturesList car={car} />
+					{
+						car.data.misc?.loanWidget && (
+							<WidgetLoan
+								price={car.data.general.salePrice ? car.data.general.salePrice : car.data.general.price}
+							/>
+						)
+					}
 				</div>
 
 				<hr />
@@ -125,3 +144,13 @@ const { Content } = await render(car);
 		</Container>
 	</Section>
 </Layout>
+
+<script>
+	// wait for the page to load
+	document.addEventListener("astro:page-load", function () {
+		const listItems = document.querySelectorAll("div.feature-list-item");
+		listItems.forEach((item, index) => {
+			(item as HTMLElement).style.order = index.toString();
+		});
+	});
+</script>

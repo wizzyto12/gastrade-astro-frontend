@@ -45,3 +45,20 @@ export function getPrice(price: number): string {
 		maximumFractionDigits: 0,
 	}).format(price);
 }
+
+/**
+ * Returns the currency symbol based on the site language and currency.
+ *
+ * @returns {string} The currency symbol.
+ */
+export function getCurrencySymbol(): string {
+	const formatter = new Intl.NumberFormat(siteLang, {
+		style: "currency",
+		currency: siteCurrency,
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	});
+	const parts = formatter.formatToParts(0);
+	const symbol = parts.find(part => part.type === "currency")?.value;
+	return symbol || "";
+}

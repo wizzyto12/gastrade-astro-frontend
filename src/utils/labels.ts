@@ -82,6 +82,7 @@ export const labels: ShapeToLabels<CollectionEntry<"cars">["data"]> = {
 		warranty: "Warranty",
 		dealerNotes: "Dealer Notes",
 		hidden: "Hidden",
+		loanWidget: "Loan Widget",
 	},
 };
 
