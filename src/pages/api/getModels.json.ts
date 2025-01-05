@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ request }) => {
 	});
 
 	const allModelNames = allMakes.map((model) => model.data.general.model);
-	console.log(allModelNames);
+	// console.log(allModelNames);
 
 	if (!allModelNames || allModelNames.length === 0) {
 		return new Response(JSON.stringify({ error: "No models found" }), {

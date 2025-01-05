@@ -58,3 +58,5 @@ export const hours = {
 	saturday: "9:00 - 17:00",
 	sunday: "Closed",
 };
+
+export const priceSteps = [50000, 100000, 150000, 200000, 250000, 300000];

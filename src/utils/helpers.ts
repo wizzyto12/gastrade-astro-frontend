@@ -59,6 +59,6 @@ export function getCurrencySymbol(): string {
 		maximumFractionDigits: 0,
 	});
 	const parts = formatter.formatToParts(0);
-	const symbol = parts.find(part => part.type === "currency")?.value;
+	const symbol = parts.find((part) => part.type === "currency")?.value;
 	return symbol || "";
 }
