@@ -1,6 +1,7 @@
 ---
 import IconClose from "~/assets/images/icons/close.svg";
 const searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
+searchParams.delete("page");
 ---
 
 <div class="my-4">

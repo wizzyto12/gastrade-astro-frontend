@@ -63,6 +63,10 @@ import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
 			const url = new URL(window.location.href);
 			const sort = sortSelect.value;
 
+			if (url.searchParams.has("page")) {
+				url.searchParams.delete("page");
+			}
+
 			if (url.searchParams.has("sort")) {
 				url.searchParams.delete("sort");
 			}
@@ -78,6 +82,10 @@ import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
 			event.preventDefault();
 			const url = new URL(window.location.href);
 			const search = searchInput.value;
+
+			if (url.searchParams.has("page")) {
+				url.searchParams.delete("page");
+			}
 
 			if (url.searchParams.has("search")) {
 				url.searchParams.delete("search");
