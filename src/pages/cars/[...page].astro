@@ -1,7 +1,6 @@
 ---
 export const prerender = false;
-import { getCollection, type CollectionEntry } from "astro:content";
-import type { GetStaticPaths, Page } from "astro";
+import { type CollectionEntry } from "astro:content";
 import { siteName } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
@@ -12,6 +11,7 @@ import SidebarFiltersDesktop from "~/components/sidebars/SidebarFiltersDesktop.a
 import SidebarFiltersMobile from "~/components/sidebars/SidebarFiltersMobile.astro";
 import Pagination from "~/components/Pagination.astro";
 import SearchSort from "~/components/SearchSort.astro";
+import PresetBar from "~/components/PresetBar.astro";
 
 type Car = CollectionEntry<"cars">;
 
@@ -65,6 +65,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
 						<SearchSort />
+						<PresetBar />
 
 						<ul class="grid grid-cols-1 lg:gap-16">
 							{
