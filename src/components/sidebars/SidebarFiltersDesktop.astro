@@ -2,25 +2,33 @@
 export const prerender = false;
 import { bodyTypes, fuelTypes, transmission, conditions } from "~/content.config";
 import { getPrice } from "~/utils/helpers";
-import type { CollectionEntry } from "astro:content";
 import IconReset from "~/assets/images/icons/reset.svg";
 import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
+import IconClose from "~/assets/images/icons/close.svg";
 
-type Car = CollectionEntry<"cars">;
+interface Props {
+	data: {
+		makes: string[];
+		colors: string[];
+		count: number;
+		priceSteps: number[];
+	};
+}
 
-let url = new URL("/api/getFilteredCars.json", Astro.url);
-const response = await fetch(url);
-const allCars: Car[] = await response.json();
-
-const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
-const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
-
-const priceSteps = [50000, 100000, 150000, 200000, 250000, 300000];
-const { count } = Astro.props;
+const { data } = Astro.props;
 ---
 
-<div class="max-lg:hidden shrink-0 lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-	<div class="flex sticky top-8 flex-col gap-y-5 overflow-y-auto bg-white shadow-md px-6 py-4">
+<div
+	id="sidebar-filter"
+	class="fixed lg:relative shrink-0 inset-y-0 z-50 lg:flex w-full lg:w-80 lg:flex-col max-lg:bg-white transition duration-300 max-lg:opacity-0 max-lg:pointer-events-none"
+>
+	<div class="flex lg:sticky lg:top-8 flex-col gap-y-5 bg-white lg:shadow-md px-6 py-4 relative">
+		<button id="button-modal-filter-close" class="lg:hidden" type="button" aria-label="Close filter modal">
+			<div class="flex justify-end">
+				<IconClose class="size-8 bg-gray-800 rounded-full p-1 text-white" />
+			</div>
+		</button>
+
 		<form id="form-filter" method="get" class="grid grid-cols-1 gap-y-6">
 			<div>
 				<div class="flex items-center gap-x-2">
@@ -32,7 +40,7 @@ const { count } = Astro.props;
 				<div class="grid grid-cols-1">
 					<select name="make" id="make" class="appearance-none col-start-1 row-start-1">
 						<option value="all">All</option>
-						{makes.map((make) => <option value={make}>{make}</option>)}
+						{data.makes.map((make) => <option value={make}>{make}</option>)}
 					</select>
 					<IconChevronDown class="icon-chevron-down" />
 				</div>
@@ -64,8 +72,8 @@ const { count } = Astro.props;
 					<select name="price" id="price" class="appearance-none col-start-1 row-start-1">
 						<option value="all">All</option>
 						{
-							priceSteps.map((step, index) => {
-								const nextStep = priceSteps[index + 1];
+							data.priceSteps.map((step, index) => {
+								const nextStep = data.priceSteps[index + 1];
 								if (index === 0) {
 									return <option value={`0-${step}`}>Lower than {getPrice(step)}</option>;
 								} else if (nextStep) {
@@ -94,7 +102,7 @@ const { count } = Astro.props;
 				<div class="grid grid-cols-1">
 					<select name="color" id="color" class="appearance-none col-start-1 row-start-1">
 						<option value="all">All</option>
-						{colors.map((color) => <option value={color}>{color}</option>)}
+						{data.colors.map((color) => <option value={color}>{color}</option>)}
 					</select>
 					<IconChevronDown class="icon-chevron-down" />
 				</div>
@@ -164,9 +172,9 @@ const { count } = Astro.props;
 				</div>
 			</div>
 
-			<div>
+			<div class="sticky bottom-0">
 				<button type="submit" class="button button-yellow w-full">
-					Search <span id="filter-result-found">({count})</span></button
+					Search <span id="filter-result-found">({data.count})</span></button
 				>
 			</div>
 		</form>
@@ -278,12 +286,14 @@ const { count } = Astro.props;
 				}
 			});
 
-			const filters = form.querySelectorAll("select");
-			filters.forEach((filter) => {
-				filter.addEventListener("change", () => {
-					form.dispatchEvent(new Event("submit"));
+			if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobi/i.test(navigator.userAgent)) {
+				const filters = form.querySelectorAll("select");
+				filters.forEach((filter) => {
+					filter.addEventListener("change", () => {
+						form.requestSubmit();
+					});
 				});
-			});
+			}
 
 			form.addEventListener("submit", async function (event) {
 				event.preventDefault();

@@ -4,7 +4,7 @@ const searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
 searchParams.delete("page");
 ---
 
-<div class="my-4">
+<div class="my-4 max-lg:hidden">
 	<ul class="flex flex-wrap gap-2">
 		{
 			searchParams.entries().map(([key, value]) => (

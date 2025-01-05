@@ -2,7 +2,7 @@
 import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
 ---
 
-<div class="mb-4 flex items-center justify-between gap-x-4">
+<div class="mb-4 flex flex-col lg:flex-row lg:items-center justify-between gap-x-4 max-lg:gap-y-4">
 	<form id="form-search">
 		<div>
 			<label class="sr-only" for="search">Search</label>
@@ -11,33 +11,34 @@ import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
 				name="search"
 				placeholder="Search..."
 				id="search"
-				class="bg-transparent px-2 outline-none text-xl border-b-2 border-gray-300 rounded-none placeholder:text-gray-500 focus:outline-none focus-visible:border-gray-500"
+				class="bg-gray-200 max-lg:mt-0 lg:bg-transparent max-lg:py-3 px-2 outline-none lg:text-xl lg:border-b-2 border-gray-300 rounded-none placeholder:text-gray-500 focus:outline-none focus-visible:border-gray-500"
 			/>
 		</div>
 	</form>
 
-	<form id="form-sort"></form>
-	<div class="shrink-0">
-		<div class="flex items-center gap-x-2">
-			<label class="sr-only" for="sort">Sort</label>
+	<form id="form-sort">
+		<div class="shrink-0">
+			<div class="flex items-center gap-x-2">
+				<label class="sr-only" for="sort">Sort</label>
+			</div>
+			<div class="grid grid-cols-1 max-lg:w-max ml-auto">
+				<select
+					name="sort"
+					id="sort"
+					class="appearance-none  max-lg:mt-0 col-start-1 bg-transparent max-lg:outline-none outline-gray-300 row-start-1 pr-10"
+				>
+					<option value="all">Sort by</option>
+					<option value="mileage-desc">Mileage: High to Low</option>
+					<option value="mileage-asc">Mileage: Low to High</option>
+					<option value="price-desc">Price: High to Low</option>
+					<option value="price-asc">Price: Low to High</option>
+					<option value="year-desc">Year: High to Low</option>
+					<option value="year-asc">Year: Low to High</option>
+				</select>
+				<IconChevronDown class="icon-chevron-down" />
+			</div>
 		</div>
-		<div class="grid grid-cols-1">
-			<select
-				name="sort"
-				id="sort"
-				class="appearance-none col-start-1 bg-transparent outline-gray-300 row-start-1 pr-10"
-			>
-				<option value="all">Sort by</option>
-				<option value="mileage-desc">Mileage: High to Low</option>
-				<option value="mileage-asc">Mileage: Low to High</option>
-				<option value="price-desc">Price: High to Low</option>
-				<option value="price-asc">Price: Low to High</option>
-				<option value="year-desc">Year: High to Low</option>
-				<option value="year-asc">Year: Low to High</option>
-			</select>
-			<IconChevronDown class="icon-chevron-down" />
-		</div>
-	</div>
+	</form>
 </div>
 
 <script>

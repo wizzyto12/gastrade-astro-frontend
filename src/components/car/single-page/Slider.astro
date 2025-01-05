@@ -4,6 +4,7 @@ import IconChevronLeft from "~/assets/images/icons/chevron-left.svg";
 import IconChevronRight from "~/assets/images/icons/chevron-right.svg";
 import IconExpand from "~/assets/images/icons/expand.svg";
 const { image, alt, gallery } = Astro.props;
+console.log(image.src);
 ---
 
 <!-- Main Slider -->
@@ -79,13 +80,10 @@ const { image, alt, gallery } = Astro.props;
 	} from "~/utils/embla-thumbs";
 
 	document.addEventListener("astro:page-load", function () {
-		const viewportNodeMainCarousel = document.querySelector(".embla__viewport") as HTMLElement;
-		const viewportNodeThumbCarousel = document.querySelector(".embla-thumbs__viewport") as HTMLElement;
+		const viewportNodesMainCarousel = document.querySelectorAll(".embla__viewport") as NodeListOf<HTMLElement>;
+		const viewportNodesThumbCarousel = document.querySelectorAll(".embla-thumbs__viewport") as NodeListOf<HTMLElement>;
 
-		if (!viewportNodeMainCarousel || !viewportNodeThumbCarousel) return;
-
-		const prevBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-prev");
-		const nextBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-next");
+		if (!viewportNodesMainCarousel.length || !viewportNodesThumbCarousel.length) return;
 
 		const OPTIONS = {
 			loop: true,
@@ -95,19 +93,30 @@ const { image, alt, gallery } = Astro.props;
 			dragFree: true,
 		};
 
-		const emblaApiMain = EmblaCarousel(viewportNodeMainCarousel, OPTIONS);
-		const emblaApiThumb = EmblaCarousel(viewportNodeThumbCarousel, OPTIONS_THUMBS);
+		viewportNodesMainCarousel.forEach((viewportNodeMainCarousel, index) => {
+			const viewportNodeThumbCarousel = viewportNodesThumbCarousel[index];
+			if (!viewportNodeThumbCarousel) return;
 
-		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(emblaApiMain, prevBtnNode, nextBtnNode);
+			const prevBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-prev");
+			const nextBtnNode = viewportNodeMainCarousel.querySelector(".embla-button-next");
 
-		const removeThumbBtnsClickHandlers = addThumbBtnsClickHandlers(emblaApiMain, emblaApiThumb);
-		const removeToggleThumbBtnsActive = addToggleThumbBtnsActive(emblaApiMain, emblaApiThumb);
+			const emblaApiMain = EmblaCarousel(viewportNodeMainCarousel, OPTIONS);
+			const emblaApiThumb = EmblaCarousel(viewportNodeThumbCarousel, OPTIONS_THUMBS);
 
-		emblaApiMain
-			.on("destroy", removeThumbBtnsClickHandlers)
-			.on("destroy", removeToggleThumbBtnsActive)
-			.on("destroy", removePrevNextBtnsClickHandlers);
+			const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
+				emblaApiMain,
+				prevBtnNode,
+				nextBtnNode
+			);
+			const removeThumbBtnsClickHandlers = addThumbBtnsClickHandlers(emblaApiMain, emblaApiThumb);
+			const removeToggleThumbBtnsActive = addToggleThumbBtnsActive(emblaApiMain, emblaApiThumb);
 
-		emblaApiThumb.on("destroy", removeThumbBtnsClickHandlers).on("destroy", removeToggleThumbBtnsActive);
+			emblaApiMain
+				.on("destroy", removeThumbBtnsClickHandlers)
+				.on("destroy", removeToggleThumbBtnsActive)
+				.on("destroy", removePrevNextBtnsClickHandlers);
+
+			emblaApiThumb.on("destroy", removeThumbBtnsClickHandlers).on("destroy", removeToggleThumbBtnsActive);
+		});
 	});
 </script>

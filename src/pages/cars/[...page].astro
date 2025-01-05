@@ -1,17 +1,16 @@
 ---
 export const prerender = false;
 import { type CollectionEntry } from "astro:content";
-import { siteName } from "~/data/config";
+import { siteName, priceSteps } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
-import Heading from "~/components/Heading.astro";
 import CardCar from "~/components/car/CardCar.astro";
 import SidebarFiltersDesktop from "~/components/sidebars/SidebarFiltersDesktop.astro";
-import SidebarFiltersMobile from "~/components/sidebars/SidebarFiltersMobile.astro";
 import Pagination from "~/components/Pagination.astro";
 import SearchSort from "~/components/SearchSort.astro";
 import PresetBar from "~/components/PresetBar.astro";
+import ButtonFilterMobile from "~/components/buttons/ButtonFilterMobile.astro";
 
 type Car = CollectionEntry<"cars">;
 
@@ -24,7 +23,17 @@ url.search = searchParams.toString();
 const response = await fetch(url);
 const allCars: Car[] = await response.json();
 
+const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
+const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
 const count = allCars.length > 0 ? allCars.length : 0;
+
+const sideBarData = {
+	makes,
+	colors,
+	count,
+	priceSteps,
+};
+
 const page = parseInt(searchParams.get("page") || "1");
 const pageSize = 12;
 const totalPages = Math.ceil(Array.isArray(allCars) ? allCars.length / pageSize : 0);
@@ -33,34 +42,10 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 
 <Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
 	<Section class:list={"bg-gray-50"}>
-		<Container class:list={"max-lg:px-0 max-lg:max-w-full"}>
+		<Container class:list={"pt-0 max-lg:px-0 max-lg:max-w-full"}>
 			<div class="flex flex-col lg:flex-row">
-				<SidebarFiltersMobile />
-
-				<div class="lg:hidden bg-yellow-200 flex items-center justify-center p-2 mb-8">
-					<button id="button-modal-filter-open" type="button" class="-m-2.5 p-2.5 lg:hidden">
-						<span class="sr-only">Open filter</span>
-						<div class="flex items-center space-x-2">
-							<svg
-								class="size-5"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								aria-hidden="true"
-								data-slot="icon"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-							</svg>
-							<span>Filter: found 12 cars</span>
-						</div>
-					</button>
-				</div>
-
-				<SidebarFiltersDesktop count={count} />
+				<ButtonFilterMobile />
+				<SidebarFiltersDesktop data={sideBarData} />
 
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
@@ -93,16 +78,15 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 	document.addEventListener("astro:page-load", function () {
 		const buttonModalFilterOpen = document.getElementById("button-modal-filter-open");
 		const buttonModalFilterClose = document.getElementById("button-modal-filter-close");
-		const sidebarFiltersMobile = document.getElementById("modal-filter") as HTMLDialogElement;
+		const sidebarFiltersMobile = document.getElementById("sidebar-filter");
 
 		if (sidebarFiltersMobile) {
 			buttonModalFilterOpen?.addEventListener("click", () => {
-				sidebarFiltersMobile.open = true;
+				sidebarFiltersMobile.classList.remove("max-lg:opacity-0", "max-lg:pointer-events-none");
 			});
 
 			buttonModalFilterClose?.addEventListener("click", () => {
-				console.log("close");
-				sidebarFiltersMobile.open = false;
+				sidebarFiltersMobile.classList.add("max-lg:opacity-0", "max-lg:pointer-events-none");
 			});
 		}
 	});
