@@ -174,11 +174,13 @@ const { count } = Astro.props;
 </div>
 
 <script>
-	document.addEventListener("astro:page-load", function () {
+	document.addEventListener("astro:page-load", async function () {
 		const form = document.getElementById("form-filter") as HTMLFormElement;
 
 		if (form) {
 			const resultFound = document.getElementById("filter-result-found")!;
+			const makeSelect = form.elements.namedItem("make") as HTMLSelectElement;
+			const modelSelect = form.elements.namedItem("model") as HTMLSelectElement;
 			const urlParams = new URLSearchParams(window.location.search);
 
 			for (const [key, value] of urlParams.entries()) {
@@ -193,6 +195,31 @@ const { count } = Astro.props;
 				}
 			}
 
+			if (makeSelect.value !== "all") {
+				try {
+					const url = new URL("/api/getModels.json", window.location.origin);
+					url.searchParams.append("make", makeSelect.value);
+
+					const response = await fetch(url);
+					const models = await response.json();
+
+					modelSelect.innerHTML = '<option value="all">All</option>';
+
+					models.forEach((model: string) => {
+						const option = document.createElement("option");
+						option.value = model;
+						option.textContent = model;
+						modelSelect.appendChild(option);
+					});
+
+					if (urlParams.has("model")) {
+						modelSelect.value = urlParams.get("model")!;
+					}
+				} catch (error) {
+					console.error("Error fetching models:", error);
+				}
+			}
+
 			form.addEventListener("change", async (event) => {
 				const target = event.target! as HTMLSelectElement;
 				const clearButton = document.getElementById(`clear-input-${target.name}`)! as HTMLButtonElement;
@@ -201,6 +228,29 @@ const { count } = Astro.props;
 					clearButton.classList.remove("hidden");
 				} else {
 					clearButton.classList.add("hidden");
+				}
+
+				if (target.name === "make") {
+					modelSelect.innerHTML = '<option value="all">All</option>';
+
+					if (target.value !== "all") {
+						try {
+							const url = new URL("/api/getModels.json", window.location.origin);
+							url.searchParams.append("make", target.value);
+
+							const response = await fetch(url);
+							const models = await response.json();
+
+							models.forEach((model: string) => {
+								const option = document.createElement("option");
+								option.value = model;
+								option.textContent = model;
+								modelSelect.appendChild(option);
+							});
+						} catch (error) {
+							console.error("Error fetching models:", error);
+						}
+					}
 				}
 
 				try {
@@ -226,6 +276,13 @@ const { count } = Astro.props;
 				} catch (error) {
 					console.error(error);
 				}
+			});
+
+			const filters = form.querySelectorAll("select");
+			filters.forEach((filter) => {
+				filter.addEventListener("change", () => {
+					form.dispatchEvent(new Event("submit"));
+				});
 			});
 
 			form.addEventListener("submit", async function (event) {
@@ -261,6 +318,14 @@ const { count } = Astro.props;
 					if (input) {
 						input.value = "all";
 						input.dispatchEvent(new Event("change"));
+
+						if (inputId === "make") {
+							const modelSelect = form.elements.namedItem("model") as HTMLSelectElement;
+							if (modelSelect) {
+								modelSelect.innerHTML = '<option value="all">All</option>';
+							}
+						}
+
 						form.dispatchEvent(new Event("submit"));
 					}
 				});
