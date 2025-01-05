@@ -2,8 +2,8 @@
 import { Image } from "astro:assets";
 import IconChevronLeft from "~/assets/images/icons/chevron-left.svg";
 import IconChevronRight from "~/assets/images/icons/chevron-right.svg";
+import IconExpand from "~/assets/images/icons/expand.svg";
 const { image, alt, gallery } = Astro.props;
-// gallery.unshift({ image, alt });
 ---
 
 <!-- Main Slider -->
@@ -13,14 +13,14 @@ const { image, alt, gallery } = Astro.props;
 			{
 				image && (
 					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
-						<Image src={image} alt={alt || ""} class="w-full h-full object-cover" />
+						<Image src={image} alt={alt || ""} class="w-full h-full object-cover aspect-[4/3]" />
 					</div>
 				)
 			}
 			{
 				gallery.map((image: any) => (
 					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
-						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover" />
+						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover aspect-[4/3]" />
 					</div>
 				))
 			}
@@ -42,27 +42,33 @@ const { image, alt, gallery } = Astro.props;
 			<IconChevronRight class="text-white/90" />
 		</button>
 	</div>
+
+	<div class="absolute bottom-1 right-2 z-10 group">
+		<button type="button" aria-label="open full screen gallery" class="bg-gray-800 p-1 size-8 bg-gray-800/30">
+			<IconExpand class="text-white/30 transition group-hover:text-white" />
+		</button>
+	</div>
 </div>
 
 <!-- Thumbnail Nav -->
-<div class="embla-thumbs bg-gray-900">
-	<div class="embla-thumbs__viewport overflow-hidden">
-		<div class="embla-thumbs__container flex">
-			<div
-				class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1"
-			>
-				{image && <Image src={image} alt={alt || ""} class="w-full h-full object-cover" />}
-			</div>
-			{
-				gallery.map((image: any) => (
+{
+	gallery.length > 0 && (
+		<div class="embla-thumbs bg-gray-900">
+			<div class="embla-thumbs__viewport overflow-hidden">
+				<div class="embla-thumbs__container flex">
 					<div class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1">
-						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover" />
+						{image && <Image src={image} alt={alt || ""} class="w-full h-full object-cover aspect-[4/3]" />}
 					</div>
-				))
-			}
+					{gallery.map((image: any) => (
+						<div class="embla-thumbs__slide select-none min-w-0 border-t-4 border-transparent basis-[30%] md:basis-[15%] shrink-0 grow-0 transition mr-1">
+							<Image src={image.image} alt={image.alt} class="w-full h-full object-cover aspect-[4/3]" />
+						</div>
+					))}
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
+	)
+}
 
 <script>
 	import EmblaCarousel from "embla-carousel";
