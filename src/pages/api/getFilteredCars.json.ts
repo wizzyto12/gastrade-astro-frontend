@@ -115,7 +115,7 @@ export const GET: APIRoute = async ({ request }) => {
 
 	// Fuel Type
 	if (fuelType && fuelType !== "all") {
-		filters.push((data: any) => data.technical.fuelType === fuelType);
+		filters.push((data: any) => data.efficiency.fuelType === fuelType);
 	}
 
 	// Body Type
