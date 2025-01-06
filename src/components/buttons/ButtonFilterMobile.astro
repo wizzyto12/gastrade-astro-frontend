@@ -1,23 +1,11 @@
 ---
-import Container from "~/components/Container.astro";
 import IconFilter from "~/assets/images/icons/filter.svg";
-import SortCarsMobile from "../forms/SortCarsMobile.astro";
 ---
 
-<Container class="lg:hidden bg-gray-800 pt-0 pb-0">
-	<div class="text-white w-full flex items-center justify-between py-2">
-		<button id="button-modal-filter-open" type="button" class="-m-1 p-1">
-			<span class="sr-only">Open filter</span>
-			<div class="flex space-x-2 items-center">
-				<IconFilter class="size-5" />
-				<span>Filter</span>
-			</div>
-		</button>
-
-		<!-- Presets -->
-		<div class="text-white grow shrink-0 px-2 text-center">Presets</div>
-
-		<!-- Sort -->
-		<SortCarsMobile />
+<button id="button-modal-filter-open" type="button" class="-m-1 p-1 max-lg:shrink-0">
+	<span class="sr-only">Open filter</span>
+	<div class="flex space-x-2 items-center">
+		<IconFilter class="size-5" />
+		<span>Filter</span>
 	</div>
-</Container>
+</button>

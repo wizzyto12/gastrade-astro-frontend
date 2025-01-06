@@ -4,14 +4,14 @@ const searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
 searchParams.delete("page");
 ---
 
-<div class="my-4 max-lg:hidden">
-	<ul class="flex flex-wrap gap-2">
+<div class="my-4 max-lg:overflow-x-scroll" style="scrollbar-width: none;">
+	<ul class="flex lg:flex-wrap gap-2 flex-nowrap">
 		{
 			searchParams.entries().map(([key, value]) => (
-				<li class="rounded-full bg-gray-800 text-white px-2.5 py-1 text-sm flex items-center gap-x-2">
+				<li class="rounded-full bg-white lg:bg-gray-800 text-gray-800 lg:text-white px-2.5 py-1 text-xs lg:text-sm flex items-center gap-x-1 lg:gap-x-2 max-lg:opacity-90">
 					<button type="button" class={`preset-remove-${key}`}>
 						<span class="sr-only">Remove filter</span>
-						<IconClose class="size-2.5 rounded-full bg-white text-gray-800" />
+						<IconClose class="size-2.5 rounded-full bg-gray-800 lg:bg-white text-white lg:text-gray-800" />
 					</button>
 					<span>{key}:</span>
 					<span class="font-bold">{value}</span>
@@ -26,12 +26,14 @@ searchParams.delete("page");
 		const searchParams = new URLSearchParams(window.location.search);
 
 		for (const [key, value] of searchParams.entries()) {
-			const removeButton = document.querySelector(`.preset-remove-${key}`);
+			const removeButtons = document.querySelectorAll(`.preset-remove-${key}`);
 
-			removeButton?.addEventListener("click", () => {
-				searchParams.delete(key);
-				const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-				window.location.href = newUrl;
+			removeButtons.forEach((removeButton) => {
+				removeButton.addEventListener("click", () => {
+					searchParams.delete(key);
+					const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+					window.location.href = newUrl;
+				});
 			});
 		}
 	});

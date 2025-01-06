@@ -10,7 +10,7 @@ import SidebarFiltersDesktop from "~/components/sidebars/SidebarFiltersDesktop.a
 import Pagination from "~/components/Pagination.astro";
 import SearchSort from "~/components/SearchSort.astro";
 import PresetBar from "~/components/PresetBar.astro";
-import ButtonFilterMobile from "~/components/buttons/ButtonFilterMobile.astro";
+import FilterBarMobile from "~/components/FilterBarMobile.astro";
 
 type Car = CollectionEntry<"cars">;
 
@@ -21,7 +21,7 @@ searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
 url.search = searchParams.toString();
 
 const response = await fetch(url);
-const allCars: Car[] = await response.json();
+const allCars: Car[] = response.status === 404 ? [] : await response.json();
 
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
 const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
@@ -41,16 +41,20 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 ---
 
 <Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
-	<Section class:list={"bg-gray-50"}>
+	<Section class:list={"bg-gray-50 max-lg:max-w-svw max-lg:overflow-hidden"}>
 		<Container class:list={"pt-0 max-lg:px-0 max-lg:max-w-full"}>
 			<div class="flex flex-col lg:flex-row">
-				<ButtonFilterMobile />
+				<FilterBarMobile />
+
 				<SidebarFiltersDesktop data={sideBarData} />
 
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
 						<SearchSort />
-						<PresetBar />
+						
+						<div class="max-lg:hidden">
+							<PresetBar />
+						</div>
 
 						<ul class="grid grid-cols-1 lg:gap-16">
 							{

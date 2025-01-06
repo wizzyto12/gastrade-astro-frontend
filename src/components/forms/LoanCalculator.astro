@@ -2,6 +2,7 @@
 import { getCurrencySymbol } from "~/utils/helpers";
 import { interestRate, siteName } from "~/data/config";
 import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
+import IconCalculator from "~/assets/images/icons/calculator.svg";
 
 const currency = getCurrencySymbol();
 const { price } = Astro.props;
@@ -75,7 +76,10 @@ const { price } = Astro.props;
 		</div>
 
 		<div class="lg:col-span-1 flex items-center justify-center">
-			<button type="submit" class="button button-black w-full"> Calculate </button>
+			<button type="submit" class="button button-black w-full">
+				<IconCalculator class="size-4 -mt-0.5 inline-block" />
+				<span>Calculate</span>
+			</button>
 		</div>
 	</div>
 
