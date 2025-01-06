@@ -16,6 +16,7 @@ import SortCars from "./forms/SortCars.astro";
 		const sortForm = document.getElementById("form-sort") as HTMLFormElement;
 		const searchInput = document.getElementById("search") as HTMLInputElement;
 		const sortSelect = document.getElementById("sort") as HTMLSelectElement;
+		const sortSelectMobile = document.getElementById("sort-mobile") as HTMLSelectElement;
 
 		const url = new URL(window.location.href);
 		const sort = url.searchParams.get("sort");
@@ -23,6 +24,7 @@ import SortCars from "./forms/SortCars.astro";
 
 		if (sort) {
 			sortSelect.value = sort;
+			sortSelectMobile.value = sort;
 		}
 
 		if (search) {
@@ -32,6 +34,25 @@ import SortCars from "./forms/SortCars.astro";
 		sortSelect?.addEventListener("change", (event) => {
 			const url = new URL(window.location.href);
 			const sort = sortSelect.value;
+
+			if (url.searchParams.has("page")) {
+				url.searchParams.delete("page");
+			}
+
+			if (url.searchParams.has("sort")) {
+				url.searchParams.delete("sort");
+			}
+
+			if (sort !== "all") {
+				url.searchParams.set("sort", sort);
+			}
+
+			window.location.href = url.toString();
+		});
+
+		sortSelectMobile?.addEventListener("change", (event) => {
+			const url = new URL(window.location.href);
+			const sort = sortSelectMobile.value;
 
 			if (url.searchParams.has("page")) {
 				url.searchParams.delete("page");
