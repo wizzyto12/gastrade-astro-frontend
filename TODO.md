@@ -6,7 +6,6 @@
 - [ ] Create landing pages for about, contact, etc.
 - [ ] Create landing pages for services
 - [ ] Related cars widget
-- [ ] Add icons to features list
 - [ ] Create lightbox for slider images
 
 ## Low Priority
