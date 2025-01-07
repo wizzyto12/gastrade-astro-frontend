@@ -4,7 +4,7 @@ import SortCarsMobile from "~/components/forms/SortCarsMobile.astro";
 import ButtonFilterMobile from "~/components/buttons/ButtonFilterMobile.astro";
 import PresetBar from "~/components/PresetBar.astro";
 
-const { params: searchParams } = Astro.props;
+const { params } = Astro.props;
 ---
 
 <Container class="lg:hidden bg-gray-800 pt-0 pb-0">
@@ -17,8 +17,8 @@ const { params: searchParams } = Astro.props;
 			class="text-white grow overflow-x-auto text-center whitespace-nowrap relative"
 			style="scrollbar-width: none; -webkit-overflow-scrolling: touch;"
 		>
-			<PresetBar params={searchParams} />
-			
+			<PresetBar params={params} />
+
 			<div class="absolute pointer-events-none inset-0">
 				<div class="bg-gradient-to-r from-transparent to-gray-800 w-8 h-full ml-auto"></div>
 			</div>

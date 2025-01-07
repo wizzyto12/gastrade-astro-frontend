@@ -7,6 +7,7 @@ export const siteSlogan = "The best car dealership in the galaxy!";
 export const themeColor = "#FF0000";
 export const unitSystem = "imperial";
 export const interestRate = 5.12;
+export const defaultPaginationSize = 12;
 
 export const phone = {
 	href: "tel:+123456789",

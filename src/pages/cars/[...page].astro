@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 import { type CollectionEntry } from "astro:content";
-import { siteName, priceSteps } from "~/data/config";
+import { siteName, priceSteps, defaultPaginationSize } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
@@ -14,17 +14,17 @@ import FilterBarMobile from "~/components/FilterBarMobile.astro";
 
 type Car = CollectionEntry<"cars">;
 
-let url = new URL("/api/getFilteredCars.json", Astro.url);
-let searchParams;
+let APIURL = new URL("/api/getFilteredCars.json", Astro.url);
 
-// searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
-searchParams = Astro.url.searchParams;
-const searchParamsArray = Array.from(searchParams);
+const searchParamsValue = Astro.url.searchParams;
+const searchParamsArray = Array.from(searchParamsValue);
 
-console.log(searchParamsArray);
-url.search = searchParams.toString();
+// console.log(searchParamsValue);
+// console.log(searchParamsArray);
 
-const response = await fetch(url);
+APIURL.search = searchParamsValue.toString();
+
+const response = await fetch(APIURL);
 const allCars: Car[] = response.status === 404 ? [] : await response.json();
 
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
@@ -38,8 +38,8 @@ const sideBarData = {
 	priceSteps,
 };
 
-const page = parseInt(searchParams.get("page") || "1");
-const pageSize = 12;
+const page = parseInt(searchParamsValue.get("page") || "1");
+const pageSize = defaultPaginationSize;
 const totalPages = Math.ceil(Array.isArray(allCars) ? allCars.length / pageSize : 0);
 const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSize, page * pageSize) : [];
 ---
@@ -48,7 +48,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 	<Section class:list={"bg-gray-50 max-lg:max-w-svw max-lg:overflow-hidden"}>
 		<Container class:list={"pt-0 max-lg:px-0 max-lg:max-w-full"}>
 			<div class="flex flex-col lg:flex-row">
-				<FilterBarMobile params={searchParams} />
+				<FilterBarMobile params={searchParamsArray} />
 
 				<SidebarFiltersDesktop data={sideBarData} />
 
@@ -57,7 +57,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 						<SearchSort />
 
 						<div class="max-lg:hidden">
-							<PresetBar params={searchParams} />
+							<PresetBar params={searchParamsArray} />
 						</div>
 
 						<ul class="grid grid-cols-1 lg:gap-16">
@@ -72,7 +72,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 
 						{
 							paginatedCars.length > 0 && totalPages > 1 && (
-								<Pagination page={page} totalPages={totalPages} searchParams={searchParams} />
+								<Pagination page={page} totalPages={totalPages} searchParams={searchParamsValue} />
 							)
 						}
 					</div>
