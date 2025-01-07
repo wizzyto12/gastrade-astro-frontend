@@ -1,7 +1,27 @@
 ---
 import IconClose from "~/assets/images/icons/close.svg";
+
 const { params: searchParams } = Astro.props;
-if (!searchParams) return;
+
+const allowedParams = [
+	"make",
+	"color",
+	"price",
+	"model",
+	"condition",
+	"fuelType",
+	"transmission",
+	"bodyType",
+	"mileage",
+	"year",
+];
+
+for (const key of searchParams.keys()) {
+	if (!allowedParams.includes(key)) {
+		searchParams.delete(key);
+	}
+}
+
 searchParams.delete("page");
 ---
 

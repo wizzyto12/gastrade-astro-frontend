@@ -17,7 +17,11 @@ type Car = CollectionEntry<"cars">;
 let url = new URL("/api/getFilteredCars.json", Astro.url);
 let searchParams;
 
-searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
+// searchParams = new URLSearchParams(Astro.request.url.split("?")[1]);
+searchParams = Astro.url.searchParams;
+const searchParamsArray = Array.from(searchParams);
+
+console.log(searchParamsArray);
 url.search = searchParams.toString();
 
 const response = await fetch(url);
