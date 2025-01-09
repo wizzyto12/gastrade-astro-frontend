@@ -1,4 +1,6 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 interface Faq {
 	items: {
 		question: string;
@@ -6,10 +8,13 @@ interface Faq {
 	}[];
 }
 
-const { items } = Astro.props as Faq;
+type Props = Faq & HTMLAttributes<"div">;
+
+const { items, class: className } = Astro.props;
+const wrapperClasses = `mx-auto max-w-3xl ${className}`;
 ---
 
-<div class="mx-auto max-w-3xl">
+<div class={wrapperClasses}>
 	<dl id="faq-items" class="space-y-6 divide-y divide-gray-800/10">
 		{
 			items.map((item, index) => (
