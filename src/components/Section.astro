@@ -1,5 +1,5 @@
 ---
-const { id, class: className } = Astro.props;
+const { id, class: className = 'bg-white' } = Astro.props;
 ---
 
 <section id={id} class={className}>

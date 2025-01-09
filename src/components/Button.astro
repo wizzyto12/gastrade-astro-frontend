@@ -1,10 +1,11 @@
 ---
-const { color = "teal", url = "", newtab = false, As = "a", ...props } = Astro.props;
+const { color = "yellow", href = "", newtab = false, As = "a", class: className, ...props } = Astro.props;
+const buttonClasses = `not-prose button button-${color} ${className}`;
 ---
 
 <As
-	class={`not-prose button button-${color}`}
-	href={url}
+	class={buttonClasses}
+	href={href}
 	target={newtab ? "_blank" : "_self"}
 	rel={newtab ? "noopener noreferrer" : ""}
 	{...props}

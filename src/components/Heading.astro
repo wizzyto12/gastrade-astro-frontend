@@ -1,8 +1,9 @@
 ---
-
+const { class: className } = Astro.props;
+const wrapperClasses = `max-w-3xl prose mb-16 ${className}`;
 ---
 
-<div class="max-w-3xl prose mb-16">
+<div class={wrapperClasses}>
 	<Fragment>
 		<slot name="heading-title" />
 	</Fragment>
