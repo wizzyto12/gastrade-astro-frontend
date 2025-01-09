@@ -1,7 +1,79 @@
 ---
-import Layout from "~/layouts/Layout.astro"
+import Layout from "~/layouts/Layout.astro";
+import Section from "~/components/Section.astro";
+import Container from "~/components/Container.astro";
+import Button from "~/components/Button.astro";
+import Hero from "~/components/Hero.astro";
+import Faq from "~/components/Faq.astro";
+import Heading from "~/components/Heading.astro";
+import { Image } from "astro:assets";
+import ImageCarDealer from "~/assets/images/pexels-shkrabaanthony-7144179.jpg";
 ---
 
 <Layout>
-	
+	<Section>
+		<Container>
+			<Hero>
+				<div slot="hero-left" class="prose lg:max-w-2xl">
+					<h2>Welcome to our car dealer!</h2>
+					<p>
+						Find your next car here. We have a wide range of cars for sale. Browse through our collection
+						and find the perfect car that suits your needs and budget.
+					</p>
+
+					<Button href="/cars" class:list={"mt-4"}>View all cars</Button>
+				</div>
+				<div slot="hero-right">
+					<Image src={ImageCarDealer} alt="Car dealer" />
+				</div>
+			</Hero>
+		</Container>
+	</Section>
+
+	<Section class:list={"bg-gray-50"}>
+		<Container>
+			<Hero invert>
+				<div slot="hero-left" class="prose lg:max-w-2xl">
+					<h2>Welcome to our car dealer!</h2>
+					<p>
+						Find your next car here. We have a wide range of cars for sale. Browse through our collection
+						and find the perfect car that suits your needs and budget.
+					</p>
+				</div>
+				<div slot="hero-right">
+					<Image src={ImageCarDealer} alt="Car dealer" />
+				</div>
+			</Hero>
+		</Container>
+	</Section>
+
+	<Section>
+		<Container>
+			<Heading class:list={"max-w-3xl mx-auto lg:text-center"}>
+				<h2 slot="heading-title">Welcome to our car dealer!</h2>
+
+				<p slot="heading-content">
+					Find your next car here. We have a wide range of cars for sale. Browse through our collection and
+					find the perfect car that suits your needs and budget.
+				</p>
+			</Heading>
+
+			<Faq
+				items={[
+					{
+						question: "What's the best thing about Switzerland?",
+						answer: "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+					},
+					{
+						question: "What do you call a fake noodle?",
+						answer: "An impasta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+					},
+					{
+						question: "What do you call a belt made out of watches?",
+						answer: "A waist of time. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+					},
+				]}
+			/>
+		</Container>
+	</Section>
 </Layout>
