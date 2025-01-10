@@ -331,7 +331,6 @@ const { data } = Astro.props;
 						input.dispatchEvent(new Event("change"));
 
 						if (inputId === "make") {
-							const modelSelect = form.elements.namedItem("model") as HTMLSelectElement;
 							if (modelSelect) {
 								modelSelect.innerHTML = '<option value="all">All</option>';
 							}

@@ -66,7 +66,7 @@ export const GET: APIRoute = async ({ request }) => {
 
 	// Model
 	if (model && model !== "all") {
-		if (make) {
+		if (make !== 'all') {
 			filters.push((data: any) => data.general.model === model);
 		} else {
 			return new Response(JSON.stringify({ error: "Please provide a make" }), {
