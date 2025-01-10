@@ -55,7 +55,7 @@ p {
 }
 
 .button {
-	@apply inline-flex px-4 py-3 text-base transition duration-300 font-bold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+	@apply inline-flex text-center items-center justify-center px-4 py-3 text-base transition duration-300 font-bold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
 }
 
 .button-teal {
