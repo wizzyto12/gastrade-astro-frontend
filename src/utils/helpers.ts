@@ -1,4 +1,5 @@
 import { siteLang, unitSystem, siteCurrency } from "~/data/config";
+import { getCollection } from "astro:content";
 
 /**
  * Formats a given mileage number into a localized string representation.
@@ -61,4 +62,33 @@ export function getCurrencySymbol(): string {
 	const parts = formatter.formatToParts(0);
 	const symbol = parts.find((part) => part.type === "currency")?.value;
 	return symbol || "";
+}
+
+/**
+ * Returns a set of unique makes and models from the given cars collection.
+ *
+ */
+export async function getMakeModelSet() {
+	const allCars = await getCollection("cars", ({ data }) => {
+		return data.misc?.hidden !== true;
+	});
+
+	const makesWithModels = allCars.reduce((acc: { [key: string]: Set<string> }, car) => {
+		const make = car.data.general.make;
+		const model = car.data.general.model;
+
+		if (!acc[make]) {
+			acc[make] = new Set();
+		}
+		acc[make].add(model);
+
+		return acc;
+	}, {});
+
+	const result = Object.entries(makesWithModels).map(([make, models]) => ({
+		make,
+		models: Array.from(models),
+	}));
+
+	return result;
 }
