@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 import { bodyTypes, fuelTypes, transmission, conditions } from "~/content.config";
-import { getPrice } from "~/utils/helpers";
+import { getPrice, getMakeModelSet } from "~/utils/helpers";
 import IconReset from "~/assets/images/icons/reset.svg";
 import IconChevronDown from "~/assets/images/icons/chevron-down-select.svg";
 import IconClose from "~/assets/images/icons/close.svg";
@@ -15,6 +15,7 @@ interface Props {
 	};
 }
 
+const allMakesModels = await getMakeModelSet();
 const { data } = Astro.props;
 ---
 
@@ -40,7 +41,7 @@ const { data } = Astro.props;
 				<div class="grid grid-cols-1">
 					<select name="make" id="make" class="appearance-none col-start-1 row-start-1">
 						<option value="all">All</option>
-						{data.makes.map((make) => <option value={make}>{make}</option>)}
+						{allMakesModels.map((car) => <option value={car.make}>{car.make}</option>)}
 					</select>
 					<IconChevronDown class="icon-chevron-down" />
 				</div>
