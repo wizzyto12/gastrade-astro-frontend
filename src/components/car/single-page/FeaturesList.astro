@@ -14,7 +14,7 @@ if (!carData) {
 	return;
 }
 
-const excludeFields = ["price", "salePrice", "availability", "hidden", "vin", 'loanWidget'];
+const excludeFields = ["price", "salePrice", "availability", "hidden", "vin", "loanWidget", "featured"];
 ---
 
 {
@@ -29,7 +29,7 @@ const excludeFields = ["price", "salePrice", "availability", "hidden", "vin", 'l
 
 					{key === "options" ? (
 						<ul class="lg:col-span-2 grid grid-cols-2 gap-x-2 md:gap-x-8 max-w-lg gap-y-2 text-base max-lg:mt-8">
-							{carData.data[key].sort().map((option) => (
+							{carData.data[key].sort().map((option: string) => (
 								<li class="md:whitespace-nowrap">- {option}</li>
 							))}
 						</ul>
@@ -42,7 +42,7 @@ const excludeFields = ["price", "salePrice", "availability", "hidden", "vin", 'l
 											<dt>{labels[key][subKey] || subKey}</dt>
 											<dd class="font-bold md:whitespace-nowrap">
 												{subKey === "mileage"
-													? `${getMileage(value)} ${getMileageUnit()}`
+													? `${getMileage(value as number)} ${getMileageUnit()}`
 													: value === true
 														? "Yes"
 														: value
