@@ -50,3 +50,9 @@ import { siteName, siteLang, themeColor } from "~/data/config";
 		<Footer />
 	</body>
 </html>
+
+<script>
+	document.addEventListener("astro:after-swap", () => {
+		scrollTo({ top: history.state.scrollY, behavior: "instant" });
+	});
+</script>
