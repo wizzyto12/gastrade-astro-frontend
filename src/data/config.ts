@@ -8,6 +8,7 @@ export const themeColor = "#FF0000";
 export const unitSystem = "imperial";
 export const interestRate = 5.12;
 export const defaultPaginationSize = 12;
+export const priceSteps = [50000, 100000, 150000, 200000, 250000, 300000];
 
 export const phone = {
 	href: "tel:+123456789",
@@ -60,4 +61,3 @@ export const hours = {
 	sunday: "Closed",
 };
 
-export const priceSteps = [50000, 100000, 150000, 200000, 250000, 300000];
