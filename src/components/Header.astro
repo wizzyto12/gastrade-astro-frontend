@@ -19,26 +19,49 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
 					</div>
 				</a>
 
-				<nav class="max-lg:hidden">
-					<ul class="flex items-center gap-x-4">
+				<nav class="max-lg:hidden" role="navigation" aria-label="Main Navigation">
+					<div class="flex lg:gap-x-12 items-center">
 						{
 							menuMain.map((item) => (
-								<li>
+								<div class="relative group">
 									<a
 										href={item.url}
-										class={`hover:text-gray-600 ${pathname === item.url ? "font-bold" : ""}`}
+										class={`border-b-2 transition border-transparent ${pathname === item.url ? "font-bold" : "hover:border-gray-800 font-medium"}`}
+										aria-haspopup={item.submenu ? "true" : "false"}
+										aria-expanded={item.submenu ? "false" : undefined}
 									>
-										{item.name}
+										{item.label}
 									</a>
-								</li>
+									{item.submenu && (
+										<div
+											class="absolute top-full -mt-4 pt-4 -left-4 z-50 translate-y-4 w-screen max-w-52 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300"
+											role="menu"
+										>
+											<div
+												class="bg-white rounded-lg ring-1 shadow-md ring-gray-900/5 overflow-hidden"
+												role="menu"
+												aria-label={`Submenu for ${item.label}`}
+											>
+												{item.submenu.map((subItem) => (
+													<a
+														href={subItem.url}
+														class={`block px-4 py-3 text-base hover:bg-gray-100 ${
+															pathname === subItem.url ? "font-bold" : "font-medium"
+														}`}
+														role="menuitem"
+													>
+														{subItem.label}
+													</a>
+												))}
+											</div>
+										</div>
+									)}
+								</div>
 							))
 						}
-					</ul>
+						<a href="/contact" class="button button-black ml-8">Contact</a>
+					</div>
 				</nav>
-
-				<div class="max-lg:hidden">
-					<a href="/" class="button button-black">Contact</a>
-				</div>
 			</div>
 		</div>
 	</section>
