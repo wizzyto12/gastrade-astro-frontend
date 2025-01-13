@@ -1,0 +1,35 @@
+---
+import { blogCategories } from "~/content.config";
+import { Image } from "astro:assets";
+import Pill from "./Pill.astro";
+import type { CollectionEntry } from "astro:content";
+
+const { post } = Astro.props as { post: CollectionEntry<"blog"> };
+---
+
+<article class="">
+	<Image
+		src={post.data.image}
+		alt={post.data.imageAlt}
+		class="rounded-lg aspect-[5/3] object-cover object-center w-full"
+	/>
+
+	<div class="group space-y-4 mt-4 prose max-w-none">
+		<div class="flex items-center gap-x-4 justify-between">
+            <time class="text-sm text-gray-600" datetime={post.data.publishDate.toISOString()}>
+                Posted on: {post.data.publishDate.toLocaleDateString()}
+			</time>
+            <Pill title={post.data.category} color={blogCategories[post.data.category]} />
+		</div>
+
+		<h2 class="h5">
+			<a class="no-underline font-bold hover:underline" href={`/blog/${post.id}`}>{post.data.title}</a>
+		</h2>
+
+		<p class="text-pretty line-clamp-4">
+			{post.data.excerpt}
+		</p>
+
+		<a class="no-underline hover:underline block font-semibold" href={`/blog/${post.id}`}>Read more &rarr;</a>
+	</div>
+</article>

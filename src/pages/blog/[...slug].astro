@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
@@ -21,7 +22,16 @@ const { Content } = await render(post);
 	<Section>
 		<Container>
 			<Article contain>
-				
+				<h1>
+					{post.data.title}
+				</h1>
+
+				<time class="text-base text-gray-600 italic" datetime={post.data.publishDate.toISOString()}>
+					Posted on: {post.data.publishDate.toLocaleDateString()}
+				</time>
+
+				<Image class:list={"rounded-lg"} src={post.data.image} alt={post.data.imageAlt} />
+
 				<Content />
 			</Article>
 		</Container>

@@ -29,6 +29,11 @@ export const menuMain: MainMenuItem[] = [
 		label: "Services",
 		url: "/services",
 	},
+	{
+		id: "blog",
+		label: "Blog",
+		url: "/blog",
+	},
 ];
 
 export const menuNavigation = {

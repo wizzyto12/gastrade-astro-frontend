@@ -1,11 +1,21 @@
 import { z, defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
-import slugify from "slugify";
+import { glob, file } from "astro/loaders";
 
 export const bodyTypes = ["SUV", "Sedan", "Hatchback", "Coupe", "Convertible", "Pickup"] as const;
 export const fuelTypes = ["Petrol", "Diesel", "Hybrid", "Electric", "CNG"] as const;
 export const conditions = ["New", "Used", "Certified Pre-Owned"] as const;
 export const transmission = ["Automatic", "Manual", "CVT", "Dual-Clutch"] as const;
+export const blogCategories = {
+	news: "indigo",
+	reviews: "pink",
+	tips: "purple",
+	events: "green",
+} as const;
+
+const categoryKeys = Object.keys(blogCategories) as [
+	keyof typeof blogCategories,
+	...Array<keyof typeof blogCategories>
+];
 
 const cars = defineCollection({
 	loader: glob({ pattern: ["*.mdx", "!example.mdx"], base: "./src/content/cars" }),
@@ -20,7 +30,6 @@ const cars = defineCollection({
 			publishDate: z.coerce.date().default(new Date(2025, 0, 1)),
 			general: z.object({
 				make: z.string(),
-				// makeSlugified: z.string(),
 				model: z.coerce.string(),
 				type: z.string().optional(),
 				price: z.number().positive(),
@@ -104,7 +113,20 @@ const blog = defineCollection({
 			imageAlt: z.string(),
 			excerpt: z.string().optional(),
 			publishDate: z.coerce.date().default(new Date(2025, 0, 1)),
+			category: z.enum(categoryKeys).default("news"),
 		}),
 });
 
-export const collections = { cars, blog };
+const team = defineCollection({
+	loader: file("src/data/team.json"),
+	schema: ({ image }) =>
+		z.object({
+			name: z.string(),
+			role: z.string(),
+			email: z.string().email(),
+			phone: z.string(),
+			image: image(),
+		}),
+});
+
+export const collections = { cars, blog, team };

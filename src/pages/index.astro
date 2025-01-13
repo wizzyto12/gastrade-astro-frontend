@@ -10,6 +10,8 @@ import Heading from "~/components/Heading.astro";
 import WidgetSearch from "~/components/WidgetSearch.astro";
 import Grid from "~/components/Grid.astro";
 import GridItem from "~/components/GridItem.astro";
+import ShowPosts from "~/components/ShowPosts.astro";
+import Team from "~/components/Team.astro";
 
 // Images
 import ImageCarDealer from "~/assets/images/pexels-shkrabaanthony-7144179.jpg";
@@ -147,6 +149,21 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 
 	<Section>
 		<Container>
+			<Heading class:list={"max-w-3xl"}>
+				<h2 slot="heading-title">Latest news</h2>
+
+				<p slot="heading-content">
+					Stay up to date with the latest news and updates from our car dealer. Read our blog posts to learn
+					more about our featured cars, special offers, and industry news.
+				</p>
+			</Heading>
+
+			<ShowPosts />
+		</Container>
+	</Section>
+
+	<Section class:list={"bg-gray-50"}>
+		<Container>
 			<Heading class:list={"max-w-3xl mx-auto lg:text-center"}>
 				<h2 slot="heading-title">Welcome to our car dealer!</h2>
 
@@ -172,6 +189,22 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 					},
 				]}
 			/>
+		</Container>
+	</Section>
+
+	<Section>
+		<Container>
+			<Heading class:list={"max-w-3xl mx-auto lg:text-center"}>
+				<h2 slot="heading-title">Our team</h2>
+
+				<p slot="heading-content">
+					Meet the team behind our car dealer. Our dedicated staff is here to help you find the perfect car that
+					suits your needs and budget. Whether you're looking for a sleek sports car, a reliable family vehicle,
+					or an eco-friendly hybrid, we have something for everyone.
+				</p>
+			</Heading>
+
+			<Team />
 		</Container>
 	</Section>
 </Layout>
