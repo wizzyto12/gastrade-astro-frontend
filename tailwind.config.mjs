@@ -27,6 +27,7 @@ export default {
 						h1: {
 							fontSize: theme("fontSize.5xl")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.6xl")[0],
 							},
@@ -34,6 +35,7 @@ export default {
 						h2: {
 							fontSize: theme("fontSize.4xl")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.5xl")[0],
 							},
@@ -41,6 +43,7 @@ export default {
 						h3: {
 							fontSize: theme("fontSize.3xl")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.4xl")[0],
 							},
@@ -48,6 +51,7 @@ export default {
 						h4: {
 							fontSize: theme("fontSize.2xl")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.3xl")[0],
 							},
@@ -55,6 +59,7 @@ export default {
 						h5: {
 							fontSize: theme("fontSize.xl")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.2xl")[0],
 							},
@@ -62,6 +67,7 @@ export default {
 						h6: {
 							fontSize: theme("fontSize.lg")[0],
 							marginBottom: "1rem",
+							fontWeight: "700",
 							"@media screen(lg)": {
 								fontSize: theme("fontSize.xl")[0],
 							},

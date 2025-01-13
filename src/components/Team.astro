@@ -9,11 +9,11 @@ const team = await getCollection("team");
 <ul role="list" class="mx-auto grid max-w-6xl grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">
 	{
 		team.map((member) => (
-			<li class="text-center max-lg:max-w-md mx-auto">
+			<li class="text-center max-lg:max-w-xs mx-auto">
 				<Image
 					src={member.data.image}
 					alt={`image of ${member.data.name}`}
-					class="mx-auto xl:size-80 rounded-full"
+					class="mx-auto xl:size-72 rounded-full"
 				/>
 				<h3 class="mt-6 text-lg font-semibold tracking-tight">{member.data.name}</h3>
 				<p class="text-base text-gray-600">{member.data.role}</p>
