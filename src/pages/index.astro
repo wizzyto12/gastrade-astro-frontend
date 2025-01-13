@@ -12,6 +12,7 @@ import Grid from "~/components/Grid.astro";
 import GridItem from "~/components/GridItem.astro";
 import ShowPosts from "~/components/ShowPosts.astro";
 import Team from "~/components/Team.astro";
+import Stats from "~/components/Stats.astro";
 
 // Images
 import ImageCarDealer from "~/assets/images/pexels-shkrabaanthony-7144179.jpg";
@@ -22,6 +23,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 ---
 
 <Layout>
+	{/* Main Heading */}
 	<Section class:list={"relative"}>
 		<Image
 			src={ImageHeadingBackground}
@@ -43,6 +45,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Hero */}
 	<Section>
 		<Container>
 			<Hero>
@@ -62,6 +65,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Grid */}
 	<Section>
 		<Container>
 			<Grid>
@@ -102,6 +106,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Hero */}
 	<Section class:list={"bg-gray-50"}>
 		<Container>
 			<Hero invert>
@@ -119,6 +124,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Cars */}
 	<Section class:list={"bg-blue-50"}>
 		<Container>
 			<Heading>
@@ -133,6 +139,41 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Stats */}
+	<Section>
+		<Container>
+			<Heading class:list={"text-center mx-auto"}>
+				<h2 slot="heading-title" class="text-balance">Why choose us?</h2>
+				<p slot="heading-content">
+					We are the leading car dealer in the country. With over 20 years of experience, we have helped
+					thousands of customers find their dream car.
+				</p>
+			</Heading>
+
+			<Stats
+				items={[
+					{
+						title: "Cars in stock",
+						value: "259",
+						animateNumber: true,
+						animateFrom: 100,
+					},
+					{
+						title: "Satified customers",
+						value: "1088",
+						animateNumber: true,
+						animateFrom: 800,
+					},
+					{
+						title: "Experience",
+						value: "20+ years",
+					},
+				]}
+			/>
+		</Container>
+	</Section>
+
+	{/* CTA */}
 	<Section class:list={"bg-gradient-to-br from-gray-900 to-gray-700"}>
 		<Container>
 			<Heading class:list={"mb-0 lg:mb-0 prose-invert text-center mx-auto"}>
@@ -149,6 +190,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Cars */}
 	<Section class:list={"bg-gray-50"}>
 		<Container>
 			<Heading>
@@ -163,6 +205,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* News */}
 	<Section>
 		<Container>
 			<Heading class:list={"max-w-3xl"}>
@@ -178,6 +221,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* FAQ */}
 	<Section class:list={"bg-gray-50"}>
 		<Container>
 			<Heading class:list={"max-w-3xl mx-auto lg:text-center"}>
@@ -208,6 +252,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
 		</Container>
 	</Section>
 
+	{/* Team */}
 	<Section>
 		<Container>
 			<Heading class:list={"max-w-3xl mx-auto lg:text-center"}>
