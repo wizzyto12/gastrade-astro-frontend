@@ -66,6 +66,10 @@ p {
 	@apply bg-gray-800 hover:bg-gray-500 text-white focus-visible:outline-gray-800;
 }
 
+.button-white {
+	@apply bg-white hover:opacity-90 text-gray-800 focus-visible:outline-white;
+}
+
 .button-yellow {
 	@apply bg-yellow-200 hover:bg-yellow-100 text-gray-800 focus-visible:outline-yellow-200;
 }
