@@ -17,3 +17,4 @@
 - [ ] Translation support
 
 ## Bugs
+- [ ] Fix FF mobile scripts (faq, share button)
