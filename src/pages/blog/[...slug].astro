@@ -22,15 +22,26 @@ const { Content } = await render(post);
 	<Section>
 		<Container>
 			<Article contain>
-				<h1>
+				<h1 transition:name={`post-title-${post.id}`}>
 					{post.data.title}
 				</h1>
 
-				<time class="text-base text-gray-600 italic" datetime={post.data.publishDate.toISOString()}>
+				<time
+					class="text-base text-gray-600 italic"
+					datetime={post.data.publishDate.toISOString()}
+					transition:name={`post-date-${post.id}`}
+				>
 					Posted on: {post.data.publishDate.toLocaleDateString()}
 				</time>
 
-				<Image class:list={"rounded-lg"} src={post.data.image} alt={post.data.imageAlt} />
+				<Image
+					class:list={"rounded-lg"}
+					src={post.data.image}
+					alt={post.data.imageAlt}
+					loading={"eager"}
+					fetchpriority={"high"}
+					transition:name={`post-image-${post.id}`}
+				/>
 
 				<Content />
 			</Article>

@@ -16,7 +16,9 @@ if (latestPosts.length === 0) {
 
 <div class="grid grid-cols-1 gap-4 gap-y-8 gap-x-20 lg:grid-cols-2 lg:grid-rows-3">
 	<div class="lg:row-span-3 max-lg:border-b max-lg:border-b-gray-200 max-lg:pb-8">
-		<Image src={latestPosts[0].data.image} alt={latestPosts[0].data.title} class="rounded-lg" />
+		<a href={`/blog/${latestPosts[0].id}`}>
+			<Image src={latestPosts[0].data.image} alt={latestPosts[0].data.title} class="rounded-lg" />
+		</a>
 
 		<div class="group space-y-4 mt-4">
 			<Pill title={latestPosts[0].data.category} color={blogCategories[latestPosts[0].data.category]} />
