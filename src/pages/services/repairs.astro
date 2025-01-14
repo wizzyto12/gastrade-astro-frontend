@@ -3,11 +3,7 @@ import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
 import Heading from "~/components/Heading.astro";
-import { Image } from "astro:assets";
 import FAQ from "~/components/Faq.astro";
-import repairImage from '~/assets/images/pexels-adrian-dorobantu-989175-2127733.webp';
-// import Testimonials from "~/components/Testimonials.astro";
-// import CallToAction from "~/components/CallToAction.astro";
 
 const faqItems = [
     {
@@ -36,4 +32,9 @@ const faqItems = [
             </Heading>
         </Container>
     </Section>
+
+    <Section class:list={"bg-white"}>
+        <Container>
+            <FAQ items={faqItems} />
+        </Container>
 </Layout>

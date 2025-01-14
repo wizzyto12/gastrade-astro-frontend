@@ -1,11 +1,4 @@
-interface MainMenuItem {
-	id: string;
-	label: string;
-	url?: string; // Optional for navigation
-	submenu?: MainMenuItem[]; // Nested menus
-	isExternal?: boolean; // Flag for external links
-	icon?: string; // Optional icon (e.g., Heroicons)
-}
+import type { MainMenuItem, MenuNavigation } from "~/types";
 
 export const menuMain: MainMenuItem[] = [
 	{
@@ -22,12 +15,17 @@ export const menuMain: MainMenuItem[] = [
 		id: "about",
 		label: "About",
 		url: "/about-us",
-		submenu: [{ id: "home", label: "Home", url: "/" }],
+		submenu: [{ id: "testimonials", label: "Testimonials", url: "/about-us/testimonials" }],
 	},
 	{
 		id: "services",
 		label: "Services",
 		url: "/services",
+		submenu: [
+			{ id: "repairs", label: "Repairs", url: "/services/repairs" },
+			{ id: "maintenance", label: "Maintenance", url: "/services/maintenance" },
+			{ id: "car-sales", label: "Car Sales", url: "/services/car-sales" },
+		],
 	},
 	{
 		id: "blog",
@@ -36,7 +34,7 @@ export const menuMain: MainMenuItem[] = [
 	},
 ];
 
-export const menuNavigation = {
+export const menuNavigation: MenuNavigation = {
 	prettyName: "Navigation",
 	items: [
 		{
@@ -62,7 +60,7 @@ export const menuNavigation = {
 	],
 };
 
-export const menuService = {
+export const menuService: MenuNavigation = {
 	prettyName: "Service",
 	items: [
 		{
@@ -88,7 +86,7 @@ export const menuService = {
 	],
 };
 
-export const menuMisc = {
+export const menuMisc: MenuNavigation = {
 	prettyName: "Miscellaneous",
 	items: [
 		{
@@ -114,7 +112,7 @@ export const menuMisc = {
 	],
 };
 
-export const menuLegal = {
+export const menuLegal: MenuNavigation = {
 	prettyName: "Legal",
 	items: [
 		{

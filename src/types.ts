@@ -5,6 +5,7 @@ import { pillColors } from "./components/Pill.astro";
 export type Blog = CollectionEntry<"blog">;
 export type Car = CollectionEntry<"cars">;
 
+// Components
 export interface ClassNameProps {
 	class?: string;
 }
@@ -134,4 +135,23 @@ export interface SliderProps {
 
 export interface WidgetLoanProps {
 	price: number;
+}
+
+
+// Menus
+export interface MainMenuItem {
+	id: string;
+	label: string;
+	url?: string;
+	submenu?: MainMenuItem[];
+	isExternal?: boolean;
+	icon?: string;
+}
+
+export interface MenuNavigation {
+	prettyName: string;
+	items: {
+		name: string;
+		url: string;
+	}[];
 }
