@@ -1,5 +1,10 @@
 ---
 export const prerender = false;
+
+if (Astro.response.headers) {
+	Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, s-maxage=2592000");
+}
+
 import { type CollectionEntry } from "astro:content";
 import { siteName, priceSteps, defaultPaginationSize } from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
