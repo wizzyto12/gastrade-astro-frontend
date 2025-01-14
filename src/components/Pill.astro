@@ -1,12 +1,8 @@
 ---
-const { title = "", color = "indigo" }: Props = Astro.props;
+import type { PillProps as Props } from "~/types";
+const { title = "", color = "indigo" } = Astro.props;
 
-interface Props {
-	title?: string;
-	color?: keyof typeof colors;
-}
-
-const colors = {
+export const pillColors = {
 	indigo: "bg-indigo-50 text-indigo-800 ring-1 ring-indigo-800/10",
 	blue: "bg-blue-50 text-blue-800 ring-1 ring-blue-800/10",
 	green: "bg-green-50 text-green-800 ring-1 ring-green-800/10",
@@ -19,7 +15,7 @@ const colors = {
 	white: "bg-white text-black ring-1 ring-black",
 };
 
-const pillClasses = `text-xs px-3 py-1 font-medium rounded-full ${colors[color]}`;
+const pillClasses = `text-xs px-3 py-1 font-medium rounded-full ${pillColors[color]}`;
 ---
 
 <span class={pillClasses}>

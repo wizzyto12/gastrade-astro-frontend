@@ -23,7 +23,7 @@ const cars = defineCollection({
 		z.object({
 			title: z.string(),
 			image: image().optional(),
-			imageAlt: z.string().optional(),
+			imageAlt: z.string().optional().default(""),
 			gallery: z.array(z.object({ image: image(), alt: z.string() })).optional(),
 			videoTourUrl: z.string().url().optional(),
 			excerpt: z.string().optional(),

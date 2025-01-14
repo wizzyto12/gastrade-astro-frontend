@@ -1,16 +1,10 @@
 ---
+import type { ShowCarsProps as Props } from "~/types";
 import { getCollection, getEntries } from "astro:content";
 import CardCarAlt from "~/components/car/CardCarAlt.astro";
 import CardCar from "~/components/car/CardCar.astro";
 import type { CollectionEntry } from "astro:content";
 type Car = CollectionEntry<"cars">;
-
-interface Props {
-	recent?: boolean;
-	featured?: boolean;
-	slugs?: string[];
-	ui?: "list" | "grid";
-}
 
 const { recent = false, featured = false, slugs = [], ui = "list" } = Astro.props;
 

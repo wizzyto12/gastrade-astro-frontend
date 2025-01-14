@@ -1,4 +1,6 @@
 ---
+import type { PaginationProps as Props } from "~/types";
+
 const { page, totalPages, searchParams } = Astro.props;
 
 function generatePaginationRange(currentPage: number, totalPages: number, delta = 2) {

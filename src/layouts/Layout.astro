@@ -3,9 +3,17 @@ import "~/styles/tailwind.css";
 import { ClientRouter } from "astro:transitions";
 import Header from "~/components/Header.astro";
 import Footer from "~/components/Footer.astro";
-const { pageTitle, title, description, noindex = false } = Astro.props;
-const baseUrl = `${Astro.url.protocol}//${Astro.url.host}`;
 import { siteName, siteLang, themeColor } from "~/data/config";
+
+const baseUrl = `${Astro.url.protocol}//${Astro.url.host}`;
+const { pageTitle, title, description, noindex = false } = Astro.props;
+
+interface Props {
+	pageTitle?: string;
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+}
 ---
 
 <!doctype html>

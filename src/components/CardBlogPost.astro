@@ -1,11 +1,11 @@
 ---
+import type { CardBlogPost as Props } from "~/types";
 import { blogCategories } from "~/content.config";
 import { Image } from "astro:assets";
 import Pill from "./Pill.astro";
-import type { CollectionEntry } from "astro:content";
 
 const { post, index } = Astro.props;
-const postData = post as CollectionEntry<"blog">;
+const postData = post;
 ---
 
 <article class="group">

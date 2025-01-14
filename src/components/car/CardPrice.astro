@@ -1,9 +1,10 @@
 ---
+import type { CardPriceProps as Props } from "~/types";
 import { getPrice } from "~/utils/helpers";
 const { data } = Astro.props;
 
 const price = getPrice(data.price);
-const salePrice = getPrice(data.salePrice);
+const salePrice = data.salePrice ? getPrice(data.salePrice) : null;
 ---
 
 <div class="xxl:pr-8 shrink-0 max-xxl:flex max-xxl:gap-2 max-xxl:items-center max-xxl:mb-6">

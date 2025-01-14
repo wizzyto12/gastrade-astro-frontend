@@ -1,16 +1,6 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-
-interface Faq {
-	items: {
-		question: string;
-		answer: string;
-	}[];
-}
-
-type Props = Faq & HTMLAttributes<"div">;
-
-const { items, class: className } = Astro.props;
+import type { FaqProps as Props } from "~/types";
+const { items, class: className = '' } = Astro.props;
 const wrapperClasses = `mx-auto max-w-3xl ${className}`;
 ---
 

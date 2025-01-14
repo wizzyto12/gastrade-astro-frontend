@@ -1,4 +1,5 @@
 ---
+import type { FilterBarMobileProps as Props } from "~/types";
 import Container from "~/components/Container.astro";
 import SortCarsMobile from "~/components/forms/SortCarsMobile.astro";
 import ButtonFilterMobile from "~/components/buttons/ButtonFilterMobile.astro";
@@ -7,7 +8,7 @@ import PresetBar from "~/components/PresetBar.astro";
 const { params } = Astro.props;
 ---
 
-<Container class="lg:hidden bg-gray-800 pt-0 pb-0">
+<Container class:list={"lg:hidden bg-gray-800 pt-0 pb-0"}>
 	<div class="text-white w-full flex items-center justify-between py-2 gap-x-4">
 		<ButtonFilterMobile />
 

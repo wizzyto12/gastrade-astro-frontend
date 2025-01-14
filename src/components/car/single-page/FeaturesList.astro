@@ -1,8 +1,9 @@
 ---
+import type { Car as Astro } from "~/types";
 import { getMileage, getMileageUnit } from "~/utils/helpers";
 import { labels, categoryLabels } from "~/utils/labels";
 import { getEntry } from "astro:content";
-const { car } = Astro.props;
+const { car } = Astro.props as { car: { id: string } };
 
 if (!car) {
 	return;

@@ -1,20 +1,12 @@
 ---
+import type { StatsProps as Props } from "~/types";
 const { items = [] } = Astro.props;
-
-interface Stat {
-	title: string;
-	value: string;
-	animateNumber?: boolean;
-	animateFrom?: number;
-}
-
-const statistics = items as Stat[];
 ---
 
 <div class="mx-auto max-w-7xl">
 	<dl class="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
 		{
-			statistics.map((stat) => (
+			items.map((stat) => (
 				<div class="mx-auto flex max-w-xs flex-col gap-y-4">
 					<dt class="text-base text-gray-600">{stat.title}</dt>
 					<dd

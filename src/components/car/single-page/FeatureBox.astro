@@ -1,5 +1,6 @@
 ---
-import { getMileage, getMileageUnit, getMileageLabel } from "~/utils/helpers";
+import type { Car } from "~/types";
+import { getMileage, getMileageUnit } from "~/utils/helpers";
 import { labels } from "~/utils/labels";
 import IconFuel from "~/assets/images/icons/fuel.svg";
 import IconTransmission from "~/assets/images/icons/transmission.svg";
@@ -8,11 +9,10 @@ import IconCalendar from "~/assets/images/icons/calendar.svg";
 import IconOdometer from "~/assets/images/icons/odometer.svg";
 import IconColor from "~/assets/images/icons/color.svg";
 
-const { car } = Astro.props;
+const { car } = Astro.props as { car: Car };
 
 const mileage = getMileage(car.data.history.mileage);
 const mileageUnit = getMileageUnit();
-const mileageLabel = getMileageLabel();
 ---
 
 <div class="rounded-md ring-1 ring-gray-800 w-full p-4 my-8 text-base">

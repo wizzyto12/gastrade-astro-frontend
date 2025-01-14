@@ -6,7 +6,7 @@ import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
 import CardCar from "~/components/car/CardCar.astro";
-import SidebarFiltersDesktop from "~/components/sidebars/SidebarFiltersDesktop.astro";
+import SidebarFilters from "~/components/sidebars/SidebarFilters.astro";
 import Pagination from "~/components/Pagination.astro";
 import SearchSort from "~/components/SearchSort.astro";
 import PresetBar from "~/components/PresetBar.astro";
@@ -50,7 +50,7 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 			<div class="flex flex-col lg:flex-row">
 				<FilterBarMobile params={searchParamsArray} />
 
-				<SidebarFiltersDesktop data={sideBarData} />
+				<SidebarFilters data={sideBarData} />
 
 				<main class="lg:pl-16 grow">
 					<div class="lg:px-8">
