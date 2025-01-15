@@ -4,6 +4,7 @@ import { pillColors } from "./components/Pill.astro";
 
 export type Blog = CollectionEntry<"blog">;
 export type Car = CollectionEntry<"cars">;
+export type Testimonial = CollectionEntry<"testimonials">;
 
 // Components
 export interface ClassNameProps {
@@ -135,6 +136,10 @@ export interface SliderProps {
 
 export interface WidgetLoanProps {
 	price: number;
+}
+
+export interface TestimonialProps {
+	id?: string;
 }
 
 

@@ -1,10 +1,21 @@
 ---
-import Layout from "~/layouts/Layout.astro"
-import Article from "~/components/Article.astro"
+import Layout from "~/layouts/Layout.astro";
+import Section from "~/components/Section.astro";
+import Container from "~/components/Container.astro";
+import Testimonial from "~/components/Testimonial.astro";
+import SliderTestimonial from "~/components/SliderTestimonial.astro";
 ---
 
 <Layout pageTitle="About Us" title="About Us">
-    <Article>
+	<Section>
+		<Container>
+			<Testimonial />
+		</Container>
+	</Section>
 
-    </Article>
+    <Section>
+		<Container>
+			<SliderTestimonial />
+		</Container>
+	</Section>
 </Layout>

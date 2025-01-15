@@ -129,4 +129,18 @@ const team = defineCollection({
 		}),
 });
 
-export const collections = { cars, blog, team };
+const testimonials = defineCollection({
+	loader: file("./src/data/testimonials.json"),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			img: image(),
+			author: z.string(),
+			location: z.string(),
+			hidden: z.boolean().default(false),
+			starRating: z.number().min(1).max(5),
+		}),
+});
+
+export const collections = { cars, blog, team, testimonials };

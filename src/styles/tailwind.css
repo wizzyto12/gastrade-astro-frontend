@@ -121,6 +121,19 @@ label {
 	@apply absolute z-20 bg-red-200 text-sm font-bold px-4 py-1 text-red-900;
 }
 
+.embla-testimonials .embla__dot {
+	@apply appearance-none touch-manipulation inline-flex items-center justify-center cursor-pointer border-0 p-0 m-0 bg-transparent size-6 rounded-full;
+	-webkit-tap-highlight-color: transparent;
+}
+.embla-testimonials .embla__dot:after {
+	content: "";
+	@apply size-3 rounded-full flex items-center bg-gray-200;
+}
+.embla-testimonials .embla__dot--selected:after {
+	content: "";
+	@apply bg-gray-500;
+}
+
 /* Icons */
 svg.icon-chevron-down {
 	@apply pointer-events-none text-gray-800 col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end sm:size-4;
