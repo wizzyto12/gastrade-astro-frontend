@@ -1,9 +1,13 @@
 ---
 export const prerender = false;
 
+const start = performance.now();
+
 if (Astro.response.headers) {
 	Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, s-maxage=2592000");
 }
+
+const headersSet = performance.now();
 
 import { type CollectionEntry } from "astro:content";
 import { siteName, priceSteps, defaultPaginationSize } from "~/data/config";
@@ -16,6 +20,9 @@ import Pagination from "~/components/Pagination.astro";
 import SearchSort from "~/components/SearchSort.astro";
 import PresetBar from "~/components/PresetBar.astro";
 import FilterBarMobile from "~/components/FilterBarMobile.astro";
+
+
+const afterImports = performance.now();
 
 type Car = CollectionEntry<"cars">;
 
@@ -30,11 +37,19 @@ const searchParamsArray = Array.from(searchParamsValue);
 APIURL.search = searchParamsValue.toString();
 
 const response = await fetch(APIURL);
+
+const afterFetch = performance.now();
+
 const allCars: Car[] = response.status === 404 ? [] : await response.json();
 
+const afterData = performance.now();
+
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
+const afterMakes = performance.now();
 const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
+const afterColors = performance.now();
 const count = allCars.length > 0 ? allCars.length : 0;
+const afterCount = performance.now();
 
 const sideBarData = {
 	makes,
@@ -44,9 +59,28 @@ const sideBarData = {
 };
 
 const page = parseInt(searchParamsValue.get("page") || "1");
+const afterPage = performance.now();
 const pageSize = defaultPaginationSize;
+const afterPageSize = performance.now();
 const totalPages = Math.ceil(Array.isArray(allCars) ? allCars.length / pageSize : 0);
+const afterTotalPages = performance.now();
 const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSize, page * pageSize) : [];
+const afterPaginatedCars = performance.now();
+
+const performanceData = {
+	start,
+	headersSet,
+	afterImports,
+	afterFetch,
+	afterData,
+	afterMakes,
+	afterColors,
+	afterCount,
+	afterPage,
+	afterPageSize,
+	afterTotalPages,
+	afterPaginatedCars,
+};
 ---
 
 <Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
@@ -103,4 +137,8 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 			});
 		}
 	});
+</script>
+
+<script define:vars={{performanceData}}>
+	console.log("Performance Data", performanceData);
 </script>
