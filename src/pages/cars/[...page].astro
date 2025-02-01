@@ -30,11 +30,12 @@ const searchParamsArray = Array.from(searchParamsValue);
 APIURL.search = searchParamsValue.toString();
 
 const response = await fetch(APIURL);
-const allCars: Car[] = response.status === 404 ? [] : await response.json();
+const responseData = response.status === 404 ? { allCars: [] } : await response.json();
+const allCars: Car[] = responseData.allCars;
 
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
 const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].sort();
-const count = allCars.length > 0 ? allCars.length : 0;
+const count = allCars.length;
 
 const sideBarData = {
 	makes,
