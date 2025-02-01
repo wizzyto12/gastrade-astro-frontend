@@ -1,4 +1,5 @@
 export const prerender = false;
+
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { z } from "zod";
@@ -27,11 +28,19 @@ const searchParamsSchema = z.object({
 });
 
 export const GET: APIRoute = async ({ request }) => {
+	const start = performance.now();
+
 	const url = new URL(request.url);
+
+	const afterUrl = performance.now();
 
 	const searchParams = Object.fromEntries(url.searchParams.entries());
 
+	const afterSearchParams = performance.now();
+
 	const result = searchParamsSchema.safeParse(searchParams);
+
+	const afterValidation = performance.now();
 
 	if (!result.success) {
 		return new Response(JSON.stringify({ error: "Invalid search parameters" }), {
@@ -59,14 +68,18 @@ export const GET: APIRoute = async ({ request }) => {
 
 	const filters: ((data: any) => boolean)[] = [];
 
+	const afterParsing = performance.now();
+
 	// Make
 	if (make && make !== "all") {
 		filters.push((data: any) => data.general.make === make);
 	}
 
+	const afterMake = performance.now();
+
 	// Model
 	if (model && model !== "all") {
-		if (make !== 'all') {
+		if (make !== "all") {
 			filters.push((data: any) => data.general.model === model);
 		} else {
 			return new Response(JSON.stringify({ error: "Please provide a make" }), {
@@ -75,6 +88,8 @@ export const GET: APIRoute = async ({ request }) => {
 			});
 		}
 	}
+
+	const afterModel = performance.now();
 
 	// Year
 	if (yearFrom) {
@@ -103,6 +118,8 @@ export const GET: APIRoute = async ({ request }) => {
 			}
 		});
 	}
+
+	const afterPrice = performance.now();
 
 	// Mileage
 	if (mileageFrom) {
@@ -138,6 +155,8 @@ export const GET: APIRoute = async ({ request }) => {
 		filters.push((data: any) => data.general.condition === condition);
 	}
 
+	const afterFilters = performance.now();
+
 	// Search
 	if (search) {
 		const searchQueries = search
@@ -162,9 +181,13 @@ export const GET: APIRoute = async ({ request }) => {
 		});
 	}
 
+	const afterSearch = performance.now();
+
 	const allCars = await getCollection("cars", ({ data }: { data: any }) => {
 		return filters.every((filter) => filter(data));
 	});
+
+	const afterGetCollection = performance.now();
 
 	// Sort
 	if (sort && sort !== "all") {
@@ -198,6 +221,8 @@ export const GET: APIRoute = async ({ request }) => {
 		});
 	}
 
+	const afterSort = performance.now();
+
 	if (!allCars || allCars.length === 0) {
 		return new Response(JSON.stringify({ error: "No cars found" }), {
 			status: 404,
@@ -205,8 +230,30 @@ export const GET: APIRoute = async ({ request }) => {
 		});
 	}
 
-	return new Response(JSON.stringify(allCars), {
-		status: 200,
-		headers: { "content-type": "application/json" },
-	});
+	// put all performance measurements in an object and calculate the time taken for each step
+	const performanceResults = {
+		"Total time": afterSort - start,
+		"URL Parsing": afterUrl - start,
+		"Search Parameters Parsing": afterSearchParams - afterUrl,
+		Validation: afterValidation - afterSearchParams,
+		Parsing: afterParsing - afterValidation,
+		Make: afterMake - afterParsing,
+		Model: afterModel - afterMake,
+		Price: afterPrice - afterModel,
+		Filters: afterFilters - afterPrice,
+		Search: afterSearch - afterFilters,
+		"Get Collection": afterGetCollection - afterSearch,
+		Sort: afterSort - afterGetCollection,
+	};
+
+	return new Response(
+		JSON.stringify({
+			performance: performanceResults,
+			allCars,
+		}),
+		{
+			status: 200,
+			headers: { "content-type": "application/json" },
+		}
+	);
 };
