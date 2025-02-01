@@ -3,11 +3,11 @@ export const prerender = false;
 
 const start = performance.now();
 
-if (Astro.response.headers) {
-	Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, s-maxage=2592000");
-}
+// if (Astro.response.headers) {
+// 	Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, s-maxage=2592000");
+// }
 
-const headersSet = performance.now();
+// const headersSet = performance.now();
 
 import { type CollectionEntry } from "astro:content";
 import { siteName, priceSteps, defaultPaginationSize } from "~/data/config";
@@ -69,7 +69,7 @@ const afterPaginatedCars = performance.now();
 
 const performanceData = {
 	start,
-	headersSet,
+	// headersSet,
 	afterImports,
 	afterFetch,
 	afterData,
@@ -140,5 +140,5 @@ const performanceData = {
 </script>
 
 <script define:vars={{performanceData}}>
-	console.log("Performance Data", performanceData);
+	console.log("Performance Data", JSON.stringify(performanceData, null, 2));
 </script>
