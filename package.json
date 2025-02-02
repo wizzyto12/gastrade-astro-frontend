@@ -12,7 +12,6 @@
     "@astrojs/mdx": "^4.0.3",
     "@astrojs/netlify": "^6.0.1",
     "@astrojs/tailwind": "^5.1.4",
-    "@astrojs/vercel": "^8.0.5",
     "@playform/inline": "^0.1.0",
     "astro": "^5.1.1",
     "embla-carousel": "^8.5.2",

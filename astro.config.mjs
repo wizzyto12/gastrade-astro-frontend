@@ -5,19 +5,17 @@ import mdx from "@astrojs/mdx";
 import playformInline from "@playform/inline";
 import netlify from "@astrojs/netlify";
 
-import vercel from "@astrojs/vercel";
-
 // https://astro.build/config
 export default defineConfig({
-    site: "https://astro-hyperdrive.netlify.app",
-    base: "/",
-    integrations: [tailwind(), mdx(), playformInline({ Critters: true })],
-    output: "static",
-    devToolbar: {
-        enabled: false,
-    },
-    experimental: {
-        svg: true,
-    },
-    adapter: vercel(),
+	site: "https://astro-hyperdrive.netlify.app",
+	base: "/",
+	integrations: [tailwind(), mdx(), playformInline({ Critters: true })],
+	output: "static",
+	devToolbar: {
+		enabled: false,
+	},
+	experimental: {
+		svg: true,
+	},
+	adapter: netlify(),
 });
