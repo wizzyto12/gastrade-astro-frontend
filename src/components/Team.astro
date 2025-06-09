@@ -15,7 +15,7 @@ const team = await getCollection("team");
 					alt={`image of ${member.data.name}`}
 					class="mx-auto xl:size-72 rounded-full"
 				/>
-				<h3 class="mt-6 text-lg font-semibold tracking-tight">{member.data.name}</h3>
+				<span class="mt-6 block text-lg font-semibold tracking-tight">{member.data.name}</span>
 				<p class="text-base text-gray-600">{member.data.role}</p>
 				<ul role="list" class="mt-6 flex justify-center gap-x-6">
 					<li>

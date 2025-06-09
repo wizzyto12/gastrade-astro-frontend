@@ -23,7 +23,7 @@ const year = new Date().getFullYear();
 					{
 						menuNavigation.items.length > 0 && (
 							<div>
-								<h3 class="text-base font-semibold">{menuNavigation.prettyName}</h3>
+								<span class="text-base font-semibold">{menuNavigation.prettyName}</span>
 								<ul role="list" class="mt-6 space-y-4">
 									{menuNavigation.items.map((item) => (
 										<li>
@@ -42,7 +42,7 @@ const year = new Date().getFullYear();
 					{
 						menuService.items.length > 0 && (
 							<div class="max-md:mt-10">
-								<h3 class="text-base font-semibold">{menuService.prettyName}</h3>
+								<span class="text-base font-semibold">{menuService.prettyName}</span>
 								<ul role="list" class="mt-6 space-y-4">
 									{menuService.items.map((item) => (
 										<li>
@@ -63,7 +63,7 @@ const year = new Date().getFullYear();
 					{
 						menuMisc.items.length > 0 && (
 							<div>
-								<h3 class="text-base font-semibold">{menuMisc.prettyName}</h3>
+								<span class="text-base font-semibold">{menuMisc.prettyName}</span>
 								<ul role="list" class="mt-6 space-y-4">
 									{menuMisc.items.map((item) => (
 										<li>
@@ -82,7 +82,7 @@ const year = new Date().getFullYear();
 					{
 						menuLegal.items.length > 0 && (
 							<div class="max-md:mt-10">
-								<h3 class="text-base font-semibold">{menuLegal.prettyName}</h3>
+								<span class="text-base font-semibold">{menuLegal.prettyName}</span>
 								<ul role="list" class="mt-6 space-y-4">
 									{menuLegal.items.map((item) => (
 										<li>
@@ -105,7 +105,7 @@ const year = new Date().getFullYear();
 			class="mt-16 border-t border-gray-800/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between"
 		>
 			<div>
-				<h3 class="text-base font-semibold">Subscribe to our newsletter</h3>
+				<span class="text-base font-semibold">Subscribe to our newsletter</span>
 				<p class="mt-2 text-sm text-gray-600">
 					The latest news, articles, and resources, sent to your inbox weekly.
 				</p>
