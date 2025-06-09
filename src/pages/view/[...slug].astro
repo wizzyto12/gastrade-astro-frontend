@@ -94,7 +94,7 @@ const { Content } = await render(car);
 								<p class="mt-8">{car.data.excerpt}</p>
 							</div>
 
-							<hr class="w-full" />
+							<hr class="w-full border-gray-200" />
 
 							<Price properties={car.data.general} />
 
@@ -102,7 +102,7 @@ const { Content } = await render(car);
 
 							<FeatureBox car={car} />
 
-							<hr class="w-full mt-auto" />
+							<hr class="w-full mt-auto border-gray-200" />
 
 							<div
 								class="flex flex-col sm:flex-row sm:items-center gap-x-4 mt-8 w-full max-sm:gap-y-8 print:hidden"
@@ -132,17 +132,17 @@ const { Content } = await render(car);
 					id="features-list"
 					class="p-4 lg:p-8 divide-y divide-gray-200 max-w-5xl grid grid-cols-1 gap-y-12 feature-list"
 				>
-					<FeaturesList car={car} />
-					{
-						car.data.misc?.loanWidget && (
-							<WidgetLoan
-								price={car.data.general.salePrice ? car.data.general.salePrice : car.data.general.price}
-							/>
-						)
-					}
+				{
+					car.data.misc?.loanWidget && (
+						<WidgetLoan
+						price={car.data.general.salePrice ? car.data.general.salePrice : car.data.general.price}
+						/>
+					)
+				}
+				<FeaturesList car={car} />
 				</div>
 
-				<hr />
+				<hr class="border-gray-200" />
 
 				<!-- Form -->
 				<div id="ask-a-question" class="p-8 max-w-3xl pt-12 prose print:hidden">

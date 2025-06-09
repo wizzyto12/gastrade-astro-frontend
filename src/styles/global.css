@@ -1,6 +1,156 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--font-inter: "Inter", "sans-serif";
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-xxl: 1366px;
+	--breakpoint-xxxl: 1440px;
+}
+
+@utility container {
+	margin-inline: auto;
+	padding-inline: 1rem;
+
+	@media screen and (min-width: 1024px) {
+		padding-inline: 2rem;
+	}
+}
+
+@utility prose {
+	h1 {
+		font-size: var(--text-5xl);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	h2 {
+		font-size: var(--text-4xl);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	h3 {
+		font-size: var(--text-3xl);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	h4 {
+		font-size: var(--text-2xl);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	h5 {
+		font-size: var(--text-xl);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	h6 {
+		font-size: var(--text-lg);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	pre {
+		background-color: transparent;
+	}
+
+	p {
+		font-size: var(--text-lg);
+		line-height: var(--leading-loose);
+	}
+
+	hr {
+		border-color: var(--color-gray-800);
+	}
+
+	a {
+		color: var(--color-gray-800);
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	strong {
+		font-weight: 700;
+	}
+
+	img {
+		width: "100%";
+	}
+
+	li {
+		font-size: var(--text-lg);
+		color: var(--color-gray-800);
+		line-height: var(--leading-loose);
+	}
+
+	--tw-prose-body: var(--color-gray-800);
+	--tw-prose-headings: var(--color-gray-800);
+	--tw-prose-lead: var(--color-gray-800);
+	--tw-prose-links: var(--color-gray-800);
+	--tw-prose-bold: var(--color-gray-800);
+	--tw-prose-counters: var(--color-gray-800);
+	--tw-prose-bullets: var(--color-gray-800);
+	--tw-prose-hr: var(--color-gray-800);
+	--tw-prose-quotes: var(--color-gray-800);
+	--tw-prose-quote-borders: var(--color-gray-800);
+	--tw-prose-captions: var(--color-gray-800);
+	--tw-prose-code: var(--color-gray-800);
+	--tw-prose-pre-code: var(--color-gray-800);
+	--tw-prose-pre-bg: var(--color-gray-800);
+	--tw-prose-th-borders: var(--color-gray-800);
+	--tw-prose-td-borders: var(--color-gray-800);
+	--tw-prose-invert-body: var(--color-white);
+	--tw-prose-invert-headings: var(--color-white);
+	--tw-prose-invert-lead: var(--color-white);
+	--tw-prose-invert-links: var(--color-white);
+	--tw-prose-invert-bold: var(--color-white);
+	--tw-prose-invert-counters: var(--color-white);
+	--tw-prose-invert-bullets: var(--color-white);
+	--tw-prose-invert-hr: var(--color-white);
+	--tw-prose-invert-quotes: var(--color-white);
+	--tw-prose-invert-quote-borders: var(--color-white);
+	--tw-prose-invert-captions: var(--color-white);
+	--tw-prose-invert-code: var(--color-white);
+	--tw-prose-invert-pre-code: var(--color-white);
+	--tw-prose-invert-pre-bg: var(--color-white);
+	--tw-prose-invert-th-borders: var(--color-white);
+	--tw-prose-invert-td-borders: var(--color-white);
+
+	@media screen and (min-width: 1024px) {
+		h1 {
+			font-size: var(--text-6xl);
+		}
+
+		h2 {
+			font-size: var(--text-5xl);
+		}
+
+		h3 {
+			font-size: var(--text-4xl);
+		}
+
+		h4 {
+			font-size: var(--text-3xl);
+		}
+
+		h5 {
+			font-size: var(--text-2xl);
+		}
+
+		h6 {
+			font-size: var(--text-xl);
+		}
+	}
+}
 
 html,
 body {
@@ -55,7 +205,7 @@ p {
 }
 
 .button {
-	@apply inline-flex text-center items-center justify-center px-4 py-3 text-base transition duration-300 font-bold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2;
+	@apply inline-flex text-center items-center justify-center px-4 py-3 text-base transition duration-300 font-bold shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2;
 }
 
 .button-white-outline {
@@ -85,7 +235,7 @@ section.bg-white + section.bg-white > .container {
 input,
 textarea,
 select {
-	@apply mt-1 bg-white block transition w-full rounded-md px-3 py-2 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-gray-900;
+	@apply mt-1 bg-white block transition w-full rounded-md px-3 py-2 text-base outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-gray-900;
 }
 
 label {

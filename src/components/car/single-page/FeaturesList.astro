@@ -25,7 +25,7 @@ const excludeFields = ["price", "salePrice", "availability", "hidden", "vin", "l
 			Object.keys(carData.data[key]).some(
 				(subKey) => !excludeFields.includes(subKey) && carData.data[key][subKey]
 			) && (
-				<div class="grid grid-cols-1 lg:grid-cols-3 pt-12 feature-list-item">
+				<div class="grid grid-cols-1 lg:grid-cols-3 pb-12 first:mt-12 feature-list-item">
 					<h2 class={`h6 feature-icon feature-icon-${key}`}>{label}</h2>
 
 					{key === "options" ? (
