@@ -66,14 +66,21 @@ const { Content } = await render(car);
 						{
 							car.data.image ? (
 								car.data.gallery ? (
-									<Slider image={car.data.image} alt={car.data.imageAlt} gallery={car.data.gallery} />
+									<Slider image={car.data.image} alt={car.data.imageAlt} gallery={car.data.gallery} videoTour={car.data.videoTourUrl} />
 								) : (
-									<Image
-										src={car.data.image}
-										alt={car.data.imageAlt ? car.data.imageAlt : ""}
-										loading={"eager"}
-										fetchpriority={"high"}
-									/>
+									<a
+										href={car.data.image.src}
+										target="_blank"
+										aria-label={car.data.imageAlt ? car.data.imageAlt : ""}
+										class="glightbox"
+									>
+										<Image
+											src={car.data.image}
+											alt={car.data.imageAlt ? car.data.imageAlt : ""}
+											loading={"eager"}
+											fetchpriority={"high"}
+										/>
+									</a>
 								)
 							) : (
 								<div class="lg:absolute inset-0 text-gray-200 size-full bg-gray-50 flex flex-col gap-4 items-center justify-center">
@@ -132,14 +139,14 @@ const { Content } = await render(car);
 					id="features-list"
 					class="p-4 lg:p-8 divide-y divide-gray-200 max-w-5xl grid grid-cols-1 gap-y-12 feature-list"
 				>
-				{
-					car.data.misc?.loanWidget && (
-						<WidgetLoan
-						price={car.data.general.salePrice ? car.data.general.salePrice : car.data.general.price}
-						/>
-					)
-				}
-				<FeaturesList car={car} />
+					{
+						car.data.misc?.loanWidget && (
+							<WidgetLoan
+								price={car.data.general.salePrice ? car.data.general.salePrice : car.data.general.price}
+							/>
+						)
+					}
+					<FeaturesList car={car} />
 				</div>
 
 				<hr class="border-gray-200" />
@@ -156,8 +163,12 @@ const { Content } = await render(car);
 </Layout>
 
 <script>
+	import GLightbox from "glightbox";
+	import "glightbox/dist/css/glightbox.min.css";
+
 	// wait for the page to load
 	document.addEventListener("astro:page-load", function () {
+		const lightbox = GLightbox({ touchNavigation: true, loop: true });
 		const listItems = document.querySelectorAll("div.feature-list-item");
 		listItems.forEach((item, index) => {
 			(item as HTMLElement).style.order = index.toString();
