@@ -132,6 +132,7 @@ export interface SliderProps {
 	image: ImageMetadata;
 	alt: string;
 	gallery: { image: ImageMetadata; alt: string }[];
+	videoTour?: string;
 }
 
 export interface WidgetLoanProps {

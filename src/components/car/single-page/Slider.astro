@@ -1,10 +1,11 @@
 ---
-import type { SliderProps as Props } from "~/types";
-import { Image } from "astro:assets";
 import IconChevronLeft from "~/assets/images/icons/chevron-left.svg";
 import IconChevronRight from "~/assets/images/icons/chevron-right.svg";
 import IconExpand from "~/assets/images/icons/expand.svg";
-const { image, alt, gallery } = Astro.props;
+import { Image } from "astro:assets";
+import type { SliderProps as Props } from "~/types";
+
+const { image, alt, gallery, videoTour = "" } = Astro.props;
 ---
 
 <!-- Main Slider -->
@@ -13,18 +14,46 @@ const { image, alt, gallery } = Astro.props;
 		<div class="embla__container flex touch-pinch-zoom">
 			{
 				image && (
-					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
+					<a
+						href={image.src}
+						target="_blank"
+						aria-label={alt || ""}
+						class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)] glightbox"
+					>
 						<Image src={image} alt={alt || ""} class="w-full h-full object-cover aspect-[4/3]" />
-					</div>
+					</a>
 				)
 			}
 			{
 				gallery.map((image: any) => (
-					<div class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)]">
+					<a
+						href={image.image.src}
+						target="_blank"
+						aria-label={image.alt}
+						class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)] glightbox"
+					>
 						<Image src={image.image} alt={image.alt} class="w-full h-full object-cover aspect-[4/3]" />
-					</div>
+					</a>
 				))
 			}
+			<!-- {
+				videoTour && (
+					<a
+						href={videoTour}
+						target="_blank"
+						aria-label="Video Tour"
+						class="embla__slide select-none min-w-0 basis-full shrink-0 grow-0 [transform:_translate3d(0,_0,_0)] glightbox"
+					>
+						<iframe
+							src={`https://www.youtube-nocookie.com/embed/${new URL(videoTour).searchParams.get("v")}`}
+							title="Video Tour"
+							class="w-full h-full aspect-[16/9] border-none"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen
+						></iframe>
+					</a>
+				)
+			} -->
 		</div>
 
 		<button
@@ -41,12 +70,6 @@ const { image, alt, gallery } = Astro.props;
 			type="button"
 		>
 			<IconChevronRight class="text-white/90" />
-		</button>
-	</div>
-
-	<div class="absolute bottom-1 right-2 z-10 group print:hidden">
-		<button type="button" aria-label="open full screen gallery" class="bg-gray-800 p-1 size-8 bg-gray-800/30">
-			<IconExpand class="text-white/30 transition group-hover:text-white" />
 		</button>
 	</div>
 </div>
