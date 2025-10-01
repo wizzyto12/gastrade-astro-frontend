@@ -9,11 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.0",
-    "@astrojs/netlify": "^6.5.1",
+    "@astrojs/mdx": "^4.3.6",
+    "@astrojs/netlify": "^6.5.11",
     "@playform/inline": "^0.1.0",
     "@tailwindcss/vite": "^4.1.8",
-    "astro": "^5.11.2",
+    "astro": "^5.14.1",
     "embla-carousel": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "glightbox": "^3.3.1",
