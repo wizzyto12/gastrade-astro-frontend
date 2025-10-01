@@ -1,125 +1,43 @@
----
-import { siteName } from "~/data/config";
-import { menuNavigation, menuMisc, menuService, menuLegal } from "~/data/menus";
-import NewsletterFooter from "./forms/NewsletterFooter.astro";
-import IconLogo from "~/assets/images/icons/logo.svg";
-import SocialMediaIcons from "./SocialMediaIcons.astro";
-const year = new Date().getFullYear();
----
 
-<footer class="bg-gray-50">
-	<div class="container py-16">
-		<div class="xl:grid xl:grid-cols-3 xl:gap-8">
-			<div>
-				<a href="/">
-					<div class="flex items-center gap-x-2">
-						<IconLogo class="h-5 lg:h-8 inline-block" />
-						<span class="font-bold text-2xl lg:text-4xl">Hyper<span class="font-normal">Drive</span></span>
-					</div>
-				</a>
-			</div>
-			<div class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-				<div class="md:grid md:grid-cols-2 md:gap-8">
-					{
-						menuNavigation.items.length > 0 && (
-							<div>
-								<span class="text-base font-semibold">{menuNavigation.prettyName}</span>
-								<ul role="list" class="mt-6 space-y-4">
-									{menuNavigation.items.map((item) => (
-										<li>
-											<a
-												href={item.url}
-												class="text-base transition text-gray-600 hover:text-gray-800"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						)
-					}
-					{
-						menuService.items.length > 0 && (
-							<div class="max-md:mt-10">
-								<span class="text-base font-semibold">{menuService.prettyName}</span>
-								<ul role="list" class="mt-6 space-y-4">
-									{menuService.items.map((item) => (
-										<li>
-											<a
-												href={item.url}
-												class="text-base transition text-gray-600 hover:text-gray-800"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						)
-					}
-				</div>
-				<div class="md:grid md:grid-cols-2 md:gap-8">
-					{
-						menuMisc.items.length > 0 && (
-							<div>
-								<span class="text-base font-semibold">{menuMisc.prettyName}</span>
-								<ul role="list" class="mt-6 space-y-4">
-									{menuMisc.items.map((item) => (
-										<li>
-											<a
-												href={item.url}
-												class="text-base transition text-gray-600 hover:text-gray-800"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						)
-					}
-					{
-						menuLegal.items.length > 0 && (
-							<div class="max-md:mt-10">
-								<span class="text-base font-semibold">{menuLegal.prettyName}</span>
-								<ul role="list" class="mt-6 space-y-4">
-									{menuLegal.items.map((item) => (
-										<li>
-											<a
-												href={item.url}
-												class="text-base transition text-gray-600 hover:text-gray-800"
-											>
-												{item.name}
-											</a>
-										</li>
-									))}
-								</ul>
-							</div>
-						)
-					}
-				</div>
-			</div>
-		</div>
-		<div
-			class="mt-16 border-t border-gray-800/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between"
-		>
-			<div>
-				<span class="text-base font-semibold">Subscribe to our newsletter</span>
-				<p class="mt-2 text-sm text-gray-600">
-					The latest news, articles, and resources, sent to your inbox weekly.
-				</p>
-			</div>
-			<NewsletterFooter />
-		</div>
-		<div class="mt-8 border-t border-gray-800/10 pt-8 md:flex md:items-center md:justify-between">
-			<div class="flex gap-x-6 md:order-2">
-				<SocialMediaIcons />
-			</div>
-			<p class="mt-8 text-sm/6 text-gray-600 md:order-1 md:mt-0">
-				&copy; {year}
-				{siteName}. All rights reserved.
-			</p>
-		</div>
-	</div>
+<footer class="border-t border-zinc-200">
+    <div class="mx-auto max-w-7xl px-4 py-10">
+        <div class="grid gap-6 md:grid-cols-3">
+            <div>
+                <div class="flex items-center gap-2 font-semibold">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" class="fill-violet-600"/>
+                        <path d="M7 13.5h7.5M9 10.5h8" class="stroke-white" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                    <span>Вашият майстор LPG</span>
+                </div>
+                <p class="mt-3 text-sm text-zinc-600">Професионален монтаж и настройка на LPG системи в България.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold">Контакти</h4>
+                <ul class="mt-3 space-y-1 text-sm text-zinc-700">
+                    <li>Тел.: <a href="tel:+3598XXXXXXXX" class="underline">+359 8X XXX XXXX</a></li>
+                    <li>Viber / WhatsApp: налични</li>
+                    <li>Имейл: <a href="mailto:info@example.com" class="underline">info@example.com</a></li>
+                    <li>Адрес: Вашият град, ул. Пример 1</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold">Навигация</h4>
+                <ul class="mt-3 space-y-1 text-sm text-zinc-700">
+                    <li><a href="#services" class="hover:underline">Услуги</a></li>
+                    <li><a href="#portfolio" class="hover:underline">Портфолио</a></li>
+                    <li><a href="#pricing" class="hover:underline">Цени</a></li>
+                    <li><a href="#faq" class="hover:underline">ЧЗВ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-6 text-xs text-zinc-500 md:flex-row">
+            <p>© {new Date().getFullYear()} Вашият майстор LPG. Всички права запазени.</p>
+            <div class="flex items-center gap-4">
+                <a href="#" class="hover:underline">Условия</a>
+                <a href="#" class="hover:underline">Политика за поверителност</a>
+            </div>
+        </div>
+    </div>
 </footer>
+

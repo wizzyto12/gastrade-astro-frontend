@@ -17,7 +17,7 @@ interface Props {
 ---
 
 <!doctype html>
-<html lang={siteLang}>
+<html lang={siteLang} class="scroll-smooth">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,7 +50,7 @@ interface Props {
 		<title>{pageTitle}</title>
 		<ClientRouter />
 	</head>
-	<body>
+    <body class="bg-white text-zinc-900 antialiased">
 		<Header />
 		<main>
 			<slot />

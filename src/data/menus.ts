@@ -8,8 +8,8 @@ export const menuMain: MainMenuItem[] = [
 	},
 	{
 		id: "cars",
-		label: "Cars",
-		url: "/cars",
+		label: "Installations",
+		url: "/installations",
 	},
 	{
 		id: "about",
