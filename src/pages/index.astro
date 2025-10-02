@@ -34,7 +34,8 @@ let featuredInstallations: InstallationGetInstallationsResponses[200]["data"] = 
 try {
     const response = await installationGetInstallations({
         query: {
-            populate: "*",
+            //@ts-ignore
+            pLevel: 4,
             sort,
             pagination: {
                 page: 1,
@@ -179,7 +180,6 @@ try {
                             <InstallationCard
                                 installation={installation}
                                 strapiUrl={strapiUrl}
-                                key={installation.documentId ?? installation.id}
                             />
                         ))}
                     </div>

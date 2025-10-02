@@ -2,13 +2,13 @@
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
-import { siteName, phone } from "~/data/config";
-import { installationGetInstallationsById } from "~/lib/client";
-import type { InstallationGetInstallationsByIdResponses, PluginUploadFileDocument } from "~/lib/client";
+import {siteName, phone} from "~/data/config";
+import {installationGetInstallationsById} from "~/lib/client";
+import type {InstallationGetInstallationsByIdResponses, PluginUploadFileDocument} from "~/lib/client";
 
 export const prerender = false;
 
-const { id } = Astro.params;
+const {id} = Astro.params;
 const strapiUrl = import.meta.env.STRAPI_URL ?? "";
 
 let installation: InstallationGetInstallationsByIdResponses[200]["data"] | null = null;
@@ -25,26 +25,29 @@ function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
     return `${strapiUrl}${media.url}`;
 }
 
-if (typeof id === "string" && id.length > 0) {
-    try {
-        const response = await installationGetInstallationsById({
-            path: { id },
-            query: {
-                populate: "*",
-            },
-        });
-
-        installation = (response as unknown as { data?: InstallationGetInstallationsByIdResponses[200]["data"] })?.data ?? null;
-    } catch (error) {
-        console.error("Failed to fetch installation", error);
-    }
+if (typeof id !== "string" || id.length === 0) {
+    Astro.redirect("/404");
 }
 
-if (!installation) {
-    Astro.response.status = 404;
+try {
+    const response = await installationGetInstallationsById({
+        path: {id},
+        query: {
+            pLevel: 4,
+        },
+    });
+
+    installation = (response as unknown as {
+        data?: InstallationGetInstallationsByIdResponses[200]["data"]
+    })?.data?.data ?? null;
+} catch (error) {
+    console.error("Failed to fetch installation", error);
+
+    Astro.redirect("/500");
 }
 
-const brandName = installation?.car?.model?.brand?.name ?? installation?.car?.model?.name ?? "";
+
+const brandName = installation?.car?.model?.brand?.name;
 const modelName = installation?.car?.model?.name ?? "";
 const carTitle = [brandName, modelName, installation?.car?.year].filter(Boolean).join(" ") || "Монтаж на газова уредба";
 const engine = installation?.car?.engine;
@@ -79,33 +82,10 @@ const metaTitle = `${carTitle} | Монтажи`;
 ---
 
 <Layout pageTitle={`${metaTitle} | ${siteName}`} title={carTitle} description={description}>
-    <Section class="border-b border-zinc-200 bg-zinc-50/60">
-        <Container class="py-10 md:py-16">
-            <a href="/installations" class="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-violet-700 transition hover:text-violet-600">
-                <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path
-                        fill-rule="evenodd"
-                        d="M12.79 4.23a.75.75 0 0 1 0 1.06L8.56 9.52l4.23 4.23a.75.75 0 1 1-1.06 1.06l-4.76-4.76a.75.75 0 0 1 0-1.06l4.76-4.76a.75.75 0 0 1 1.06 0Z"
-                        clip-rule="evenodd"
-                    />
-                </svg>
-                Всички монтажи
-            </a>
-            <div class="max-w-3xl">
-                <p class="text-sm font-semibold uppercase tracking-wide text-violet-700">Галерия</p>
-                <h1 class="mt-2 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">{carTitle}</h1>
-                {engine && <p class="mt-2 text-lg text-zinc-600">Двигател: {engine}</p>}
-                {published && (
-                    <p class="mt-1 text-sm text-zinc-500">Публикувано на {published.toLocaleDateString("bg-BG")}</p>
-                )}
-            </div>
-        </Container>
-    </Section>
-
-    <Section>
-        <Container class="py-12 md:py-16">
+    <div>
+        <div class="mx-auto max-w-7xl px-4 py-10">
             {installation ? (
-                <div class="grid gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                     <div class="space-y-6">
                         {gallery.length > 0 ? (
                             <div class="grid gap-4 md:grid-cols-2">
@@ -164,7 +144,8 @@ const metaTitle = `${carTitle} | Монтажи`;
                             )}
                             {engine && (
                                 <div>
-                                    <dt class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Двигател</dt>
+                                    <dt class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Двигател
+                                    </dt>
                                     <dd class="mt-1 text-base text-zinc-900">{engine}</dd>
                                 </div>
                             )}
@@ -172,7 +153,8 @@ const metaTitle = `${carTitle} | Монтажи`;
 
                         {lpgComponents.length > 0 && (
                             <div class="space-y-4">
-                                <h3 class="text-sm font-semibold uppercase tracking-wide text-zinc-500">Използвани компоненти</h3>
+                                <h3 class="text-sm font-semibold uppercase tracking-wide text-zinc-500">Използвани
+                                    компоненти</h3>
                                 <ul class="space-y-3">
                                     {lpgComponents.map((component) => (
                                         <li class="rounded-xl border border-zinc-100 bg-zinc-50 px-4 py-3">
@@ -193,13 +175,19 @@ const metaTitle = `${carTitle} | Монтажи`;
                                 Свържете се с нас за записване на час и индивидуална оферта.
                             </p>
                             <div class="mt-4 flex flex-col gap-2">
-                                <a href={phone.href} class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-600">
+                                <a
+                                    href={phone.href}
+                                    class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-600"
+                                >
                                     Обади се: {phone.label}
                                     <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h1.11c.6 0 1.13.36 1.35.91l.7 1.74a1.5 1.5 0 0 1-.3 1.52L6.3 7.6a10.46 10.46 0 0 0 6.09 6.09l1.43-1.06a1.5 1.5 0 0 1 1.52-.3l1.74.7c.55.22.91.75.91 1.35v1.11A2.5 2.5 0 0 1 15.5 18h-1A12.5 12.5 0 0 1 2 4.5Z" />
+                                        <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h1.11c.6 0 1.13.36 1.35.91l.7 1.74a1.5 1.5 0 0 1-.3 1.52L6.3 7.6a10.46 10.46 0 0 0 6.09 6.09l1.43-1.06a1.5 1.5 0 0 1 1.52-.3l1.74.7c.55.22.91.75.91 1.35v1.11A2.5 2.5 0 0 1 15.5 18h-1A12.5 12.5 0 0 1 2 4.5Z"/>
                                     </svg>
                                 </a>
-                                <a href="/contact" class="inline-flex items-center gap-2 rounded-xl border border-violet-200 px-4 py-2 text-sm font-semibold text-violet-700 transition hover:border-violet-300 hover:text-violet-800">
+                                <a
+                                    href="/contact"
+                                    class="inline-flex items-center gap-2 rounded-xl border border-violet-200 px-4 py-2 text-sm font-semibold text-violet-700 transition hover:border-violet-300 hover:text-violet-800"
+                                >
                                     Изпрати запитване
                                 </a>
                             </div>
@@ -211,6 +199,6 @@ const metaTitle = `${carTitle} | Монтажи`;
                     Монтажът не беше намерен или е премахнат.
                 </div>
             )}
-        </Container>
-    </Section>
+        </div>
+    </div>
 </Layout>

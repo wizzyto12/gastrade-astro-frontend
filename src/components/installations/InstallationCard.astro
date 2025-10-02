@@ -9,7 +9,9 @@ interface Props {
     strapiUrl: string;
 }
 
-const { installation, strapiUrl } = Astro.props as Props;
+const {installation, strapiUrl} = Astro.props as Props;
+
+console.log(installation);
 
 function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
     if (!media?.url) {
@@ -25,28 +27,19 @@ function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
 
 const coverImage = installation.gallery?.[0];
 const coverUrl = buildMediaUrl(coverImage);
-const brandName = installation.car?.model?.brand?.name ?? installation.car?.model?.name ?? "";
+const brandName = installation.car?.model?.brand?.name;
 const modelName = installation.car?.model?.name ?? "";
-const carName = [brandName, modelName].filter(Boolean).join(" ");
-const year = installation.car?.year ?? "";
+const carName = `${brandName} ${modelName}`;
+const year = installation.car?.year ? new Date(installation.car?.year).getFullYear() : "";
 const engine = installation.car?.engine ?? "";
+const summary = installation.subheading;
 
 const tagCandidates = [
-    carName || null,
     installation.lpg_reducer?.lpg_brand?.name ?? installation.lpg_reducer?.name ?? null,
-    year || engine ? [year, engine].filter(Boolean).join(" · ") : null,
+    year,
+    engine,
 ].filter(Boolean) as string[];
 
-const summaryParts = [
-    installation.lpg_ecus?.name,
-    installation.lpg_injector?.name,
-    installation.lpg_reducer?.name,
-    installation.lpg_tank?.name,
-].filter(Boolean);
-
-const summary = summaryParts.length > 0
-    ? summaryParts.join(" • ")
-    : "Професионален монтаж и настройка.";
 ---
 
 <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
@@ -69,13 +62,12 @@ const summary = summaryParts.length > 0
             {tagCandidates.length > 0 && (
                 <div class="flex flex-wrap gap-2 text-xs">
                     {tagCandidates.map((tag) => (
-                        <span class="rounded-full bg-zinc-100 px-2 py-1" key={tag}>{tag}</span>
+                        <span class="rounded-full bg-zinc-100 px-2 py-1">{tag}</span>
                     ))}
                 </div>
             )}
             <h3 class="font-semibold leading-tight">
-                {carName || "Монтаж на газова уредба"}
-                {year && <span class="ml-1 text-sm text-zinc-500">{year}</span>}
+                {carName}
             </h3>
             <p class="line-clamp-2 text-sm text-zinc-600">{summary}</p>
             <span class="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-violet-700">

@@ -24,7 +24,7 @@ let currentPage = page;
 try {
     const response = await installationGetInstallations({
         query: {
-            populate: "*",
+            pLevel: 4,
             sort,
             pagination: {
                 page,
@@ -71,7 +71,7 @@ const description = "Разгледайте реализирани газови 
 
 <Layout pageTitle={`${pageTitle} | ${siteName}`} title={pageTitle} description={description}>
     <Section class="border-b border-zinc-200 bg-zinc-50/60">
-        <Container class="py-12 md:py-16">
+        <Container class="mx-auto max-w-7xl px-4 py-10">
             <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                 <div>
                     <p class="text-sm font-semibold uppercase tracking-wide text-violet-700">Нашата работа</p>
@@ -100,12 +100,12 @@ const description = "Разгледайте реализирани газови 
     </Section>
 
     <Section>
-        <Container class="py-12 md:py-16">
+        <Container class="mx-auto max-w-7xl px-4 py-10">
             {installations.length > 0 ? (
                 <>
                     <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                         {installations.map((installation) => (
-                            <InstallationCard installation={installation} strapiUrl={strapiUrl} key={installation.documentId} />
+                            <InstallationCard installation={installation} strapiUrl={strapiUrl} />
                         ))}
                     </div>
                     <PaginationSimple page={Math.min(Math.max(1, currentPage), totalPages)} totalPages={totalPages} />
