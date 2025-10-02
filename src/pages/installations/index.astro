@@ -1,0 +1,120 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Section from "~/components/Section.astro";
+import Container from "~/components/Container.astro";
+import InstallationCard from "~/components/installations/InstallationCard.astro";
+import PaginationSimple from "~/components/PaginationSimple.astro";
+import { siteName } from "~/data/config";
+import { installationGetInstallations } from "~/lib/client";
+import type { InstallationGetInstallationsResponses } from "~/lib/client";
+
+export const prerender = false;
+
+const pageParam = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+const pageSize = 6;
+const strapiUrl = import.meta.env.STRAPI_URL ?? "";
+const sort: Record<string, "asc" | "desc"> = { publishedAt: "desc" };
+
+let installations: InstallationGetInstallationsResponses[200]["data"] = [];
+let totalPages = 1;
+let totalCount = 0;
+let currentPage = page;
+
+try {
+    const response = await installationGetInstallations({
+        query: {
+            populate: "*",
+            sort,
+            pagination: {
+                page,
+                pageSize,
+                withCount: true,
+            },
+        },
+    });
+
+    const direct = response as unknown as {
+        data?: InstallationGetInstallationsResponses[200]["data"];
+        meta?: { pagination?: { total?: number; pageCount?: number; page?: number; pageSize?: number } };
+    };
+
+    const nested = (response as unknown as {
+        data?: {
+            data?: InstallationGetInstallationsResponses[200]["data"];
+            meta?: { pagination?: { total?: number; pageCount?: number; page?: number; pageSize?: number } };
+        };
+    })?.data;
+
+    const resolved = Array.isArray(direct?.data) ? direct : nested;
+
+    if (Array.isArray(resolved?.data)) {
+        installations = resolved.data;
+    }
+
+    const pagination = resolved?.meta?.pagination ?? nested?.meta?.pagination ?? direct?.meta?.pagination;
+    if (pagination) {
+        totalCount = pagination.total ?? installations.length;
+        totalPages = pagination.pageCount ?? Math.max(1, Math.ceil((pagination.total ?? installations.length) / pageSize));
+        currentPage = pagination.page ?? currentPage;
+    } else {
+        totalCount = installations.length;
+        totalPages = Math.max(1, Math.ceil(installations.length / pageSize));
+    }
+} catch (error) {
+    console.error("Failed to fetch installations", error);
+}
+
+const pageTitle = "Монтажи";
+const description = "Разгледайте реализирани газови уредби и монтажи от нашия екип.";
+---
+
+<Layout pageTitle={`${pageTitle} | ${siteName}`} title={pageTitle} description={description}>
+    <Section class="border-b border-zinc-200 bg-zinc-50/60">
+        <Container class="py-12 md:py-16">
+            <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-wide text-violet-700">Нашата работа</p>
+                    <h1 class="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">Монтажи на газови уредби</h1>
+                    <p class="mt-4 max-w-2xl text-base text-zinc-600">
+                        Актуални конверсии с внимателен монтаж, подбрани компоненти и детайлна настройка. Показваме реални
+                        проекти за {totalCount > 0 ? totalCount : ""} клиента.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-violet-100 bg-white px-6 py-5 shadow-sm">
+                    <h2 class="text-base font-semibold text-zinc-900">Нужно ви е подобно решение?</h2>
+                    <p class="mt-2 text-sm text-zinc-600">Свържете се с нас за консултация и оферта за вашия автомобил.</p>
+                    <a href="/contact" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-600">
+                        Запази час
+                        <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path
+                                fill-rule="evenodd"
+                                d="M3.75 10a.75.75 0 0 1 .75-.75h9.19L11.47 7.03a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06-1.06l2.22-2.22H4.5A.75.75 0 0 1 3.75 10Z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </Container>
+    </Section>
+
+    <Section>
+        <Container class="py-12 md:py-16">
+            {installations.length > 0 ? (
+                <>
+                    <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                        {installations.map((installation) => (
+                            <InstallationCard installation={installation} strapiUrl={strapiUrl} key={installation.documentId} />
+                        ))}
+                    </div>
+                    <PaginationSimple page={Math.min(Math.max(1, currentPage), totalPages)} totalPages={totalPages} />
+                </>
+            ) : (
+                <div class="rounded-2xl border border-dashed border-zinc-300 bg-white p-10 text-center text-zinc-500">
+                    Няма налични монтажи в момента. Свържете се с нас за повече информация.
+                </div>
+            )}
+        </Container>
+    </Section>
+</Layout>
