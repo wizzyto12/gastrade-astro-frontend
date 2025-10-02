@@ -14,6 +14,12 @@ export default defineConfig({
 	devToolbar: {
 		enabled: false,
 	},
+	image: {
+		remotePatterns: [{
+			protocol: 'http',
+			hostname: '127.0.0.1',
+		}],
+	},
 	adapter: netlify(),
 	vite: {
 		plugins: [tailwindcss()],
