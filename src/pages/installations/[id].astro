@@ -37,7 +37,7 @@ try {
 
 const brandName = installation?.car?.model?.brand?.name;
 const modelName = installation?.car?.model?.name ?? "";
-const carTitle = [brandName, modelName, installation?.car?.year].filter(Boolean).join(" ") || "Монтаж на газова уредба";
+const carTitle = [brandName, modelName, installation?.car?.engine].filter(Boolean).join(" ");
 const engine = installation?.car?.engine;
 
 const lpgComponents = [
@@ -58,7 +58,7 @@ const lpgComponents = [
     },
     {
         label: "Тороид/бутилка",
-        name: installation?.lpg_tank?.name,
+        name: installation?.lpg_tank?.volume,
         brand: installation?.lpg_tank?.lpg_brand?.name,
     },
 ].filter((item) => item.name || item.brand);
@@ -72,7 +72,8 @@ const metaTitle = `${carTitle} | Монтажи`;
         <div class="mx-auto max-w-7xl px-4 py-10">
             <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 <div class="space-y-6">
-                    <div class={`sticky top-20 grid gap-4 grid-cols-${installation?.gallery?.length - 1}`}>
+                    <h4>{carTitle}</h4>
+                    <div class={`sticky top-20 grid gap-2 md:gap-4 grid-cols-${installation?.gallery?.length - 1}`}>
                         {/* Main image, larger design */}
                         <a
                             href={buildMediaUrl(installation?.gallery[0])}
@@ -141,9 +142,9 @@ const metaTitle = `${carTitle} | Монтажи`;
 
                 <aside class="space-y-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm md:p-8 lg:sticky lg:top-24">
                     <div>
-                        <h2 class="text-xl font-semibold text-zinc-900">Детайли за монтажа</h2>
+                        <h3 class="text-xl font-semibold text-zinc-900">Детайли за монтажа</h3>
                         <p class="mt-2 text-sm text-zinc-600">
-                            Внимателно подбран комплект и настройка за безпроблемна работа на газ и бензин.
+                            {installation?.subheading}
                         </p>
                     </div>
                     <dl class="grid gap-4 text-sm text-zinc-700 grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
