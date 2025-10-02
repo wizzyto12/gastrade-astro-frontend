@@ -14,7 +14,7 @@
     "@hey-api/openapi-ts": "^0.84.4",
     "@playform/inline": "^0.1.0",
     "@tailwindcss/vite": "^4.1.8",
-    "astro": "^5.11.2",
+    "astro": "^5.14.1",
     "embla-carousel": "^8.5.2",
     "embla-carousel-autoplay": "^8.5.2",
     "glightbox": "^3.3.1",
