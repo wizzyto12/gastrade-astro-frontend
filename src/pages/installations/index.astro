@@ -1,0 +1,93 @@
+---
+import Layout from "~/layouts/Layout.astro";
+import Section from "~/components/Section.astro";
+import Container from "~/components/Container.astro";
+import InstallationCard from "~/components/installations/InstallationCard.astro";
+import PaginationSimple from "~/components/PaginationSimple.astro";
+import { siteName } from "~/data/config";
+import { installationGetInstallations } from "~/lib/client";
+import type { InstallationGetInstallationsResponses } from "~/lib/client";
+
+export const prerender = false;
+
+const pageParam = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const page = Number.isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
+const pageSize = 6;
+const strapiUrl = import.meta.env.STRAPI_URL ?? "";
+const sort: Record<string, "asc" | "desc"> = { publishedAt: "desc" };
+
+let installations: InstallationGetInstallationsResponses[200]["data"] = [];
+let totalPages = 1;
+let totalCount = 0;
+let currentPage = page;
+
+try {
+    const response = await installationGetInstallations({
+        query: {
+            pLevel: 4,
+            sort,
+            pagination: {
+                page,
+                pageSize,
+                withCount: true,
+            },
+        },
+    });
+
+    const direct = response as unknown as {
+        data?: InstallationGetInstallationsResponses[200]["data"];
+        meta?: { pagination?: { total?: number; pageCount?: number; page?: number; pageSize?: number } };
+    };
+
+    const nested = (response as unknown as {
+        data?: {
+            data?: InstallationGetInstallationsResponses[200]["data"];
+            meta?: { pagination?: { total?: number; pageCount?: number; page?: number; pageSize?: number } };
+        };
+    })?.data;
+
+    const resolved = Array.isArray(direct?.data) ? direct : nested;
+
+    if (Array.isArray(resolved?.data)) {
+        installations = resolved.data;
+    }
+
+    const pagination = resolved?.meta?.pagination ?? nested?.meta?.pagination ?? direct?.meta?.pagination;
+    if (pagination) {
+        totalCount = pagination.total ?? installations.length;
+        totalPages = pagination.pageCount ?? Math.max(1, Math.ceil((pagination.total ?? installations.length) / pageSize));
+        currentPage = pagination.page ?? currentPage;
+    } else {
+        totalCount = installations.length;
+        totalPages = Math.max(1, Math.ceil(installations.length / pageSize));
+    }
+} catch (error) {
+    console.error("Failed to fetch installations", error);
+
+    Astro.redirect("/500");
+}
+
+const pageTitle = "Монтажи";
+const description = "Разгледайте реализирани газови уредби и монтажи от нашия екип.";
+---
+
+<Layout pageTitle={`${pageTitle} | ${siteName}`} title={pageTitle} description={description}>
+    <Section>
+        <Container class="mx-auto max-w-7xl px-4 py-10">
+            {installations.length > 0 ? (
+                <>
+                    <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                        {installations.map((installation) => (
+                            <InstallationCard installation={installation} strapiUrl={strapiUrl} />
+                        ))}
+                    </div>
+                    <PaginationSimple page={Math.min(Math.max(1, currentPage), totalPages)} totalPages={totalPages} />
+                </>
+            ) : (
+                <div class="rounded-2xl border border-dashed border-zinc-300 bg-white p-10 text-center text-zinc-500">
+                    Няма налични монтажи в момента. Свържете се с нас за повече информация.
+                </div>
+            )}
+        </Container>
+    </Section>
+</Layout>

@@ -1,11 +1,5 @@
 ---
-import { menuMain } from "~/data/menus";
-import IconLogo from "~/assets/images/icons/logo.svg";
-const rmTrailingSlash = (path: string): string => {
-	return path.endsWith("/") && path.length > 1 ? path.slice(0, path.length - 1) : path;
-};
-
-const pathname = rmTrailingSlash(Astro.url.pathname);
+import {siteName} from "~/data/config";
 ---
 
 <header class="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -15,7 +9,7 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
                 <circle cx="12" cy="12" r="10" class="fill-violet-600"/>
                 <path d="M7 13.5h7.5M9 10.5h8" class="stroke-white" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
-            <span class="text-lg">Газтрейд Варна 2012 ООД</span>
+            <span class="text-lg">{siteName}</span>
         </a>
         <nav class="hidden items-center gap-6 md:flex">
             <a href="#services" class="text-sm text-zinc-700 hover:text-zinc-900">Услуги</a>
@@ -25,7 +19,10 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
             <a href="#contact" class="text-sm text-zinc-700 hover:text-zinc-900">Контакти</a>
         </nav>
         <div class="hidden md:block">
-            <a href="#quote" class="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-yellow-300">
+            <a
+                href="#quote"
+                class="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-yellow-300"
+            >
                 <span>Получи оферта</span>
             </a>
         </div>
@@ -39,12 +36,28 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
     <div id="mobileMenu" class="hidden border-t border-zinc-200 bg-white md:hidden">
         <nav class="mx-auto max-w-7xl px-4 py-3">
             <ul class="flex flex-col gap-2">
-                <li><a href="#services" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Услуги</a></li>
-                <li><a href="#portfolio" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Портфолио</a></li>
-                <li><a href="#pricing" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Цени</a></li>
-                <li><a href="#faq" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">ЧЗВ</a></li>
-                <li><a href="#contact" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Контакти</a></li>
-                <li><a href="#quote" class="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-yellow-400 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-yellow-300">Получи оферта</a></li>
+                <li>
+                    <a href="#services" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Услуги</a>
+                </li>
+                <li>
+                    <a href="#portfolio" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Портфолио</a>
+                </li>
+                <li>
+                    <a href="#pricing" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Цени</a>
+                </li>
+                <li>
+                    <a href="#faq" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">ЧЗВ</a>
+                </li>
+                <li>
+                    <a href="#contact" class="block rounded-lg px-3 py-2 hover:bg-zinc-50">Контакти</a>
+                </li>
+                <li>
+                    <a
+                        href="#quote"
+                        class="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-yellow-400 px-4 py-2 text-sm font-semibold text-zinc-900 shadow hover:bg-yellow-300"
+                    >Получи оферта
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

@@ -1,15 +1,58 @@
 ---
 import { Image } from "astro:assets";
+import {siteName, siteSlogan, phone} from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
+import InstallationCard from "~/components/installations/InstallationCard.astro";
+import { installationGetInstallations } from "~/lib/client";
+import type { InstallationGetInstallationsResponses } from "~/lib/client";
 
 // Images
-import ImageCarDealer from "~/assets/images/pexels-shkrabaanthony-7144179.jpg";
 import ImageHeadingBackground from "~/assets/images/pexels-jeshoots-com-147458-451590.jpg";
-import ImageOne from "~/assets/images/pexels-leif-bergerson-99376750-9764731.webp";
-import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
+
+export const prerender = false;
+
+const strapiUrl = import.meta.env.STRAPI_URL ?? "";
+const sort: Record<string, "asc" | "desc"> = { publishedAt: "desc" };
+
+function extractInstallations(
+    response: unknown,
+): InstallationGetInstallationsResponses[200]["data"] {
+    const direct = response as Partial<InstallationGetInstallationsResponses[200]>;
+    if (Array.isArray(direct?.data)) {
+        return direct.data as InstallationGetInstallationsResponses[200]["data"];
+    }
+
+    const nested = (response as { data?: Partial<InstallationGetInstallationsResponses[200]> })?.data;
+    if (Array.isArray(nested?.data)) {
+        return nested.data as InstallationGetInstallationsResponses[200]["data"];
+    }
+
+    return [];
+}
+
+let featuredInstallations: InstallationGetInstallationsResponses[200]["data"] = [];
+
+try {
+    const response = await installationGetInstallations({
+        query: {
+            //@ts-ignore
+            pLevel: 4,
+            sort,
+            pagination: {
+                page: 1,
+                pageSize: 3,
+                withCount: true,
+            },
+        },
+    });
+
+    featuredInstallations = extractInstallations(response);
+} catch (error) {
+    console.error("Failed to fetch featured installations", error);
+}
 ---
 
-<Layout pageTitle="Газови уредби Варна - монтаж и поддръжка" title="Газови уредби Варна - монтаж и поддръжка">
+<Layout pageTitle={siteName} title={siteName} description={siteSlogan}>
     <!-- Hero -->
     <section class="relative overflow-hidden">
         <div class="mx-auto max-w-7xl px-4">
@@ -23,8 +66,10 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                         Prins, Landi Renzo и др.
                     </p>
                     <div class="mt-6 flex flex-wrap items-center gap-3">
-                        <a href="#quote"
-                           class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600">
+                        <a
+                            href={phone.href}
+                            class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600"
+                        >
                             Обади се сега
                         </a>
                         <a href="#portfolio"
@@ -124,66 +169,38 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                     <h2 class="text-2xl font-bold sm:text-3xl">Монтажи</h2>
                     <p class="mt-2 text-zinc-600">Разгледайте нашите последни конверсии</p>
                 </div>
-                <a href="/portfolio"
-                   class="hidden rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white md:inline-flex">Виж
-                    всички</a>
+                <a
+                    href="/installations"
+                    class="hidden rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white md:inline-flex"
+                >
+                    Виж всички
+                </a>
             </div>
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <!-- Card (repeat from Strapi) -->
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageTwo} alt="BMW 320i BRC 2015"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
+            {featuredInstallations.length > 0 ? (
+                <>
+                    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {featuredInstallations.map((installation) => (
+                            <InstallationCard
+                                installation={installation}
+                                strapiUrl={strapiUrl}
+                            />
+                        ))}
                     </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">BMW 320i</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">BRC</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">2015</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">Чист монтаж, плавен преход бензин→газ</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Позициониране на изпарителя, скрито
-                            окабеляване, фина настройка на карта.</p>
+                    <div class="mt-8 text-center md:hidden">
+                        <a
+                            href="/installations"
+                            class="inline-flex rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white"
+                        >
+                            Виж всички
+                        </a>
                     </div>
-                </article>
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageOne} alt="VW Golf 1.4 TSI Lovato"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">VW Golf</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Lovato</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">1.4 TSI</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">OBD адаптация и стабилни корекции</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Гладка работа, оптимален разход
-                            град/магистрала.</p>
-                    </div>
-                </article>
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageTwo} alt="Mercedes C200 Prins"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Mercedes C200</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Prins</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">2017</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">Премиум компоненти и фина настройка</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Скрит монтаж, OEM визия, пълна документация
-                            за КАТ.</p>
-                    </div>
-                </article>
-            </div>
-            <div class="mt-8 text-center md:hidden">
-                <a href="/portfolio"
-                   class="inline-flex rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white">Виж
-                    всички</a>
-            </div>
+                </>
+            ) : (
+                <div class="mt-8 rounded-2xl border border-dashed border-zinc-300 bg-white p-10 text-center text-zinc-500">
+                    Скоро ще добавим реализирани монтажи в портфолиото.
+                </div>
+            )}
+
         </div>
     </section>
 
