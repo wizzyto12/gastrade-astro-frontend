@@ -1,3 +1,6 @@
+---
+import { siteName, phone, address, siteSlogan } from "~/data/config";
+---
 
 <footer class="border-t border-zinc-200">
     <div class="mx-auto max-w-7xl px-4 py-10">
@@ -8,17 +11,17 @@
                         <circle cx="12" cy="12" r="10" class="fill-violet-600"/>
                         <path d="M7 13.5h7.5M9 10.5h8" class="stroke-white" stroke-width="1.8" stroke-linecap="round"/>
                     </svg>
-                    <span>Вашият майстор LPG</span>
+                    <span>{siteName}</span>
                 </div>
-                <p class="mt-3 text-sm text-zinc-600">Професионален монтаж и настройка на LPG системи в България.</p>
+                <p class="mt-3 text-sm text-zinc-600">{siteSlogan}</p>
             </div>
             <div>
                 <h4 class="font-semibold">Контакти</h4>
                 <ul class="mt-3 space-y-1 text-sm text-zinc-700">
-                    <li>Тел.: <a href="tel:+3598XXXXXXXX" class="underline">+359 8X XXX XXXX</a></li>
-                    <li>Viber / WhatsApp: налични</li>
+                    <li>Тел.: <a href={phone.href} class="underline">{phone.label}</a></li>
+                    <li>Viber: налични</li>
                     <li>Имейл: <a href="mailto:info@example.com" class="underline">info@example.com</a></li>
-                    <li>Адрес: Вашият град, ул. Пример 1</li>
+                    <li>Адрес: {address.street}, {address.city}, {address.zip}, {address.country}</li>
                 </ul>
             </div>
             <div>
@@ -32,7 +35,7 @@
             </div>
         </div>
         <div class="mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-6 text-xs text-zinc-500 md:flex-row">
-            <p>© {new Date().getFullYear()} Вашият майстор LPG. Всички права запазени.</p>
+            <p>© {new Date().getFullYear()} {siteName}. Всички права запазени.</p>
             <div class="flex items-center gap-4">
                 <a href="#" class="hover:underline">Условия</a>
                 <a href="#" class="hover:underline">Политика за поверителност</a>
