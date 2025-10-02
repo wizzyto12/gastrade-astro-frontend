@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import {siteName, siteSlogan, phone} from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import InstallationCard from "~/components/installations/InstallationCard.astro";
 import { installationGetInstallations } from "~/lib/client";
@@ -51,7 +52,7 @@ try {
 }
 ---
 
-<Layout pageTitle="Газови уредби Варна - монтаж и поддръжка" title="Газови уредби Варна - монтаж и поддръжка">
+<Layout pageTitle={siteName} title={siteName} description={siteSlogan}>
     <!-- Hero -->
     <section class="relative overflow-hidden">
         <div class="mx-auto max-w-7xl px-4">
@@ -65,8 +66,10 @@ try {
                         Prins, Landi Renzo и др.
                     </p>
                     <div class="mt-6 flex flex-wrap items-center gap-3">
-                        <a href="#quote"
-                           class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600">
+                        <a
+                            href={phone.href}
+                            class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600"
+                        >
                             Обади се сега
                         </a>
                         <a href="#portfolio"
