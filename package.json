@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/netlify": "^6.5.1",
+    "@fancyapps/ui": "^6.0.33",
     "@hey-api/openapi-ts": "^0.84.4",
     "@playform/inline": "^0.1.0",
     "@tailwindcss/vite": "^4.1.8",

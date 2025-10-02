@@ -1,29 +1,18 @@
 ---
+import {Image} from "astro:assets";
 import Layout from "~/layouts/Layout.astro";
-import Section from "~/components/Section.astro";
-import Container from "~/components/Container.astro";
 import {siteName, phone} from "~/data/config";
 import {installationGetInstallationsById} from "~/lib/client";
 import type {InstallationGetInstallationsByIdResponses, PluginUploadFileDocument} from "~/lib/client";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import {buildMediaUrl} from "~/lib/media.ts";
+
 
 export const prerender = false;
 
 const {id} = Astro.params;
-const strapiUrl = import.meta.env.STRAPI_URL ?? "";
 
 let installation: InstallationGetInstallationsByIdResponses[200]["data"] | null = null;
-
-function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
-    if (!media?.url) {
-        return null;
-    }
-
-    if (media.url.startsWith("http")) {
-        return media.url;
-    }
-
-    return `${strapiUrl}${media.url}`;
-}
 
 if (typeof id !== "string" || id.length === 0) {
     Astro.redirect("/404");
@@ -93,18 +82,42 @@ const metaTitle = `${carTitle} | Монтажи`;
                             }
 
                             return (
-                                <div
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                    data-fancybox="gallery"
                                     class={`overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 ${index === 0 ? "md:col-span-2" : ""}`}
                                 >
-                                    <img
+                                    <Image
                                         src={url}
                                         alt={media.alternativeText ?? media.caption ?? carTitle}
                                         class="h-full w-full object-cover"
                                         loading={index === 0 ? "eager" : "lazy"}
                                     />
-                                </div>
+                                </a>
                             );
                         })}
+
+                        <script>
+                            import {Fancybox} from "@fancyapps/ui/dist/fancybox/";
+
+                            document.addEventListener("astro:page-load", function () {
+                                Fancybox.bind("[data-fancybox]", {
+                                    theme: "auto",
+                                    Carousel: {
+                                        Arrows: false,
+                                        Toolbar: {
+                                            display: {
+                                                left: [],
+                                                middle: [],
+                                                right: ["close"],
+                                            },
+                                        },
+                                        transition: "slide",
+                                    },
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
 

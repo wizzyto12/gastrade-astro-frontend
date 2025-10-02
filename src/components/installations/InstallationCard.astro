@@ -3,6 +3,7 @@ import type {
     InstallationGetInstallationsResponses,
     PluginUploadFileDocument,
 } from "~/lib/client";
+import {buildMediaUrl} from "~/lib/media.ts";
 
 interface Props {
     installation: InstallationGetInstallationsResponses[200]["data"][number];
@@ -10,20 +11,6 @@ interface Props {
 }
 
 const {installation, strapiUrl} = Astro.props as Props;
-
-console.log(installation);
-
-function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
-    if (!media?.url) {
-        return null;
-    }
-
-    if (media.url.startsWith("http")) {
-        return media.url;
-    }
-
-    return `${strapiUrl ?? ""}${media.url}`;
-}
 
 const coverImage = installation.gallery?.[0];
 const coverUrl = buildMediaUrl(coverImage);
