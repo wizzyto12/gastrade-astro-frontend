@@ -1,12 +1,14 @@
 ---
+import {installationGetInstallations} from "~/lib/client";
 export const prerender = false;
+import qs from "qs";
 
 // if (Astro.response.headers) {
 // 	Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, s-maxage=2592000");
 // }
 
-import { type CollectionEntry } from "astro:content";
-import { siteName, priceSteps, defaultPaginationSize } from "~/data/config";
+import {type CollectionEntry} from "astro:content";
+import {siteName, priceSteps, defaultPaginationSize} from "~/data/config";
 import Layout from "~/layouts/Layout.astro";
 import Section from "~/components/Section.astro";
 import Container from "~/components/Container.astro";
@@ -27,10 +29,18 @@ const searchParamsArray = Array.from(searchParamsValue);
 // console.log(searchParamsValue);
 // console.log(searchParamsArray);
 
+const installations = await installationGetInstallations({
+    query: {
+        populate: ["car", "lpg_ecus", "lpg_injector", "lpg_reducer", "lpg_tank", "car.model", "car.model.brand"],
+    }
+});
+
+console.log(installations.data?.data[0].car?.model?.brand?.name);
+
 APIURL.search = searchParamsValue.toString();
 
 const response = await fetch(APIURL);
-const responseData = response.status === 404 ? { allCars: [] } : await response.json();
+const responseData = response.status === 404 ? {allCars: []} : await response.json();
 const allCars: Car[] = responseData.allCars;
 
 const makes = [...new Set(allCars.map((car: Car) => car.data.general.make))].sort();
@@ -38,10 +48,10 @@ const colors = [...new Set(allCars.map((car: Car) => car.data.exterior.color))].
 const count = allCars.length;
 
 const sideBarData = {
-	makes,
-	colors,
-	count,
-	priceSteps,
+    makes,
+    colors,
+    count,
+    priceSteps,
 };
 
 const page = parseInt(searchParamsValue.get("page") || "1");
@@ -51,57 +61,58 @@ const paginatedCars = Array.isArray(allCars) ? allCars.slice((page - 1) * pageSi
 ---
 
 <Layout pageTitle={`Cars | ${siteName}`} description="Explore our range of cars for sale.">
-	<Section class:list={"bg-gray-50 max-lg:max-w-svw max-lg:overflow-hidden"}>
-		<Container class:list={"pt-0 max-lg:px-0 max-lg:max-w-full"}>
-			<div class="flex flex-col lg:flex-row">
-				<FilterBarMobile params={searchParamsArray} />
+    <Section class:list={"bg-gray-50 max-lg:max-w-svw max-lg:overflow-hidden"}>
+        <Container class:list={"pt-0 max-lg:px-0 max-lg:max-w-full"}>
+            <div class="flex flex-col lg:flex-row">
+                <FilterBarMobile params={searchParamsArray}/>
 
-				<SidebarFilters data={sideBarData} />
+                <SidebarFilters data={sideBarData}/>
 
-				<main class="lg:pl-16 grow">
-					<div class="lg:px-8">
-						<SearchSort />
+                <main class="lg:pl-16 grow">
+                    <div class="lg:px-8">
+                        <SearchSort/>
 
-						<div class="max-lg:hidden">
-							<PresetBar params={searchParamsArray} />
-						</div>
+                        <div class="max-lg:hidden">
+                            <PresetBar params={searchParamsArray}/>
+                        </div>
 
-						<ul class="grid grid-cols-1 lg:gap-16">
-							{
-								paginatedCars.length > 0 ? (
-									paginatedCars.map((car) => <CardCar car={car} />)
-								) : (
-									<li class="text-center text-gray-500">No results found</li>
-								)
-							}
-						</ul>
+                        <ul class="grid grid-cols-1 lg:gap-16">
+                            {
+                                paginatedCars.length > 0 ? (
+                                    paginatedCars.map((car) =>
+                                        <CardCar car={car}/>)
+                                ) : (
+                                    <li class="text-center text-gray-500">No results found</li>
+                                )
+                            }
+                        </ul>
 
-						{
-							paginatedCars.length > 0 && totalPages > 1 && (
-								<Pagination page={page} totalPages={totalPages} searchParams={searchParamsValue} />
-							)
-						}
-					</div>
-				</main>
-			</div>
-		</Container>
-	</Section>
+                        {
+                            paginatedCars.length > 0 && totalPages > 1 && (
+                                <Pagination page={page} totalPages={totalPages} searchParams={searchParamsValue}/>
+                            )
+                        }
+                    </div>
+                </main>
+            </div>
+        </Container>
+    </Section>
 </Layout>
 
 <script>
-	document.addEventListener("astro:page-load", function () {
-		const buttonModalFilterOpen = document.getElementById("button-modal-filter-open");
-		const buttonModalFilterClose = document.getElementById("button-modal-filter-close");
-		const sidebarFiltersMobile = document.getElementById("sidebar-filter");
+    document.addEventListener("astro:page-load", function () {
+        const buttonModalFilterOpen = document.getElementById("button-modal-filter-open");
+        const buttonModalFilterClose = document.getElementById("button-modal-filter-close");
+        const sidebarFiltersMobile = document.getElementById("sidebar-filter");
 
-		if (sidebarFiltersMobile) {
-			buttonModalFilterOpen?.addEventListener("click", () => {
-				sidebarFiltersMobile.classList.remove("max-lg:opacity-0", "max-lg:pointer-events-none");
-			});
+        if (sidebarFiltersMobile) {
+            buttonModalFilterOpen?.addEventListener("click", () => {
+                sidebarFiltersMobile.classList.remove("max-lg:opacity-0", "max-lg:pointer-events-none");
+            });
 
-			buttonModalFilterClose?.addEventListener("click", () => {
-				sidebarFiltersMobile.classList.add("max-lg:opacity-0", "max-lg:pointer-events-none");
-			});
-		}
-	});
+            buttonModalFilterClose?.addEventListener("click", () => {
+                sidebarFiltersMobile.classList.add("max-lg:opacity-0", "max-lg:pointer-events-none");
+            });
+        }
+    });
 </script>
