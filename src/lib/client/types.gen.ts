@@ -292,6 +292,10 @@ export type ApiInstallationInstallationDocument = {
     documentId: string;
     id: number;
     /**
+     * A string field
+     */
+    subheading: string;
+    /**
      * A datetime field
      */
     createdAt?: string;
@@ -395,21 +399,6 @@ export type ApiModelModelDocument = {
      * A relational field
      */
     cars?: Array<ApiCarCarDocument>;
-};
-
-export type SharedSeoEntry = {
-    /**
-     * A string field
-     */
-    metaTitle: string;
-    /**
-     * A text field
-     */
-    metaDescription: string;
-    /**
-     * A media field
-     */
-    shareImage?: PluginUploadFileDocument;
 };
 
 export type BrandGetBrandsData = {
@@ -1440,278 +1429,6 @@ export type CarPutCarsByIdResponses = {
 
 export type CarPutCarsByIdResponse = CarPutCarsByIdResponses[keyof CarPutCarsByIdResponses];
 
-export type GlobalDeleteGlobalData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
-         */
-        readonly fields?: Array<'siteName' | 'siteDescription' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
-        populate?: '*' | 'favicon' | 'defaultSeo' | Array<'favicon' | 'defaultSeo'>;
-    };
-    url: '/global';
-};
-
-export type GlobalDeleteGlobalErrors = {
-    /**
-     * Bad request
-     */
-    400: unknown;
-    /**
-     * Unauthorized
-     */
-    401: unknown;
-    /**
-     * Forbidden
-     */
-    403: unknown;
-    /**
-     * Not found
-     */
-    404: unknown;
-    /**
-     * Internal server error
-     */
-    500: unknown;
-};
-
-export type GlobalDeleteGlobalResponses = {
-    /**
-     * OK
-     */
-    200: {
-        data: {
-            /**
-             * The document ID, represented by a UUID
-             */
-            documentId: string;
-            id: number;
-            /**
-             * A string field
-             */
-            siteName: string;
-            /**
-             * A text field
-             */
-            siteDescription: string;
-            /**
-             * A datetime field
-             */
-            createdAt?: string;
-            /**
-             * A datetime field
-             */
-            updatedAt?: string;
-            /**
-             * A datetime field
-             */
-            publishedAt: string;
-            /**
-             * A media field
-             */
-            favicon?: PluginUploadFileDocument;
-            /**
-             * A component field
-             */
-            defaultSeo?: SharedSeoEntry;
-        };
-    };
-};
-
-export type GlobalDeleteGlobalResponse = GlobalDeleteGlobalResponses[keyof GlobalDeleteGlobalResponses];
-
-export type GlobalGetGlobalData = {
-    body?: never;
-    path?: never;
-    query?: {
-        /**
-         * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
-         */
-        readonly fields?: Array<'siteName' | 'siteDescription' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
-        populate?: '*' | 'favicon' | 'defaultSeo' | Array<'favicon' | 'defaultSeo'>;
-        /**
-         * Filters to apply to the query
-         */
-        filters?: {
-            [key: string]: unknown;
-        };
-    };
-    url: '/global';
-};
-
-export type GlobalGetGlobalErrors = {
-    /**
-     * Bad request
-     */
-    400: unknown;
-    /**
-     * Unauthorized
-     */
-    401: unknown;
-    /**
-     * Forbidden
-     */
-    403: unknown;
-    /**
-     * Not found
-     */
-    404: unknown;
-    /**
-     * Internal server error
-     */
-    500: unknown;
-};
-
-export type GlobalGetGlobalResponses = {
-    /**
-     * OK
-     */
-    200: {
-        data: {
-            /**
-             * The document ID, represented by a UUID
-             */
-            documentId: string;
-            id: number;
-            /**
-             * A string field
-             */
-            siteName: string;
-            /**
-             * A text field
-             */
-            siteDescription: string;
-            /**
-             * A datetime field
-             */
-            createdAt?: string;
-            /**
-             * A datetime field
-             */
-            updatedAt?: string;
-            /**
-             * A datetime field
-             */
-            publishedAt: string;
-            /**
-             * A media field
-             */
-            favicon?: PluginUploadFileDocument;
-            /**
-             * A component field
-             */
-            defaultSeo?: SharedSeoEntry;
-        };
-    };
-};
-
-export type GlobalGetGlobalResponse = GlobalGetGlobalResponses[keyof GlobalGetGlobalResponses];
-
-export type GlobalPutGlobalData = {
-    body?: {
-        data: {
-            /**
-             * A string field
-             */
-            siteName?: string;
-            /**
-             * A text field
-             */
-            siteDescription?: string;
-            /**
-             * A datetime field
-             */
-            publishedAt?: string;
-            /**
-             * A media field
-             */
-            favicon?: unknown;
-            /**
-             * A component field
-             */
-            defaultSeo?: unknown;
-        };
-    };
-    path?: never;
-    query?: {
-        /**
-         * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
-         */
-        readonly fields?: Array<'siteName' | 'siteDescription' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
-        populate?: '*' | 'favicon' | 'defaultSeo' | Array<'favicon' | 'defaultSeo'>;
-    };
-    url: '/global';
-};
-
-export type GlobalPutGlobalErrors = {
-    /**
-     * Bad request
-     */
-    400: unknown;
-    /**
-     * Unauthorized
-     */
-    401: unknown;
-    /**
-     * Forbidden
-     */
-    403: unknown;
-    /**
-     * Not found
-     */
-    404: unknown;
-    /**
-     * Internal server error
-     */
-    500: unknown;
-};
-
-export type GlobalPutGlobalResponses = {
-    /**
-     * OK
-     */
-    200: {
-        data: {
-            /**
-             * The document ID, represented by a UUID
-             */
-            documentId: string;
-            id: number;
-            /**
-             * A string field
-             */
-            siteName: string;
-            /**
-             * A text field
-             */
-            siteDescription: string;
-            /**
-             * A datetime field
-             */
-            createdAt?: string;
-            /**
-             * A datetime field
-             */
-            updatedAt?: string;
-            /**
-             * A datetime field
-             */
-            publishedAt: string;
-            /**
-             * A media field
-             */
-            favicon?: PluginUploadFileDocument;
-            /**
-             * A component field
-             */
-            defaultSeo?: SharedSeoEntry;
-        };
-    };
-};
-
-export type GlobalPutGlobalResponse = GlobalPutGlobalResponses[keyof GlobalPutGlobalResponses];
-
 export type InstallationGetInstallationsData = {
     body?: never;
     path?: never;
@@ -1719,7 +1436,7 @@ export type InstallationGetInstallationsData = {
         /**
          * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
          */
-        readonly fields?: Array<'createdAt' | 'updatedAt' | 'publishedAt'>;
+        readonly fields?: Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
         /**
          * Filters to apply to the query
          */
@@ -1757,7 +1474,7 @@ export type InstallationGetInstallationsData = {
         /**
          * Sort the result
          */
-        sort?: 'createdAt' | 'updatedAt' | 'publishedAt' | Array<'createdAt' | 'updatedAt' | 'publishedAt'> | {
+        sort?: 'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt' | Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'> | {
             [key: string]: 'asc' | 'desc';
         } | Array<{
             [key: string]: 'asc' | 'desc';
@@ -1806,6 +1523,10 @@ export type InstallationGetInstallationsResponses = {
             documentId: string;
             id: number;
             /**
+             * A string field
+             */
+            subheading: string;
+            /**
              * A datetime field
              */
             createdAt?: string;
@@ -1851,6 +1572,10 @@ export type InstallationPostInstallationsData = {
     body?: {
         data: {
             /**
+             * A string field
+             */
+            subheading: string;
+            /**
              * A datetime field
              */
             publishedAt: string;
@@ -1885,7 +1610,7 @@ export type InstallationPostInstallationsData = {
         /**
          * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
          */
-        readonly fields?: Array<'createdAt' | 'updatedAt' | 'publishedAt'>;
+        readonly fields?: Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
         populate?: '*' | 'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery' | Array<'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery'>;
         /**
          * Fetch documents based on their status. Default to "published" if not specified.
@@ -1929,6 +1654,10 @@ export type InstallationPostInstallationsResponses = {
              */
             documentId: string;
             id: number;
+            /**
+             * A string field
+             */
+            subheading: string;
             /**
              * A datetime field
              */
@@ -1983,7 +1712,7 @@ export type InstallationDeleteInstallationsByIdData = {
         /**
          * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
          */
-        readonly fields?: Array<'createdAt' | 'updatedAt' | 'publishedAt'>;
+        readonly fields?: Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
         populate?: '*' | 'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery' | Array<'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery'>;
         /**
          * Filters to apply to the query
@@ -2033,6 +1762,10 @@ export type InstallationDeleteInstallationsByIdResponses = {
              */
             documentId: string;
             id: number;
+            /**
+             * A string field
+             */
+            subheading: string;
             /**
              * A datetime field
              */
@@ -2087,7 +1820,7 @@ export type InstallationGetInstallationsByIdData = {
         /**
          * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
          */
-        readonly fields?: Array<'createdAt' | 'updatedAt' | 'publishedAt'>;
+        readonly fields?: Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
         populate?: '*' | 'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery' | Array<'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery'>;
         /**
          * Filters to apply to the query
@@ -2098,7 +1831,7 @@ export type InstallationGetInstallationsByIdData = {
         /**
          * Sort the result
          */
-        sort?: 'createdAt' | 'updatedAt' | 'publishedAt' | Array<'createdAt' | 'updatedAt' | 'publishedAt'> | {
+        sort?: 'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt' | Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'> | {
             [key: string]: 'asc' | 'desc';
         } | Array<{
             [key: string]: 'asc' | 'desc';
@@ -2146,6 +1879,10 @@ export type InstallationGetInstallationsByIdResponses = {
             documentId: string;
             id: number;
             /**
+             * A string field
+             */
+            subheading: string;
+            /**
              * A datetime field
              */
             createdAt?: string;
@@ -2191,6 +1928,10 @@ export type InstallationPutInstallationsByIdData = {
     body?: {
         data: {
             /**
+             * A string field
+             */
+            subheading?: string;
+            /**
              * A datetime field
              */
             publishedAt?: string;
@@ -2230,7 +1971,7 @@ export type InstallationPutInstallationsByIdData = {
         /**
          * The fields to return, this doesn't include populatable fields like relations, components, files, or dynamic zones
          */
-        readonly fields?: Array<'createdAt' | 'updatedAt' | 'publishedAt'>;
+        readonly fields?: Array<'subheading' | 'createdAt' | 'updatedAt' | 'publishedAt'>;
         populate?: '*' | 'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery' | Array<'lpg_ecus' | 'lpg_injector' | 'lpg_reducer' | 'lpg_tank' | 'car' | 'gallery'>;
         /**
          * Fetch documents based on their status. Default to "published" if not specified.
@@ -2274,6 +2015,10 @@ export type InstallationPutInstallationsByIdResponses = {
              */
             documentId: string;
             id: number;
+            /**
+             * A string field
+             */
+            subheading: string;
             /**
              * A datetime field
              */

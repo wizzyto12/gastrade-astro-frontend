@@ -1,55 +1,84 @@
 ---
-import { Image } from "astro:assets";
+import {Image} from "astro:assets";
 import Layout from "~/layouts/Layout.astro";
+import {siteName, siteSlogan, phone} from "~/data/config";
 
 // Images
-import ImageCarDealer from "~/assets/images/pexels-shkrabaanthony-7144179.jpg";
 import ImageHeadingBackground from "~/assets/images/pexels-jeshoots-com-147458-451590.jpg";
 import ImageOne from "~/assets/images/pexels-leif-bergerson-99376750-9764731.webp";
 import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
+import {installationGetInstallations} from "~/lib/client";
+
+// Get last 3 installations
+const installations = await installationGetInstallations({
+    query: {
+        sort: ['createdAt:desc'],
+        pagination: {
+            page: 1,
+            pageSize: 3,
+        },
+        pLevel: 4
+    }
+});
 ---
 
-<Layout pageTitle="Газови уредби Варна - монтаж и поддръжка" title="Газови уредби Варна - монтаж и поддръжка">
+<Layout pageTitle={siteName} title={siteName} description={siteSlogan}>
     <!-- Hero -->
     <section class="relative overflow-hidden">
         <div class="mx-auto max-w-7xl px-4">
             <div class="grid grid-cols-1 items-center gap-10 py-10 md:grid-cols-2 md:py-16">
                 <div>
                     <h1 class="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-                        Газови уредби с <span class="text-violet-700">фабрично качество</span>
+                        Газови уредби с
+                        <span class="text-violet-700">фабрично качество</span>
                     </h1>
                     <p class="mt-4 text-lg text-zinc-700">
                         Професионален монтаж, прецизна OBD-настройка и 24 месеца гаранция. Работим с BRC, Lovato, KME,
                         Prins, Landi Renzo и др.
                     </p>
                     <div class="mt-6 flex flex-wrap items-center gap-3">
-                        <a href="#quote"
-                           class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600">
+                        <a
+                            href={phone.href}
+                            class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600"
+                        >
                             Обади се сега
                         </a>
-                        <a href="#portfolio"
-                           class="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-5 py-3 font-semibold text-zinc-900 hover:bg-zinc-50">
+                        <a
+                            href="#portfolio"
+                            class="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-5 py-3 font-semibold text-zinc-900 hover:bg-zinc-50"
+                        >
                             Виж нашата работа
                         </a>
                     </div>
                     <div class="mt-6 flex flex-wrap items-center gap-6 text-sm text-zinc-600">
-                        <div class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>24 месеца гаранция
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"
+                            ></span>
+                            24 месеца гаранция
                         </div>
-                        <div class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>Монтаж в рамките на 1-2
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"
+                            ></span>
+                            Монтаж в рамките на 1-2
                             дни
                         </div>
-                        <div class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>Съдействие за
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-emerald-500"
+                            ></span>
+                            Съдействие за
                             регистрация в КАТ
                         </div>
                     </div>
                 </div>
                 <div class="relative">
                     <div class="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-zinc-200 shadow-lg">
-                        <Image src={ImageHeadingBackground} alt="Професионален монтаж на газова уредба"
-                             class="h-full w-full object-cover"/>
+                        <Image
+                            src={ImageHeadingBackground} alt="Професионален монтаж на газова уредба"
+                            class="h-full w-full object-cover"
+                        />
                     </div>
                     <div class="pointer-events-none absolute -bottom-6 -left-6 hidden h-24 w-24 rounded-2xl bg-yellow-300/70 blur-2xl md:block"></div>
                     <div class="pointer-events-none absolute -top-6 -right-8 hidden h-24 w-24 rounded-2xl bg-violet-300/60 blur-2xl md:block"></div>
@@ -71,8 +100,10 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                 <div class="rounded-2xl border border-zinc-200 p-6 shadow-sm">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 12h18M12 3v18" class="stroke-violet-700" stroke-width="2"
-                                  stroke-linecap="round"/>
+                            <path
+                                d="M3 12h18M12 3v18" class="stroke-violet-700" stroke-width="2"
+                                stroke-linecap="round"
+                            />
                         </svg>
                     </div>
                     <h3 class="mt-4 font-semibold">Пътешествия на половин цена</h3>
@@ -82,8 +113,10 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                 <div class="rounded-2xl border border-zinc-200 p-6 shadow-sm">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 12l3 3 9-9" class="stroke-violet-700" stroke-width="2" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
+                            <path
+                                d="M6 12l3 3 9-9" class="stroke-violet-700" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
                         </svg>
                     </div>
                     <h3 class="mt-4 font-semibold">Безкомпромисен монтаж</h3>
@@ -94,8 +127,10 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                 <div class="rounded-2xl border border-zinc-200 p-6 shadow-sm">
                     <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 2l7 4v6c0 5-7 10-7 10S5 17 5 12V6l7-4z" class="stroke-violet-700"
-                                  stroke-width="2" fill="none"/>
+                            <path
+                                d="M12 2l7 4v6c0 5-7 10-7 10S5 17 5 12V6l7-4z" class="stroke-violet-700"
+                                stroke-width="2" fill="none"
+                            />
                         </svg>
                     </div>
                     <h3 class="mt-4 font-semibold">Гаранция и сервиз</h3>
@@ -124,65 +159,44 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                     <h2 class="text-2xl font-bold sm:text-3xl">Монтажи</h2>
                     <p class="mt-2 text-zinc-600">Разгледайте нашите последни конверсии</p>
                 </div>
-                <a href="/portfolio"
-                   class="hidden rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white md:inline-flex">Виж
-                    всички</a>
+                <a
+                    href="/portfolio"
+                    class="hidden rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white md:inline-flex"
+                >
+                    Виж всички
+                </a>
             </div>
             <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <!-- Card (repeat from Strapi) -->
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageTwo} alt="BMW 320i BRC 2015"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">BMW 320i</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">BRC</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">2015</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">Чист монтаж, плавен преход бензин→газ</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Позициониране на изпарителя, скрито
-                            окабеляване, фина настройка на карта.</p>
-                    </div>
-                </article>
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageOne} alt="VW Golf 1.4 TSI Lovato"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">VW Golf</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Lovato</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">1.4 TSI</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">OBD адаптация и стабилни корекции</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Гладка работа, оптимален разход
-                            град/магистрала.</p>
-                    </div>
-                </article>
-                <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div class="aspect-[4/3] w-full overflow-hidden">
-                        <Image src={ImageTwo} alt="Mercedes C200 Prins"
-                             class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"/>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Mercedes C200</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">Prins</span>
-                            <span class="rounded-full bg-zinc-100 px-2 py-1">2017</span>
-                        </div>
-                        <h3 class="mt-3 font-semibold">Премиум компоненти и фина настройка</h3>
-                        <p class="mt-1 line-clamp-2 text-sm text-zinc-600">Скрит монтаж, OEM визия, пълна документация
-                            за КАТ.</p>
-                    </div>
-                </article>
+                {installations?.data?.data.map(installation => (
+                    <a href="#">
+                        <article class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+                            <div class="aspect-[4/3] w-full overflow-hidden">
+                                <Image
+                                    src={`${import.meta.env.STRAPI_URL}${installation.gallery[0].url}`}
+                                    alt="BMW 320i BRC 2015"
+                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                            </div>
+                            <div class="p-5">
+                                <div class="flex flex-wrap gap-2 text-xs">
+                                    <span class="rounded-full bg-zinc-100 px-2 py-1">{installation?.lpg_ecus?.lpg_brand?.name} {installation?.lpg_ecus?.name}</span>
+                                    <span class="rounded-full bg-zinc-100 px-2 py-1">{new Date(installation?.car?.year).getFullYear()}</span>
+                                </div>
+                                <h3 class="mt-3 font-semibold">{`${installation?.car?.model?.brand?.name} ${installation?.car?.model?.name}`}</h3>
+                                <p class="mt-1 line-clamp-2 text-sm text-zinc-600">{installation.subheading}</p>
+                            </div>
+                        </article>
+                    </a>
+                ))}
             </div>
             <div class="mt-8 text-center md:hidden">
-                <a href="/portfolio"
-                   class="inline-flex rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white">Виж
-                    всички</a>
+                <a
+                    href="/portfolio"
+                    class="inline-flex rounded-xl border border-zinc-300 px-4 py-2 text-sm font-semibold hover:bg-white"
+                >
+                    Виж всички
+                </a>
             </div>
         </div>
     </section>
@@ -196,17 +210,17 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
             </div>
             <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
                 {['Консултация', 'Монтаж', 'Настройка', 'Документи', 'Грижа'].map((step, i) => (
-                        <li class="rounded-2xl border border-zinc-200 p-6 shadow-sm" data-step={i + 1}>
-                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-700 font-semibold text-white">{i + 1}</div>
-                            <h3 class="mt-4 font-semibold">{step}</h3>
-                            <p class="mt-2 text-sm text-zinc-600">
-                                {i === 0 && 'Проверка на съвместимост и очаквана икономия.'}
-                                {i === 1 && 'Монтаж на компоненти, окабеляване и резервоар.'}
-                                {i === 2 && 'Калибриране на карта, тест в реални условия, фини корекции.'}
-                                {i === 3 && 'Издаване на документи за регистрация в КАТ, опис на уредбата.'}
-                                {i === 4 && 'Първа профилактика след 1000–1500 км и сервиз при нужда.'}
-                            </p>
-                        </li>
+                    <li class="rounded-2xl border border-zinc-200 p-6 shadow-sm" data-step={i + 1}>
+                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-700 font-semibold text-white">{i + 1}</div>
+                        <h3 class="mt-4 font-semibold">{step}</h3>
+                        <p class="mt-2 text-sm text-zinc-600">
+                            {i === 0 && 'Проверка на съвместимост и очаквана икономия.'}
+                            {i === 1 && 'Монтаж на компоненти, окабеляване и резервоар.'}
+                            {i === 2 && 'Калибриране на карта, тест в реални условия, фини корекции.'}
+                            {i === 3 && 'Издаване на документи за регистрация в КАТ, опис на уредбата.'}
+                            {i === 4 && 'Първа профилактика след 1000–1500 км и сервиз при нужда.'}
+                        </p>
+                    </li>
                 ))}
             </ol>
         </div>
@@ -223,7 +237,7 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
             <div class="mt-10 grid gap-6 md:grid-cols-3">
                 <!-- Plan cards -->
                 <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-                    <h3 class="text-lg font-semibold">Система A.E.B.</h3>
+                    <h3 class="text-lg font-semibold">A.E.B. Italy</h3>
                     <p class="mt-1 text-sm text-zinc-600">Качествена италианска система</p>
                     <div class="mt-4 text-3xl font-bold">от 1 250 лв.</div>
                     <ul class="mt-4 space-y-2 text-sm text-zinc-700">
@@ -232,9 +246,12 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                         <li>Бутилка до 40 литра</li>
                         <li>Гаранция 24 месеца</li>
                     </ul>
-                    <a href="#quote"
-                       class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800">Заяви
-                        оферта</a>
+                    <a
+                        href="#quote"
+                        class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800"
+                    >Заяви
+                        оферта
+                    </a>
                 </div>
                 <div class="rounded-2xl border-2 border-violet-600 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(124,58,237,0.35)]">
                     <div class="inline-flex -translate-y-8 items-center gap-2 rounded-full bg-violet-700 px-3 py-1 text-xs font-semibold text-white shadow">
@@ -251,12 +268,15 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                         <li>Зареждане при бензинова гърловина</li>
                         <li>Гаранция 24 месеца</li>
                     </ul>
-                    <a href="#quote"
-                       class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-violet-700 px-4 py-2 font-semibold text-white hover:bg-violet-600">Заяви
-                        оферта</a>
+                    <a
+                        href="#quote"
+                        class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-violet-700 px-4 py-2 font-semibold text-white hover:bg-violet-600"
+                    >Заяви
+                        оферта
+                    </a>
                 </div>
                 <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-                    <h3 class="text-lg font-semibold">BRC SEQUENT 32 OBD</h3>
+                    <h3 class="text-lg font-semibold">BRC SEQUENT OBD</h3>
                     <p class="mt-1 text-sm text-zinc-600">Качествена италианска система, лидер на пазара в газовите
                         уредби</p>
                     <div class="mt-4 text-3xl font-bold">от 1 850 лв.</div>
@@ -267,9 +287,12 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                         <li>Зареждане при бензинова гърловина</li>
                         <li>Гаранция 24 месеца</li>
                     </ul>
-                    <a href="#quote"
-                       class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800">Заяви
-                        оферта</a>
+                    <a
+                        href="#quote"
+                        class="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800"
+                    >Заяви
+                        оферта
+                    </a>
                 </div>
             </div>
             <p class="mt-4 text-center text-xs text-zinc-500">*Цените са за автомобили, които използват многоточково
@@ -361,15 +384,24 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                     <p class="mt-3 text-zinc-700">Опишете марка, модел, година и двигател. Можете да прикачите снимка на
                         талона.</p>
                     <ul class="mt-6 space-y-2 text-sm text-zinc-700">
-                        <li class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-violet-700"></span>Отговор до края на деня
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-violet-700"
+                            ></span>
+                            Отговор до края на деня
                         </li>
-                        <li class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-violet-700"></span>Viber/WhatsApp за бърза
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-violet-700"
+                            ></span>
+                            Viber/WhatsApp за бърза
                             комуникация
                         </li>
-                        <li class="flex items-center gap-2"><span
-                                class="inline-block h-2 w-2 rounded-full bg-violet-700"></span>Прозрачни цени и етапи
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="inline-block h-2 w-2 rounded-full bg-violet-700"
+                            ></span>
+                            Прозрачни цени и етапи
                         </li>
                     </ul>
                 </div>
@@ -377,43 +409,63 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div class="sm:col-span-2">
                             <label class="block text-sm font-medium">Име</label>
-                            <input type="text" placeholder="Иван Иванов"
-                                   class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"/>
+                            <input
+                                type="text" placeholder="Иван Иванов"
+                                class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Телефон</label>
-                            <input type="tel" placeholder="08xx xxx xxx"
-                                   class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"/>
+                            <input
+                                type="tel" placeholder="08xx xxx xxx"
+                                class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"
+                            />
                         </div>
                         <div>
                             <label class="block text-sm font-medium">Имейл</label>
-                            <input type="email" placeholder="you@example.com"
-                                   class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"/>
+                            <input
+                                type="email" placeholder="you@example.com"
+                                class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"
+                            />
                         </div>
                         <div class="sm:col-span-2">
                             <label class="block text-sm font-medium">Автомобил</label>
-                            <input type="text" placeholder="Пример: BMW 320i, 2015, 2.0 бензин"
-                                   class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"/>
+                            <input
+                                type="text" placeholder="Пример: BMW 320i, 2015, 2.0 бензин"
+                                class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"
+                            />
                         </div>
                         <div class="sm:col-span-2">
                             <label class="block text-sm font-medium">Бележки</label>
-                            <textarea rows="4" placeholder="Пробег, особености, желана система..."
-                                      class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"></textarea>
+                            <textarea
+                                rows="4" placeholder="Пробег, особености, желана система..."
+                                class="mt-1 w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-violet-600 focus:ring"
+                            ></textarea>
                         </div>
                         <div class="sm:col-span-2">
                             <label class="block text-sm font-medium">Прикачи снимка на талона (по желание)</label>
-                            <input type="file"
-                                   class="mt-1 w-full rounded-xl border border-dashed border-zinc-300 px-3 py-8 text-sm text-zinc-500 file:hidden"/>
+                            <input
+                                type="file"
+                                class="mt-1 w-full rounded-xl border border-dashed border-zinc-300 px-3 py-8 text-sm text-zinc-500 file:hidden"
+                            />
                         </div>
                         <div class="sm:col-span-2">
-                            <button type="submit"
-                                    class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600">
+                            <button
+                                type="submit"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-violet-700 px-5 py-3 font-semibold text-white shadow hover:bg-violet-600"
+                            >
                                 Изпрати заявка
                             </button>
                         </div>
-                        <div class="sm:col-span-2 text-center text-xs text-zinc-500">С изпращането приемате <a href="#"
-                                                                                                               class="underline">Условията</a>
-                            и <a href="#" class="underline">Политиката за поверителност</a>.
+                        <div class="sm:col-span-2 text-center text-xs text-zinc-500">С изпращането приемате
+                            <a
+                                href="#"
+                                class="underline"
+                            >Условията
+                            </a>
+                            и
+                            <a href="#" class="underline">Политиката за поверителност</a>
+                            .
                         </div>
                     </div>
                 </form>
@@ -424,12 +476,16 @@ import ImageTwo from "~/assets/images/pexels-zenzazione-2922140.webp";
     <!-- Sticky mobile action bar -->
     <div class="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/95 backdrop-blur md:hidden">
         <div class="mx-auto flex max-w-7xl items-center gap-2 px-4 py-2">
-            <a href="tel:+3598XXXXXXXX"
-               class="inline-flex w-1/2 items-center justify-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 font-medium">
+            <a
+                href="tel:+3598XXXXXXXX"
+                class="inline-flex w-1/2 items-center justify-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 font-medium"
+            >
                 Обади се
             </a>
-            <a href="#quote"
-               class="inline-flex w-1/2 items-center justify-center gap-2 rounded-xl bg-violet-700 px-3 py-2 font-semibold text-white">
+            <a
+                href="#quote"
+                class="inline-flex w-1/2 items-center justify-center gap-2 rounded-xl bg-violet-700 px-3 py-2 font-semibold text-white"
+            >
                 Заяви оферта
             </a>
         </div>

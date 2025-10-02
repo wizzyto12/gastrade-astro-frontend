@@ -1,11 +1,8 @@
 ---
 import { menuMain } from "~/data/menus";
 import IconLogo from "~/assets/images/icons/logo.svg";
-const rmTrailingSlash = (path: string): string => {
-	return path.endsWith("/") && path.length > 1 ? path.slice(0, path.length - 1) : path;
-};
-
-const pathname = rmTrailingSlash(Astro.url.pathname);
+import {globalGetGlobal} from "~/lib/client";
+import { siteName } from "~/data/config";
 ---
 
 <header class="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -15,7 +12,7 @@ const pathname = rmTrailingSlash(Astro.url.pathname);
                 <circle cx="12" cy="12" r="10" class="fill-violet-600"/>
                 <path d="M7 13.5h7.5M9 10.5h8" class="stroke-white" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
-            <span class="text-lg">Газтрейд Варна 2012 ООД</span>
+            <span class="text-lg">{siteName}</span>
         </a>
         <nav class="hidden items-center gap-6 md:flex">
             <a href="#services" class="text-sm text-zinc-700 hover:text-zinc-900">Услуги</a>
