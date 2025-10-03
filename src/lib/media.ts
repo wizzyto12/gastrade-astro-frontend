@@ -1,6 +1,6 @@
 import type {PluginUploadFileDocument} from "~/lib/client";
 
-export function buildMediaUrl(media?: PluginUploadFileDocument | null): string | null {
+export function buildMediaUrl(media: PluginUploadFileDocument): string | null {
     if (!media?.url) {
         return null;
     }

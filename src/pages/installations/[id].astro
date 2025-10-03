@@ -6,8 +6,11 @@ import {installationGetInstallationsById} from "~/lib/client";
 import type {InstallationGetInstallationsByIdResponses, PluginUploadFileDocument} from "~/lib/client";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import {buildMediaUrl} from "~/lib/media.ts";
+import Picture from "astro/components/Picture.astro";
 
 export const prerender = false;
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=3600');
 
 const {id} = Astro.params;
 
@@ -19,21 +22,18 @@ if (typeof id !== "string" || id.length === 0) {
 
 try {
     const response = await installationGetInstallationsById({
-        path: {id},
+        path: {id: id as string},
         query: {
             pLevel: 4,
         },
     });
 
-    installation = (response as unknown as {
-        data?: InstallationGetInstallationsByIdResponses[200]["data"]
-    })?.data?.data ?? null;
+    installation = response?.data?.data ?? null;
 } catch (error) {
     console.error("Failed to fetch installation", error);
 
     Astro.redirect("/500");
 }
-
 
 const brandName = installation?.car?.model?.brand?.name;
 const modelName = installation?.car?.model?.name ?? "";
@@ -69,49 +69,54 @@ const metaTitle = `${carTitle} | Монтажи`;
 
 <Layout pageTitle={`${metaTitle} | ${siteName}`} title={carTitle} description={description}>
     <div>
-        <div class="mx-auto max-w-7xl px-4 py-10">
-            <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div class="mx-auto max-w-7xl px-4 py-6 md:py-10">
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 <div class="space-y-6">
-                    <h4>{carTitle}</h4>
-                    <div class={`sticky top-20 grid gap-2 md:gap-4 grid-cols-${installation?.gallery?.length - 1}`}>
-                        {/* Main image, larger design */}
+
+                    <h5 class="flex items-center gap-3">
+                        <a href="/installations">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                <path
+                                    fill="currentColor"
+                                    d="m7.825 13l5.6 5.6L12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2z"
+                                />
+                            </svg>
+                        </a>
+                        {carTitle}
+                    </h5>
+                    <div class={`sticky top-24 grid gap-2 md:gap-4 grid-cols-${installation?.gallery?.length - 1}`}>
                         <a
                             href={buildMediaUrl(installation?.gallery[0])}
                             target="_blank"
                             data-fancybox="gallery"
                             class={`overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 col-span-4`}
                         >
-                            <Image
+                            <Picture
                                 src={buildMediaUrl(installation?.gallery[0])}
                                 alt={installation?.gallery[0].alternativeText ?? installation?.gallery[0].caption ?? carTitle}
                                 class="h-full w-full object-cover"
                                 loading="eager"
+                                fetchpriority="high"
                             />
                         </a>
 
-                        {/* Other images, thumbnails design */}
                         {installation?.gallery.map((media, index) => {
                             if (index === 0) {
                                 return null;
                             }
 
-                            const url = buildMediaUrl(media);
-                            if (!url) {
-                                return null;
-                            }
-
                             return (
                                 <a
-                                    href={url}
+                                    href={buildMediaUrl(media)}
                                     target="_blank"
                                     data-fancybox="gallery"
-                                    class={`overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100`}
+                                    class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100"
                                 >
-                                    <Image
-                                        src={url}
+                                    <Picture
+                                        src={buildMediaUrl(media)}
                                         alt={media.alternativeText ?? media.caption ?? carTitle}
                                         class="h-full w-full object-cover"
-                                        loading={index === 0 ? "eager" : "lazy"}
+                                        loading="eager"
                                     />
                                 </a>
                             );
@@ -140,14 +145,15 @@ const metaTitle = `${carTitle} | Монтажи`;
                     </div>
                 </div>
 
-                <aside class="space-y-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm md:p-8 lg:sticky lg:top-24">
+                <aside class="space-y-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm md:p-8">
+                    <h3 class="text-xl font-semibold text-zinc-900">Детайли за монтажа</h3>
+
                     <div>
-                        <h3 class="text-xl font-semibold text-zinc-900">Детайли за монтажа</h3>
-                        <p class="mt-2 text-sm text-zinc-600">
+                        <p class="mt-2  text-zinc-600">
                             {installation?.subheading}
                         </p>
                     </div>
-                    <dl class="grid gap-4 text-sm text-zinc-700 grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                    <dl class="grid gap-4  text-zinc-700 grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                         {brandName && (
                             <div>
                                 <dt class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Марка</dt>
@@ -185,7 +191,7 @@ const metaTitle = `${carTitle} | Монтажи`;
                                         <p class="text-xs font-semibold uppercase tracking-wide text-violet-700">{component.label}</p>
                                         <p class="text-base font-semibold text-zinc-900">{component.name ?? "Неизвестен компонент"}</p>
                                         {component.brand && (
-                                            <p class="text-sm text-zinc-600">Марка: {component.brand}</p>
+                                            <p class=" text-zinc-600">Марка: {component.brand}</p>
                                         )}
                                     </li>
                                 ))}
@@ -194,25 +200,19 @@ const metaTitle = `${carTitle} | Монтажи`;
                     )}
 
                     <div class="rounded-2xl border border-violet-100 bg-violet-50 px-5 py-5">
-                        <h3 class="text-base font-semibold text-zinc-900">Искате подобен резултат?</h3>
-                        <p class="mt-2 text-sm text-zinc-600">
+                        <h3 class="text-base font-semibold text-zinc-900">Имате същия автомобил?</h3>
+                        <p class="mt-2 text-zinc-600">
                             Свържете се с нас за записване на час и индивидуална оферта.
                         </p>
                         <div class="mt-4 flex flex-col gap-2">
                             <a
                                 href={phone.href}
-                                class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-600"
+                                class="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2  font-semibold text-white transition hover:bg-violet-600"
                             >
-                                Обади се: {phone.label}
                                 <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h1.11c.6 0 1.13.36 1.35.91l.7 1.74a1.5 1.5 0 0 1-.3 1.52L6.3 7.6a10.46 10.46 0 0 0 6.09 6.09l1.43-1.06a1.5 1.5 0 0 1 1.52-.3l1.74.7c.55.22.91.75.91 1.35v1.11A2.5 2.5 0 0 1 15.5 18h-1A12.5 12.5 0 0 1 2 4.5Z"/>
                                 </svg>
-                            </a>
-                            <a
-                                href="/contact"
-                                class="inline-flex items-center gap-2 rounded-xl border border-violet-200 px-4 py-2 text-sm font-semibold text-violet-700 transition hover:border-violet-300 hover:text-violet-800"
-                            >
-                                Изпрати запитване
+                                {phone.label}
                             </a>
                         </div>
                     </div>
