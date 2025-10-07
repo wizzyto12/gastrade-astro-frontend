@@ -12,7 +12,7 @@ export const createClientConfig: CreateClientConfig = (config) => ({
     },
     querySerializer(params) {
         return qs.stringify(params, {
-            encodeValuesOnly: true, // prettify URL
+            encodeValuesOnly: true,
         });
     },
 });

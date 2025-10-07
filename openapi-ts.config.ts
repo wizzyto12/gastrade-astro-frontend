@@ -4,8 +4,8 @@ export default defineConfig({
     input: 'http://127.0.0.1:1337/openapi.json',
     output: {
         path: 'src/lib/client',
-        format: false,
-        lint: false
+        format: null,
+        lint: null
     },
     plugins: [
         {
